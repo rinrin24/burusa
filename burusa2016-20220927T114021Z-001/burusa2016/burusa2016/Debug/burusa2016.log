@@ -1,0 +1,34 @@
+﻿2016/09/17 16:52:09 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "F:\burusa2016\burusa2016\burusa2016.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt burusa2016.cpp
+         burusa2016.cpp
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(186): warning C4101: 'rc18' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(185): warning C4101: 'rc14' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(184): warning C4101: 'rc10' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(196): warning C4101: 'x' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(187): warning C4101: 'rc21' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(186): warning C4101: 'rc17' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(185): warning C4101: 'rc13' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(187): warning C4101: 'rc20' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(199): warning C4101: 'st' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(186): warning C4101: 'rc16' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(185): warning C4101: 'rc12' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(184): warning C4101: 'rc8' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(187): warning C4101: 'rc19' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(186): warning C4101: 'rc15' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(185): warning C4101: 'rc11' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(183): warning C4101: 'rc6' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(187): warning C4101: 'rc22' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(184): warning C4101: 'rc9' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(184): warning C4101: 'rc7' : ローカル変数は 1 度も使われていません。
+     1>f:\burusa2016\burusa2016\burusa2016.cpp(2409): warning C4101: 'Lpt' : ローカル変数は 1 度も使われていません。
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\burusa2016\Debug\burusa2016.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:\burusa2016\Debug\burusa2016.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\burusa2016\Debug\burusa2016.lib" /MACHINE:X86 Debug\burusa2016.obj
+         LINK : 前回のインクリメンタル リンクで F:\burusa2016\Debug\burusa2016.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
+         burusa2016.vcxproj -> F:\burusa2016\Debug\burusa2016.exe
+     1>プロジェクト "F:\burusa2016\burusa2016\burusa2016.vcxproj" (Build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:17.37
