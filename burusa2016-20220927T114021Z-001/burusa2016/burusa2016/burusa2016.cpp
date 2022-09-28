@@ -119,7 +119,6 @@ BOOL InitInstance(HINSTANCE hInst, int nCmdShow)
 	UpdateWindow(hWnd);
 	return TRUE;
 }
-int Spa;
 static int M = 1;
 static int A, B, C, D, E;
 //ウィンドウプロシージャ
@@ -157,7 +156,6 @@ int Spr = 110;
 int nD = 98;
 int nLOOP[130];
 
-
 RECT rc23, rc24, rc25, rc26;
 int CT;
 static int AAB, XO;
@@ -176,196 +174,29 @@ int YXO;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-
-
 	RECT rc;
 	RECT rc0, rc1, rc2, rc3;
-	RECT rc4, rc6;
-	RECT rc7, rc8, rc9, rc10;
-	RECT rc11, rc12, rc13, rc14;
-	RECT rc15, rc16, rc17, rc18;
-	RECT rc19, rc20, rc21, rc22;
-
-
-
+	RECT rc4;
 
 	int i, q;
 	i = 0;
 	q = 0;
 	int o;
-	int x;
 	static int test = 100;
 	int id;
-	SYSTEMTIME st;
-
-
 
 	static int Max, min;
 	static int bpty[10];
 
-
-
 	static int XX;
-
-
-
 
 	/*数字処理start*/
 
-
 	GetClientRect(hWnd, &rc);
-	/*
-	rc0.left=0;
-	rc0.top=rc.bottom/16;
-	rc0.right=rc.right/number;
-	rc0.bottom=rc.bottom/9;
-	rc1.left=rc0.right;
-	rc1.top=rc0.top;
-	rc1.right=rc.right/number*2;
-	rc1.bottom=rc0.bottom;
-	rc2.top=2;
-	rc2.left=2;
-	rc2.bottom=rc0.top-rc.bottom/80;
-	rc2.right=rc1.right;
-	rc3.top=rc0.bottom+rc.bottom/40;
-	rc3.left=rc0.left+rc.right/80;
-	rc3.bottom=rc.bottom/2-rc.bottom/40;
-	rc3.right=rc1.right-rc.right/80;
-	rc7.left=rc.right*2/3;
-	rc7.top=rc.bottom/16;
-	rc7.right=rc7.left+rc.right/number;
-	rc7.bottom=rc.bottom/9;
-	rc8.left=rc7.right;
-	rc8.top=rc7.top;
-	rc8.right=rc.right*2/3+rc.right/number*2;
-	rc8.bottom=rc0.bottom;
-	rc9.top=2;
-	rc9.left=2+rc.right*2/3;
-	rc9.bottom=rc0.top-rc.bottom/80;
-	rc9.right=rc8.right;
-	rc10.top=rc0.bottom+rc.bottom/40;
-	rc10.left=rc0.left+rc.right/80+rc.right*2/3;
-	rc10.bottom=rc.bottom/2-rc.bottom/40;
-	rc10.right=rc1.right-rc.right/80+rc.right*2/3;
-	rc11.left=0;
-	rc11.top=rc.bottom/16+rc.bottom/2;
-	rc11.right=rc.right/number;
-	rc11.bottom=rc.bottom/9+rc.bottom/2;
-	rc12.left=rc0.right;
-	rc12.top=rc0.top+rc.bottom/2;
-	rc12.right=rc.right/number*2;
-	rc12.bottom=rc0.bottom+rc.bottom/2;
-	rc13.top=2+rc.bottom/2;
-	rc13.left=2;
-	rc13.bottom=rc0.top-rc.bottom/80+rc.bottom/2;
-	rc13.right=rc1.right;
-	rc14.top=rc0.bottom+rc.bottom/40+rc.bottom/2;
-	rc14.left=rc0.left+rc.right/80;
-	rc14.bottom=rc.bottom/2-rc.bottom/40+rc.bottom/2;
-	rc14.right=rc1.right-rc.right/80;
-	rc15.left=0+rc.right/3;
-	rc15.top=rc.bottom/16+rc.bottom/2;
-	rc15.right=rc.right/number+rc.right/3;
-	rc15.bottom=rc.bottom/9+rc.bottom/2;
-	rc16.left=rc0.right+rc.right/3;
-	rc16.top=rc0.top+rc.bottom/2;
-	rc16.right=rc.right/number*2+rc.right/3;
-	rc16.bottom=rc0.bottom+rc.bottom/2;
-	rc17.top=2+rc.bottom/2;
-	rc17.left=2+rc.right/3;
-	rc17.bottom=rc0.top-rc.bottom/80+rc.bottom/2;
-	rc17.right=rc1.right+rc.right/3;
-	rc18.top=rc0.bottom+rc.bottom/40+rc.bottom/2;
-	rc18.left=rc0.left+rc.right/80+rc.right/3;
-	rc18.bottom=rc.bottom/2-rc.bottom/40+rc.bottom/2;
-	rc18.right=rc1.right-rc.right/80+rc.right/3;
-	rc19.left=rc7.left;
-	rc19.top=rc.bottom/16+rc.bottom/2;
-	rc19.right=rc7.right;
-	rc19.bottom=rc.bottom/9+rc.bottom/2;
-	rc20.left=rc8.left;
-	rc20.top=rc0.top+rc.bottom/2;
-	rc20.right=rc8.right;
-	rc20.bottom=rc0.bottom+rc.bottom/2;
-	rc21.top=2+rc.bottom/2;
-	rc21.left=rc9.left;
-	rc21.bottom=rc0.top-rc.bottom/80+rc.bottom/2;
-	rc21.right=rc9.right;
-	rc22.top=rc0.bottom+rc.bottom/40+rc.bottom/2;
-	rc22.left=rc10.left;
-	rc22.bottom=rc.bottom/2-rc.bottom/40+rc.bottom/2;
-	rc22.right=rc10.right;
-	*/
-	/*
-	rc4.left=rc1.right+rc.right/20;
-	rc4.top=rc.bottom/60;
-	rc4.bottom=rc0.top;
-	rc4.right=rc.right/number*2*2-rc.right/100;
-	*/
 
 	/*数字処理end*/
 
-
-
-
 	switch (msg) {
-
-		/*
-		case WM_COMMAND:
-		switch(LOWORD(wp)){
-		case IDM_START:
-		XO=1;
-
-		InvalidateRect(hWnd,&rc,0);
-		break;
-		case IDM_END:
-		XO=0;
-		break;
-		case IDM_TIME1:
-		DTM+=10000;
-		Tm=DTM;
-		InvalidateRect(hWnd,NULL,0);
-		break;
-		case IDM_TIME2:
-		DTM+=60000;
-		Tm=DTM;
-		InvalidateRect(hWnd,NULL,0);
-		break;
-		case IDM_TIME3:
-		DTM-=10000;
-		if(DTM<1000){
-		DTM=1000;
-		}
-		InvalidateRect(hWnd,NULL,0);
-		Tm=DTM;
-		break;
-		case IDM_TIME4:
-		DTM-=60000;
-		if(DTM<1000){
-		DTM=1000;
-		}
-		InvalidateRect(hWnd,NULL,0);
-		Tm=DTM;
-		break;
-		case IDM_NOISE:
-		M=1;
-		break;
-		case IDM_MUSIC:
-		M=0;
-		break;
-		case IDM_EASY:
-		DQ=1;
-		break;
-		case IDM_HARD:
-		DQ=0;
-		break;
-		default:
-		return (DefWindowProc(hWnd, msg, wp, lp));
-
-		}
-		break;
-
-		*/
 	case WM_CREATE:
 		for (o = 0; o<nD; o++){
 			nLOOP[o] = 0;
@@ -397,12 +228,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		rc3.left = rc0.left + rc.right / 160;
 		rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
 		rc3.right = rc1.right - rc.right / 35;
-		/*
-		rc4.left=rc1.right+rc.right/20;
-		rc4.top=rc.bottom/60;
-		rc4.bottom=rc0.top;
-		rc4.right=rc.right/number*2*2-rc.right/100;
-		*/
 
 		for (o = 0; o<HH; o++){
 			price[0][o] = 15000;
@@ -419,9 +244,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		for (o = 0; o<HH; o++){
 			price[4][o] = 15000;
 		}
-		/*
-		price[20]=6000;
-		*/
 		SetTimer(hWnd, ID_MYTIMER, 200, NULL);
 
 		srand((unsigned)time(NULL));
@@ -481,13 +303,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 		hdc_mem = CreateCompatibleDC(hdc);
 		SelectObject(hdc_mem, hBmp);
-		/*
-		hdc = GetDC( hWnd );
-		// メモリデバイスコンテキストを作成する
-		hdc_mem = CreateCompatibleDC( hdc );
-		// ロードしたビットマップを選択する
-		SelectObject( hdc_mem, hBmp );
-		*/
 
 		break;
 	case WM_CLOSE:
@@ -496,14 +311,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			TEXT("確認"),
 			MB_YESNO | MB_ICONQUESTION);
 		if (id == IDYES) {
-			/*
-			if (KillTimer(hWnd, ID_MYTIMER2) == 0) {
-			MessageBox(hWnd,
-			TEXT("KillTimer Error!"),
-			TEXT("Error"),
-			MB_OK | MB_ICONEXCLAMATION);
-			}
-			*/
 			DestroyWindow(hWnd);
 		}
 		break;
@@ -525,7 +332,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		YXO = 0;
 		hdc = BeginPaint(hWnd, &ps);
 
-
 		SelectObject(hdc, hPen4);
 		SelectObject(hdc, hBrushw);
 		Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
@@ -542,8 +348,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				Ftime(6, hWnd, rc, hdc);
 			}
 
-
-
 			if (XO == 0){
 				bmph = rc.bottom / 9;
 				bmpw = bmph;
@@ -555,13 +359,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				wsprintf((LPWSTR)CON, TEXT("\n\n\n\n\n次回の制限時間；%d秒"), DTM / 1000);
 				DrawText(hdc, CON, -1, &rc, DT_CENTER);
 
-
-
 				SelectObject(hdc_mem, hBmp);
 
-
 				Rectangle(hdc, rc.right / 2 - bmpw / 2, rc.bottom * 3 / 4 - bmph, rc.right / 2 + bmpw / 2, rc.bottom * 3 / 4);
-
 				StretchBlt(hdc,		//転送先
 					rc.right / 2 - bmpw / 2,	//転送先x座標
 					rc.bottom * 3 / 4 - bmph,	//転送先y座標
@@ -573,20 +373,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					150,
 					150,//転送元y座標
 					SRCCOPY);	//ラスターオペレーションコード
-
 				YXO = 1;
 			}
-
-
 		}
 		SelectObject(hdc, hBrush);
 
-
-
-
 		if (EV<his + 3){
-
-
 			SelectObject(hdc, hBrushw);
 
 			Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
@@ -597,29 +389,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			wsprintf((LPWSTR)YOM, TEXT("\n\n\n\n\n%d％完了"), Qw * 100 / (his + 1 + DTM / 1000));
 			DrawText(hdc, YOM, -1, &rc, DT_CENTER);
 		}
-
-
-
-
 		EndPaint(hWnd, &ps);
 
 		break;
-
-
-
-
 	case WM_TIMER:
 		if (EV == his + 3){
 			KillTimer(hWnd, ID_MYTIMER);
 			SetTimer(hWnd, ID_MYTIMER2, 1000, NULL);
 		}
 		Qw++;
-		/*
-		if(TEST==1&&SP==1){
-		XO=1;
-		TEST=0;
-		}
-		*/
+
 		if (XO == 1){
 
 			rc0.left = 0;
@@ -648,22 +427,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				Tm -= DTM - 1000;
 
 			}
-			/*
-			if(EV==his+2){
-			price[0][his]=15000;
-			price[1][his]=15000;
-			price[2][his]=15000;
-			price[3][his]=15000;
-			price[4][his]=15000;
-
-
-
-			for(o=0;o<nD;o++){
-			nLOOP[o]=0;
-			}
-			}
-
-			*/
 
 			Tm -= 1000;
 
@@ -680,56 +443,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				InvalidateRect(hWnd, NULL, 0);
 			}
 
-
-			if (M == 0){
-				/*
-				if(Tm==152000){
-				PlaySound(
-				TEXT("M1.wav"),NULL,SND_ASYNC|SND_FILENAME);
-				}
-
-				if(Tm==81000){
-				PlaySound(
-				TEXT("M2.wav"),NULL,SND_ASYNC|SND_FILENAME);
-				}
-				*/
-				/*if(Tm==111000){
-				PlaySound(
-				TEXT("M1.wav"),NULL,SND_ASYNC|SND_FILENAME);
-				}
-
-				if(Tm==40000){
-				PlaySound(
-				TEXT("M2.wav"),NULL,SND_ASYNC|SND_FILENAME);
-				}*/
-
-
-
-
-
-			}
-
-
-
-
-
-
-
-
-
-
 			if (Tm == 0){
-
 
 				if (!(EV<his + 2)){
 					XO = 0;
 					TEST = 1;
 				}
 				/*株価・チャート移動のためのスクリプトstart*/
-				/*
-				Max=0;
-				min=0;
-				*/
 
 				EV++;
 
@@ -746,91 +466,73 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				/**goto文を使っています。注意！**/
 
 				if (DQ != 1){
+					loop:
+						XX = rand() % nD;
 
-				loop:
-					XX = rand() % nD;
-
-					if (XX == 108){
-						goto loop;
-					}
-					if (XX == 110){
-						goto loop;
-					}
-					if (XX == 111){
-						goto loop;
-					}
-					if (XX == 112){
-						goto loop;
-					}
-					if (XX >= 123 && XX <= 130){
-						goto loop;
-					}
-
-
-					if (nLOOP[XX] == 1){
-						o++;
-						if (o == 1000000){
-							Data(1000);
-							goto out;
+						if (XX == 108){
+							goto loop;
 						}
-						goto loop;
-					}
-					if (!(EV<his + 3)){
-						nLOOP[XX] = 1;
-					}
-
-					if (!(EV<his + 3)){
-						if (NE == 36){
-
-							Data(34);
-							nLOOP[34] = 1;
-							NE = 0;
+						if (XX == 110){
+							goto loop;
 						}
-						else{
-							Data(XX);
+						if (XX == 111){
+							goto loop;
 						}
-					}
-				out:
-					o = 1;
+						if (XX == 112){
+							goto loop;
+						}
+						if (XX >= 123 && XX <= 130){
+							goto loop;
+						}
+
+
+						if (nLOOP[XX] == 1){
+							o++;
+							if (o == 1000000){
+								Data(1000);
+								goto out;
+							}
+							goto loop;
+						}
+						if (!(EV<his + 3)){
+							nLOOP[XX] = 1;
+						}
+						if (!(EV<his + 3)){
+							if (NE == 36){	
+								Data(34);
+								nLOOP[34] = 1;
+								NE = 0;
+							}
+							else{
+								Data(XX);
+							}
+						}
+					out:
+						o = 1;
 				}
 
 				if (DQ == 1){
-
-				Eloop:
-					XX = rand() % EnD;
-					if (nLOOP[XX] == 1){
-						o++;
-						if (o == 100000000){
-							EData(1000);
-							goto Eout;
+					Eloop:
+						XX = rand() % EnD;
+						if (nLOOP[XX] == 1){
+							o++;
+							if (o == 100000000){
+								EData(1000);
+								goto Eout;
+							}
+							goto Eloop;
 						}
-						goto Eloop;
-					}
-					if (!(EV<his + 3)){
-						nLOOP[XX] = 1;
-					}
-					EData(XX);
-				Eout:
-					o = 1;
+						if (!(EV<his + 3)){
+							nLOOP[XX] = 1;
+						}
+						EData(XX);
+					Eout:
+						o = 1;
 				}
-
-
-
-
-
-
-
-
-
-
-
 
 				/**goto文を使っています。注意！**/
 
-
 				/////////////////////////////////////////////////////////////
-				/*	XX=rand()%nD;*/
-
 
 				for (q = 0; q<5; q++){
 
@@ -838,15 +540,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						price[q][o] = price[q][o + 1];
 					}
 
-
-
 					wsprintf((LPWSTR)szPR[0], TEXT("株価；%d"), price[q][his - 1] - spread[q]);
-					/*
-					wsprintf((LPWSTR)szPR[1],TEXT("買；%d"),price[q][his-1]+spread[q]);
-					*/
-
-
-
 
 					for (o = 0; o<his; o++){
 						if (o == 0){
@@ -880,7 +574,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 							}
 						}
 
-
 					}
 					else{
 						if (q<2){
@@ -895,28 +588,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						}
 					}
 
-
 					wsprintf(szPR[q * 2 + 15], TEXT("%d"), Max);
 					wsprintf(szPR[q * 2 + 16], TEXT("%d"), min);
 
 				}
 
-
-
-
-
-
-
 				Tm = DTM;
 
-
-
-				if (M == 0){
-
-					/*PlaySound(
-					TEXT("music2.wav"),NULL,SND_ASYNC|SND_FILENAME);
-					*/
-				}
 				/*為替start*/
 
 				Spr = Rpr;
@@ -983,7 +661,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						}
 					}
 				}
-
 
 				ZZ = rand() % 5;
 				SZ = Z + ZZ - 2;
@@ -1060,22 +737,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					}
 				}
 
-				/*if(NE==36||(mNE==1&&o!=50)){
-				Rpr=150;
-				wsprintf((LPWSTR)Yrate,TEXT("↑"));
-				rR=255;
-				rG=0;
-				rB=51;
-				if(nNE==11){
-				nNE=1;
-				}
-				if(NE==32){
-				mNE=0;
-				}
-				}*/
-
 				o = 0;
-
 
 				wsprintf((LPWSTR)Rate, TEXT(""), Spr);
 
@@ -1085,75 +747,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				price[2][his] = price[2][his - 1] + C;
 				price[3][his] = price[3][his - 1] + D;
 				price[4][his] = price[4][his - 1] + E;
-				/*
-				for(o=0;o<5;o++){
-				if(price[o][his]<1000){
-				price[o][his]=1000;
-				}
-				}
-				*/
 
 				/*Unknown*/
 
 				/*為替+ニュースまとめstart*/
-
-
-
-				/*
-				q=0;
-				q=A%1000;
-				if(q<500){
-				A+=1000-q;
-				}else{
-				A-=q;
-				}
-
-				q=0;
-				q=B%1000;
-				if(q<500){
-				B+=1000-q;
-				}else{
-				B-=q;
-				}
-
-
-
-				q=0;
-				q=C%1000;
-				if(q<500){
-				C+=1000-q;
-				}else{
-				C-=q;
-				}
-
-
-
-				q=0;
-				q=D%1000;
-				if(q<500){
-				D+=1000-q;
-				}else{
-				D-=q;
-				}
-
-
-
-				q=0;
-				q=E%1000;
-				if(q<500){
-				E+=1000-q;
-				}else{
-				E-=q;
-				}
-
-
-				*/
-				/*
-
-				for(o=0;o<5;o++){
-				price[o][HH]+=rand()%961-480;
-				}
-				*/
 
 				for (o = 0; o<5; o++){
 					q = price[o][HH] % 1000;
@@ -1162,7 +759,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					}
 					price[o][HH] -= q;
 				}
-
 
 				if (EV<his + 3){
 					for (o = 0; o<5; o++){
@@ -1178,15 +774,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					}
 
 				}
-
 				if (EV>HH - 2){
 					for (o = 0; o<5; o++){
 						if (price[o][his - 1]<100){
 							AS[o] = 2;
 						}
-
 						if (AS[o]>0){ AS[o]--; }
-
 					}
 				}
 				int r;
@@ -1197,8 +790,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 							r = rand() % 4001 - 2000;
 							price[w][o] = 15000 + r;
 
-
-
 							q = price[w][o] % 1000;
 							if (q >= 500){
 								price[w][o] += 1000;
@@ -1207,82 +798,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						}
 					}
 				}
-
 				/*為替+ニュースまとめend*/
-
-
 				/*為替end*/
-
-
-
 				InvalidateRect(hWnd, NULL, 0);
-
-
 			}/**Tm==0**/
 			/*株価・チャート移動のためのスクリプトend*/
-
-
-
 		}
 		else
 		if (TEST == 200){
 			SendMessage(hWnd, WM_PAINT, 0, 0);
 		}
 		break;
-		/*
-		case WM_KEYDOWN:
-
-		switch(wp)
-		{
-		case VK_CONTROL:
-		CT=1;
-		break;
-		case VK_RETURN:
-		if(CT==1){
-		SP=1;
-		}
-		break;
-
-		default:
-		return (DefWindowProc(hWnd, msg, wp, lp));
-
-		}
-
-		case WM_KEYUP:
-
-		switch(wp)
-		{
-		case VK_CONTROL:
-		CT=0;
-		break;
-		case VK_RETURN:
-		SP=0;
-
-		break;
-
-		default:
-		return (DefWindowProc(hWnd, msg, wp, lp));
-
-		}
-		*/
-
-
-
-
-	case WM_KEYDOWN:
-		if (wp == VK_SPACE){
-			Spa = 1;
-		}
-		break;
-
-	case WM_KEYUP:
-		if (wp == VK_SPACE){
-			Spa = 0;
-		}
-
-		break;
-
-
 	case WM_CHAR:
 		if (wp == VK_ESCAPE){
 			if (XO == 0){ XO = 1; InvalidateRect(hWnd, &rc, 0); break; }
@@ -1301,41 +827,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			}
 			InvalidateRect(hWnd, NULL, 0);
 			Tm = DTM;
-
-
 		}
-
-		break;	// マウスカーソルが移動したときに送られてくる
-		// 移動先の座標を取得
-		/*if(Spa==1){
-		int Mx,My;
-		Mx = LOWORD( lp );
-		My = HIWORD( lp );
-		if(Mx>rc.right/2-bmpw/2&&Mx<rc.right/2-bmpw/2+bmpw&&My>rc.bottom*3/4-bmph&&My<rc.bottom*3/4){
-		//if(YXO==1){
-		XO=1;
-		InvalidateRect(hWnd,NULL,0);
-		//}
-		}
-		}
-		break;*/
-		/*
-		rc.right/2-bmpw/2,	//転送先x座標
-		rc.bottom*3/4-bmph,	//転送先y座標
-		bmpw,		//転送先長方形の幅
-
-		bmph,
-		*/
-
-
-
-
+		break;
 	default:
 		return (DefWindowProc(hWnd, msg, wp, lp));
 	}
 	return 0;
 }
-
 
 HFONT MyCreateFont(int nHeight, DWORD dwCharSet, LPCTSTR lpName)
 {
@@ -1351,15 +849,7 @@ HFONT MyCreateFont(int nHeight, DWORD dwCharSet, LPCTSTR lpName)
 }
 
 void Data(int XX){
-	/*if(F==1){
-	A=15000;
-	B=15000;
-	C=15000;
-	D=15000;
-	E=15000;
-
-	F=0;
-	}else*/ if (EV<his + 3){
+	if (EV<his + 3){
 		A = (rand() % 7 - 3) * 700;
 		B = (rand() % 7 - 3) * 700;
 		C = (rand() % 7 - 3) * 700;
@@ -2260,16 +1750,7 @@ void Data(int XX){
 			D = 1000;
 			E = 3000;
 		}
-
-
-
-
-
-
-
-
 		NE = XX;
-
 
 		if (XX == 1000){
 			wsprintf(S, TEXT("最後の株価を表示しています。"), XX);
@@ -2284,18 +1765,8 @@ void Data(int XX){
 	return;
 }
 
-
-
 void EData(int XX){
-	/*if(F==1){
-	A=15000;
-	B=15000;
-	C=15000;
-	D=15000;
-	E=15000;
-
-	F=0;
-	}else*/ if (EV<his + 3){
+	if (EV<his + 3){
 		A = (rand() % 7 - 3) * 700;
 		B = (rand() % 7 - 3) * 700;
 		C = (rand() % 7 - 3) * 700;
@@ -2312,17 +1783,14 @@ void EData(int XX){
 			wsprintf(S, TEXT("スーパーハイブリッド車が開発された！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			A = 2000;
-
 		}
 		if (XX == 1){
 			wsprintf(S, TEXT("汗をかくと冷たくなる「スーパークールシャツ」が開発された！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
-
 			D = 2000;
 
 		}
 		if (XX == 2){
-
 			wsprintf(S, TEXT("すべての高層ビルに震度7に耐える耐震工事を義務付ける法律ができた！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			B = 2000;
@@ -2332,33 +1800,25 @@ void EData(int XX){
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			A = -4000;
 			B = 1000;
-
 			D = 1000;
 		}
 		if (XX == 4){
-
 			wsprintf(S, TEXT("太陽光で動くソーラー自動車が発売された！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			A = 2000;
-
 		}
 		if (XX == 5){
 			wsprintf(S, TEXT("世界的に景気が良くなった！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			A = 3000;
 			B = 3000;
-
 			D = -1000;
-
 		}
 		if (XX == 6){
-
 			wsprintf(S, TEXT("円安になった！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			A = 3000;
-
 			D = -2000;
-
 		}
 		if (XX == 7){
 			wsprintf(S, TEXT("中国と日本の関係が悪化し、一切の貿易が停止した！"), XX);
@@ -2372,31 +1832,20 @@ void EData(int XX){
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			A = -1000;
 			B = -1000;
-
 		}
 		if (XX == 9){
 			wsprintf(S, TEXT("急激な円高になった！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			A = -3000;
 			B = 0;
-
 			D = 2000;
-
 		}
 		if (XX == 1000){
 			wsprintf(S, TEXT("最後の株価を表示しています。"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			KillTimer(hWnd, ID_MYTIMER2);
 		}
-
-
-
-
-
-
 	}
-
-
 	return;
 }
 
@@ -2406,7 +1855,6 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 	HBRUSH hBrush, hBrushW, hBrushT;
 	RECT rc0, rc1, rc2, rc3, rc4, rc6;
 	TCHAR szPRL[5][10];
-	POINT Lpt[HH];
 	int o, i, q;
 
 	hPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
@@ -2439,11 +1887,6 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 			rc3.right = rc1.right - rc.right / 40;
 			wsprintf((LPWSTR)szPRL[2], TEXT("トヨタ自動車"));
 			Tr = 204;
-
-
-
-
-
 		}
 		if (A == 2){
 
@@ -2467,8 +1910,6 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 			if (DQ == 1){ wsprintf((LPWSTR)szPRL[2], TEXT("鹿島建設")); }
 			Tr = 255;
 			Tg = 255;
-
-
 		}
 		if (A == 3){
 			rc0.left = 0;
@@ -2514,8 +1955,6 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 			if (DQ == 1){ wsprintf((LPWSTR)szPRL[2], TEXT("ユニクロ")); }
 			Tr = 51;
 			Tg = 204;
-
-
 		}
 		if (A == 5){
 			rc0.left = rc.right * 2 / 3;
@@ -2538,9 +1977,6 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 			Tr = 211;
 			Tg = 211;
 			Tb = 211;
-
-
-
 		}
 		SetDCBrushColor(hdc, RGB(Tr, Tg, Tb));
 
@@ -2549,62 +1985,15 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		rc2.top += rc.bottom / 200;
 		rc2.top += rc.bottom / 200;
 		rc2.bottom += rc.bottom / 200;
-		/*
-		for(o=0;o<his;o++){
-		Lpt[o].y=(rc3.bottom-rc3.top)/2+rc3.top;
-		}
-		*/
 		wsprintf((LPWSTR)szPRL[0], TEXT("株価；%d"), price[A - 1][his - 1]);
-		/*
-		wsprintf((LPWSTR)szPRL[1],TEXT("買；%d"),price[A-1][his-1]+spread[A-1]);
-		*/
 		wsprintf((LPWSTR)szPRL[3], szPR[A * 2 + 13]);
 		wsprintf((LPWSTR)szPRL[4], szPR[A * 2 + 14]);
-
-
-
-
-
-
-
-
-		/*
-		rc0.left=0;
-		rc0.top=rc.bottom/16;
-		rc0.right=rc.right/number;
-		rc0.bottom=rc.bottom/9;
-		rc1.left=rc0.right;
-		rc1.top=rc0.top;
-		rc1.right=rc.right/number*2;
-		rc1.bottom=rc0.bottom;
-		rc2.top=2;
-		rc2.left=2;
-		rc2.bottom=rc0.top-rc.bottom/80;
-		rc2.right=rc1.right;
-		rc3.top=rc0.bottom+rc.bottom/40;
-		rc3.left=rc0.left+rc.right/160;
-		rc3.bottom=rc.bottom/2-rc.bottom/40;
-		rc3.right=rc1.right-rc.right/35;
-		*/
-
-
-
-
-
-
 
 		/*初期の枠を作るスクリプト開始*/
 
 		for (o = 0; o<his; o++){
 			pt[A - 1][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left - rc.right / 300;
 		}
-
-		/*
-		for(o=0;o<10;o++){
-		Lpt[o].x=(rc3.right-rc3.left)/(his)*(o)+rc3.left;
-		}
-		*/
-
 
 		SelectObject(hdc, hPen);
 		for (i = 0; i<2; i++){
@@ -2621,7 +2010,6 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		Rectangle(hdc, rc0.left, rc0.top, rc0.right, rc0.bottom);
 		Rectangle(hdc, rc1.left, rc1.top, rc1.right, rc1.bottom);
 
-
 		RECT rc40;
 		rc40.left = (rc0.left + rc1.left) / 2;
 		rc40.right = (rc0.right + rc1.right) / 2;
@@ -2634,8 +2022,6 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		rc41.bottom = rc40.bottom;
 		rc41.top = rc40.top + rc.bottom / 100;
 
-
-
 		SelectObject(hdc, hBrushT);
 
 		RoundRect(hdc, rc2.left, rc2.top - rc.bottom / 200, rc2.right, rc2.bottom, (rc.right + rc.bottom) / 50, (rc.right + rc.bottom) / 50);
@@ -2644,55 +2030,27 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 
 		SelectObject(hdc, hFont6);
 
-
 		SelectObject(hdc, hBrush);
 
 		SetTextColor(hdc, RGB(0, 0, 0));
 
 		DrawText(hdc, szPRL[2], -1, &rc2, DT_CENTER);
 
-		/************/
 
 		SelectObject(hdc, hBrushW);
 
 		SelectObject(hdc, hPen);
 
-		/*
-
-		Rectangle(hdc,rc40.left,rc40.top,rc40.right,rc40.bottom);
-
-		*/
 		Rectangle(hdc, rc3.left, rc3.top, rc3.right, rc3.bottom);
-
-
-
-
 
 		SetTextColor(hdc, RGB(0, 0, 255));
 		DrawText(hdc, szPRL[0], -1, &rc41, DT_CENTER);
-		/*
-		SetTextColor(hdc,RGB(255,0,0));
-		DrawText(hdc,szPRL[1],-1,&rc1,DT_CENTER);
-		*/
-
-
-
-
-
 
 		/*数字処理end*/
 
-
 		SelectObject(hdc, hPen2);
 
-
-
-
-
 		Polyline(hdc, pt[A - 1], HH);
-		/*
-		SelectObject(hdc,hBrush);
-		*/
 		SelectObject(hdc, hFont3);
 		SetTextColor(hdc, RGB(255, 102, 51));
 		TextOut(hdc, rc3.right, rc3.top, szPRL[3], lstrlen(szPRL[3]));
@@ -2734,7 +2092,6 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		hBrush = CreateSolidBrush(RGB(204, 255, 102));
 		SelectObject(hdc, hBrush);
 
-
 		Rectangle(hdc, rc4.left, rc4.top, rc4.right, rc4.bottom);
 
 		SelectObject(hdc, hBrushW);
@@ -2751,7 +2108,6 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		rc6.left = rc0.left + rc.right / 160 + rc.right / 3;
 		rc6.bottom = rc.bottom / 2 - rc.bottom / 10;
 		rc6.right = rc1.right - rc.right / 32 + rc.right / 3;
-
 
 		SelectObject(hdc, hFont6);
 		DrawText(hdc, S, lstrlen(S), &rc6, DT_CENTER | DT_WORDBREAK);
@@ -2774,13 +2130,10 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		rc25.top = rc.bottom / 2 - rc.bottom / 10;
 		rc25.bottom = rc.bottom / 2;
 
-
 		if (DQ != 1){
-
 
 			SelectObject(hdc, hBrushW);
 			SelectObject(hdc, hPen3);
-
 
 			Rectangle(hdc, rc23.left, rc23.top, rc23.right, rc23.bottom);
 
@@ -2789,11 +2142,8 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 			SelectObject(hdc, hPen);
 			Ellipse(hdc, rc23.left + (rc23.right - rc23.left) / 2 - ((rc23.bottom - rc.bottom / 23) - (rc23.top - rc.bottom / 100)) / 2 - rc.bottom / 100, rc23.top - rc.bottom / 100 - rc.bottom / 100, (rc23.right - rc23.left) / 2 + ((rc23.bottom - rc.bottom / 23) - (rc23.top - rc.bottom / 100)) / 2 + rc23.left + rc.bottom / 100, rc23.bottom - rc.bottom / 23 + rc.bottom / 100);
 
-
-
 			SelectObject(hdc, hFont5);
 			SelectObject(hdc, hPen);
-
 
 			SetTextColor(hdc, RGB(rR, rG, rB));
 
@@ -2807,52 +2157,22 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 			SetTextColor(hdc, RGB(51, 102, 0));
 			SelectObject(hdc, hFont6);
 
-
-
 			DrawText(hdc, Urate, lstrlen(Urate), &rc25, DT_CENTER | DT_WORDBREAK);
-
 		}
-
-
-
-
-
 	}
-
 	if (A != 6){
-
 		if (AS[A - 1]>0){
 			SelectObject(hdc, hBrushw);
 			Rectangle(hdc, rc0.left, rc0.top, rc1.right, rc3.bottom);
 			SelectObject(hdc, hFont3);
 			wsprintf((LPWSTR)CON, TEXT("\nこの会社は倒産しました。\n株のカードをボードに戻してください。"));
 			DrawText(hdc, CON, -1, &rc3, DT_CENTER);
-
-
-			/*
-			price[A-1][HH]=15000+q;
-			*/
 		}
-
-
 	}
-
-
-
-
-
-	/****/
-
-
-
 
 	DeleteObject(hBrush);
 	DeleteObject(hBrushW);
 	DeleteObject(hPen);
 	DeleteObject(hPen2);
-	/*
-	DeleteObject(hFont4);
-	DeleteObject(hFont5);
-	*/
 	return;
 }
