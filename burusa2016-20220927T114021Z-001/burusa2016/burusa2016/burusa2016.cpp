@@ -119,22 +119,23 @@ BOOL InitInstance(HINSTANCE hInst, int nCmdShow)
 	UpdateWindow(hWnd);
 	return TRUE;
 }
-static int M = 1;
+//それぞれの企業の株価の増減分
 static int A, B, C, D, E;
 //ウィンドウプロシージャ
+//それぞれの企業の株価 一次元目で企業を指定、二次元目で期間を指定
 static int price[5][HH + 1];/*株価の数+1*/
+//画面に表示する期間の数
 int his = HH;
 static int EV = 0;
 TCHAR S[100];
 TCHAR Sb[30];
-static int F = 1;
 static int number = 6;/*株価の数*/
 int spread[5] = { 10, 20, 30, 40, 50 };
-int DI[5];
 static POINT pt[5][HH];
+//文字色について扱うグローバル変数
 int rR, rG, rB;
-int SP;
-int NE, nNE, mNE;
+//nNEは意味のない？
+int NE, nNE;
 HBRUSH hBrushw, hBrush;
 static HFONT hFont1, hFont2, hFont3;
 static HFONT hFont4, hFont5, hFont6;
@@ -174,7 +175,7 @@ int YXO;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	RECT rc;
+	RECT clientRectangle;
 	RECT rc0, rc1, rc2, rc3;
 	RECT rc4;
 
@@ -192,7 +193,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 	/*数字処理start*/
 
-	GetClientRect(hWnd, &rc);
+	GetClientRect(hWnd, &clientRectangle);
 
 	/*数字処理end*/
 
@@ -213,21 +214,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		Rpr = 110;
 		Spr = 110;
 		rc0.left = 0;
-		rc0.top = rc.bottom / 16;
-		rc0.right = rc.right / number;
-		rc0.bottom = rc.bottom / 9;
+		rc0.top = clientRectangle.bottom / 16;
+		rc0.right = clientRectangle.right / number;
+		rc0.bottom = clientRectangle.bottom / 9;
 		rc1.left = rc0.right;
 		rc1.top = rc0.top;
-		rc1.right = rc.right / number * 2;
+		rc1.right = clientRectangle.right / number * 2;
 		rc1.bottom = rc0.bottom;
 		rc2.top = 2;
 		rc2.left = 2;
-		rc2.bottom = rc0.top - rc.bottom / 80;
+		rc2.bottom = rc0.top - clientRectangle.bottom / 80;
 		rc2.right = rc1.right;
-		rc3.top = rc0.bottom + rc.bottom / 40;
-		rc3.left = rc0.left + rc.right / 160;
-		rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
-		rc3.right = rc1.right - rc.right / 35;
+		rc3.top = rc0.bottom + clientRectangle.bottom / 40;
+		rc3.left = rc0.left + clientRectangle.right / 160;
+		rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
+		rc3.right = rc1.right - clientRectangle.right / 35;
 
 		for (o = 0; o<HH; o++){
 			price[0][o] = 15000;
@@ -271,22 +272,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		}
 		for (o = 0; o<his; o++){
 			pt[1][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
-			pt[1][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left + rc.right * 2 / 3;
+			pt[1][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left + clientRectangle.right * 2 / 3;
 
 		}
 		for (o = 0; o<his; o++){
-			pt[2][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + rc.bottom / 2;
+			pt[2][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
 			pt[2][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left;
 
 		}
 		for (o = 0; o<his; o++){
-			pt[3][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + rc.bottom / 2;
-			pt[3][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left + rc.right / 3;
+			pt[3][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
+			pt[3][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left + clientRectangle.right / 3;
 
 		}
 		for (o = 0; o<his; o++){
-			pt[4][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + rc.bottom / 2;
-			pt[4][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left + rc.right * 2 / 3;
+			pt[4][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
+			pt[4][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left + clientRectangle.right * 2 / 3;
 
 		}
 
@@ -334,37 +335,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 		SelectObject(hdc, hPen4);
 		SelectObject(hdc, hBrushw);
-		Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
+		Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 
 		if (!(EV<his + 3)){
 			if (XO == 1){
-				Ftime(1, hWnd, rc, hdc);
-				Ftime(2, hWnd, rc, hdc);
+				Ftime(1, hWnd, clientRectangle, hdc);
+				Ftime(2, hWnd, clientRectangle, hdc);
 				if (DQ != 1){
-					Ftime(3, hWnd, rc, hdc);
-					Ftime(5, hWnd, rc, hdc);
+					Ftime(3, hWnd, clientRectangle, hdc);
+					Ftime(5, hWnd, clientRectangle, hdc);
 				}
-				Ftime(4, hWnd, rc, hdc);
-				Ftime(6, hWnd, rc, hdc);
+				Ftime(4, hWnd, clientRectangle, hdc);
+				Ftime(6, hWnd, clientRectangle, hdc);
 			}
 
 			if (XO == 0){
-				bmph = rc.bottom / 9;
+				bmph = clientRectangle.bottom / 9;
 				bmpw = bmph;
 				SelectObject(hdc, hBrushw);
-				Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
+				Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 				SelectObject(hdc, hFont5);
 				wsprintf((LPWSTR)CON, TEXT("\n今からの取引はできません。\n少々お待ちください。"));
-				DrawText(hdc, CON, -1, &rc, DT_CENTER);
+				DrawText(hdc, CON, -1, &clientRectangle, DT_CENTER);
 				wsprintf((LPWSTR)CON, TEXT("\n\n\n\n\n次回の制限時間；%d秒"), DTM / 1000);
-				DrawText(hdc, CON, -1, &rc, DT_CENTER);
+				DrawText(hdc, CON, -1, &clientRectangle, DT_CENTER);
 
 				SelectObject(hdc_mem, hBmp);
 
-				Rectangle(hdc, rc.right / 2 - bmpw / 2, rc.bottom * 3 / 4 - bmph, rc.right / 2 + bmpw / 2, rc.bottom * 3 / 4);
+				Rectangle(hdc, clientRectangle.right / 2 - bmpw / 2, clientRectangle.bottom * 3 / 4 - bmph, clientRectangle.right / 2 + bmpw / 2, clientRectangle.bottom * 3 / 4);
 				StretchBlt(hdc,		//転送先
-					rc.right / 2 - bmpw / 2,	//転送先x座標
-					rc.bottom * 3 / 4 - bmph,	//転送先y座標
+					clientRectangle.right / 2 - bmpw / 2,	//転送先x座標
+					clientRectangle.bottom * 3 / 4 - bmph,	//転送先y座標
 					bmpw,		//転送先長方形の幅 
 					bmph,		//転送先長方形の高さ 
 					hdc_mem,	//転送元
@@ -381,13 +382,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		if (EV<his + 3){
 			SelectObject(hdc, hBrushw);
 
-			Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
+			Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 			SelectObject(hdc, hPen5);
 			SelectObject(hdc, hFont5);
 			wsprintf((LPWSTR)YOM, TEXT("\n読み込み中です。\n少々お待ちください。"));
-			DrawText(hdc, YOM, -1, &rc, DT_CENTER);
+			DrawText(hdc, YOM, -1, &clientRectangle, DT_CENTER);
 			wsprintf((LPWSTR)YOM, TEXT("\n\n\n\n\n%d％完了"), Qw * 100 / (his + 1 + DTM / 1000));
-			DrawText(hdc, YOM, -1, &rc, DT_CENTER);
+			DrawText(hdc, YOM, -1, &clientRectangle, DT_CENTER);
 		}
 		EndPaint(hWnd, &ps);
 
@@ -402,26 +403,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		if (XO == 1){
 
 			rc0.left = 0;
-			rc0.top = rc.bottom / 16;
-			rc0.right = rc.right / number;
-			rc0.bottom = rc.bottom / 9;
+			rc0.top = clientRectangle.bottom / 16;
+			rc0.right = clientRectangle.right / number;
+			rc0.bottom = clientRectangle.bottom / 9;
 			rc1.left = rc0.right;
 			rc1.top = rc0.top;
-			rc1.right = rc.right / number * 2;
+			rc1.right = clientRectangle.right / number * 2;
 			rc1.bottom = rc0.bottom;
 			rc2.top = 2;
 			rc2.left = 2;
-			rc2.bottom = rc0.top - rc.bottom / 80;
+			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 80;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
-			rc3.right = rc1.right - rc.right / 80;
+			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
+			rc3.left = rc0.left + clientRectangle.right / 80;
+			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
+			rc3.right = rc1.right - clientRectangle.right / 80;
 
-			rc4.left = rc1.right + rc.right / 20;
-			rc4.top = rc.bottom / 60;
+			rc4.left = rc1.right + clientRectangle.right / 20;
+			rc4.top = clientRectangle.bottom / 60;
 			rc4.bottom = rc0.top;
-			rc4.right = rc.right / number * 2 * 2 - rc.right / 100;
+			rc4.right = clientRectangle.right / number * 2 * 2 - clientRectangle.right / 100;
 
 			if (EV<his + 2){
 				Tm -= DTM - 1000;
@@ -431,7 +432,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			Tm -= 1000;
 
 			RECT rc5;
-			rc5.left = rc.right / 3;
+			rc5.left = clientRectangle.right / 3;
 			rc5.right = rc4.right;
 			rc5.top = rc4.top;
 			rc5.bottom = rc4.bottom;
@@ -563,17 +564,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					if (Max != min){
 						if (q<2){
 							for (o = 0; o<his; o++){
-								i = (price[q][o] - min) * 100 / (Max - min)*((rc.bottom / 2 - rc.bottom / 30) - (rc0.bottom + rc.bottom / 30));
-								pt[q][o].y = rc.bottom / 2 - rc.bottom / 30 - i / 100;
+								i = (price[q][o] - min) * 100 / (Max - min)*((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+								pt[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100;
 							}
 						}
 						else{
 							for (o = 0; o<his; o++){
-								i = (price[q][o] - min) * 100 / (Max - min)*((rc.bottom / 2 - rc.bottom / 30) - (rc0.bottom + rc.bottom / 30));
-								pt[q][o].y = rc.bottom / 2 - rc.bottom / 30 - i / 100 + rc.bottom / 2;
+								i = (price[q][o] - min) * 100 / (Max - min)*((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+								pt[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100 + clientRectangle.bottom / 2;
 							}
 						}
-
 					}
 					else{
 						if (q<2){
@@ -583,7 +583,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						}
 						else{
 							for (o = 0; o<his; o++){
-								pt[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + rc.bottom / 2;
+								pt[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
 							}
 						}
 					}
@@ -732,7 +732,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						nNE = 0;
 					}
 					if (NE == 32){
-						mNE = 1;
 						o = 50;
 					}
 				}
@@ -811,7 +810,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		break;
 	case WM_CHAR:
 		if (wp == VK_ESCAPE){
-			if (XO == 0){ XO = 1; InvalidateRect(hWnd, &rc, 0); break; }
+			if (XO == 0){ XO = 1; InvalidateRect(hWnd, &clientRectangle, 0); break; }
 			if (XO == 1){ XO = 0; }
 		}
 		if (wp == VK_RETURN){
@@ -1849,7 +1848,7 @@ void EData(int XX){
 	return;
 }
 
-void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
+void Ftime(int A, HWND hWnd, RECT clientRectangle, HDC hdc){
 
 	HPEN hPen, hPen2, hPen3;
 	HBRUSH hBrush, hBrushW, hBrushT;
@@ -1870,42 +1869,42 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 
 		if (A == 1){
 			rc0.left = 0;
-			rc0.top = rc.bottom / 16;
-			rc0.right = rc.right / number;
-			rc0.bottom = rc.bottom / 9;
+			rc0.top = clientRectangle.bottom / 16;
+			rc0.right = clientRectangle.right / number;
+			rc0.bottom = clientRectangle.bottom / 9;
 			rc1.left = rc0.right;
 			rc1.top = rc0.top;
-			rc1.right = rc.right / number * 2;
+			rc1.right = clientRectangle.right / number * 2;
 			rc1.bottom = rc0.bottom;
 			rc2.top = 2;
 			rc2.left = 2;
-			rc2.bottom = rc0.top - rc.bottom / 80;
+			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
-			rc3.right = rc1.right - rc.right / 40;
+			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
+			rc3.left = rc0.left + clientRectangle.right / 40;
+			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
+			rc3.right = rc1.right - clientRectangle.right / 40;
 			wsprintf((LPWSTR)szPRL[2], TEXT("トヨタ自動車"));
 			Tr = 204;
 		}
 		if (A == 2){
 
-			rc0.left = rc.right * 2 / 3;
-			rc0.top = rc.bottom / 16;
-			rc0.right = rc.right * 2 / 3 + rc.right / number;
-			rc0.bottom = rc.bottom / 9;
-			rc1.left = rc.right * 2 / 3 + rc.right / number;
-			rc1.top = rc.bottom / 16;
-			rc1.right = rc.right * 2 / 3 + rc.right / number * 2;
+			rc0.left = clientRectangle.right * 2 / 3;
+			rc0.top = clientRectangle.bottom / 16;
+			rc0.right = clientRectangle.right * 2 / 3 + clientRectangle.right / number;
+			rc0.bottom = clientRectangle.bottom / 9;
+			rc1.left = clientRectangle.right * 2 / 3 + clientRectangle.right / number;
+			rc1.top = clientRectangle.bottom / 16;
+			rc1.right = clientRectangle.right * 2 / 3 + clientRectangle.right / number * 2;
 			rc1.bottom = rc0.bottom;
 			rc2.top = 2;
-			rc2.left = 2 + rc.right * 2 / 3;
-			rc2.bottom = rc0.top - rc.bottom / 80;
+			rc2.left = 2 + clientRectangle.right * 2 / 3;
+			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
-			rc3.right = rc1.right - rc.right / 40;
+			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
+			rc3.left = rc0.left + clientRectangle.right / 40;
+			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
+			rc3.right = rc1.right - clientRectangle.right / 40;
 			wsprintf((LPWSTR)szPRL[2], TEXT("ユニクロ"));
 			if (DQ == 1){ wsprintf((LPWSTR)szPRL[2], TEXT("鹿島建設")); }
 			Tr = 255;
@@ -1913,21 +1912,21 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		}
 		if (A == 3){
 			rc0.left = 0;
-			rc0.top = rc.bottom / 16 + rc.bottom / 2;
-			rc0.right = rc.right / number;
-			rc0.bottom = rc.bottom / 9 + rc.bottom / 2;
+			rc0.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
+			rc0.right = clientRectangle.right / number;
+			rc0.bottom = clientRectangle.bottom / 9 + clientRectangle.bottom / 2;
 			rc1.left = rc0.right;
-			rc1.top = rc.bottom / 16 + rc.bottom / 2;
-			rc1.right = rc.right / number * 2;
-			rc1.bottom = rc.bottom / 9 + rc.bottom / 2;
-			rc2.top = 2 + rc.bottom / 2;
+			rc1.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
+			rc1.right = clientRectangle.right / number * 2;
+			rc1.bottom = clientRectangle.bottom / 9 + clientRectangle.bottom / 2;
+			rc2.top = 2 + clientRectangle.bottom / 2;
 			rc2.left = 2;
-			rc2.bottom = rc0.top - rc.bottom / 80;
+			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
-			rc3.right = rc1.right - rc.right / 40;
+			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
+			rc3.left = rc0.left + clientRectangle.right / 40;
+			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40 + clientRectangle.bottom / 2;
+			rc3.right = rc1.right - clientRectangle.right / 40;
 			wsprintf((LPWSTR)szPRL[2], TEXT("森永製菓"));
 
 			Tr = 102;
@@ -1935,44 +1934,44 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 			Tb = 255;
 		}
 		if (A == 4){
-			rc0.left = 0 + rc.right / 3;
-			rc0.top = rc.bottom / 16 + rc.bottom / 2;
-			rc0.right = rc.right / number + rc.right / 3;
-			rc0.bottom = rc.bottom / 9 + rc.bottom / 2;
+			rc0.left = 0 + clientRectangle.right / 3;
+			rc0.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
+			rc0.right = clientRectangle.right / number + clientRectangle.right / 3;
+			rc0.bottom = clientRectangle.bottom / 9 + clientRectangle.bottom / 2;
 			rc1.left = rc0.right;
 			rc1.top = rc0.top;
-			rc1.right = rc.right / number * 2 + rc.right / 3;
+			rc1.right = clientRectangle.right / number * 2 + clientRectangle.right / 3;
 			rc1.bottom = rc0.bottom;
-			rc2.top = 2 + rc.bottom / 2;
-			rc2.left = 2 + rc.right / 3;
-			rc2.bottom = rc0.top - rc.bottom / 80;
+			rc2.top = 2 + clientRectangle.bottom / 2;
+			rc2.left = 2 + clientRectangle.right / 3;
+			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
-			rc3.right = rc1.right - rc.right / 40;
+			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
+			rc3.left = rc0.left + clientRectangle.right / 40;
+			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40 + clientRectangle.bottom / 2;
+			rc3.right = rc1.right - clientRectangle.right / 40;
 			wsprintf((LPWSTR)szPRL[2], TEXT("イトーヨーカドー"));
 			if (DQ == 1){ wsprintf((LPWSTR)szPRL[2], TEXT("ユニクロ")); }
 			Tr = 51;
 			Tg = 204;
 		}
 		if (A == 5){
-			rc0.left = rc.right * 2 / 3;
-			rc0.top = rc.bottom / 16 + rc.bottom / 2;
-			rc0.right = rc.right * 2 / 3 + rc.right / number;
-			rc0.bottom = rc.bottom / 9 + rc.bottom / 2;
-			rc1.left = rc.right * 2 / 3 + rc.right / number;
+			rc0.left = clientRectangle.right * 2 / 3;
+			rc0.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
+			rc0.right = clientRectangle.right * 2 / 3 + clientRectangle.right / number;
+			rc0.bottom = clientRectangle.bottom / 9 + clientRectangle.bottom / 2;
+			rc1.left = clientRectangle.right * 2 / 3 + clientRectangle.right / number;
 			rc1.top = rc0.top;
-			rc1.right = rc.right * 2 / 3 + rc.right / number * 2;
+			rc1.right = clientRectangle.right * 2 / 3 + clientRectangle.right / number * 2;
 			rc1.bottom = rc0.bottom;
-			rc2.top = 2 + rc.bottom / 2;
-			rc2.left = 2 + rc.right * 2 / 3;
-			rc2.bottom = rc0.top - rc.bottom / 80;
+			rc2.top = 2 + clientRectangle.bottom / 2;
+			rc2.left = 2 + clientRectangle.right * 2 / 3;
+			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
-			rc3.right = rc1.right - rc.right / 40;
+			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
+			rc3.left = rc0.left + clientRectangle.right / 40;
+			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40 + clientRectangle.bottom / 2;
+			rc3.right = rc1.right - clientRectangle.right / 40;
 			wsprintf((LPWSTR)szPRL[2], TEXT("ＪＴＢ"));
 			Tr = 211;
 			Tg = 211;
@@ -1980,11 +1979,11 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		}
 		SetDCBrushColor(hdc, RGB(Tr, Tg, Tb));
 
-		rc2.left += rc.right / 15;
-		rc2.right -= rc.right / 15;
-		rc2.top += rc.bottom / 200;
-		rc2.top += rc.bottom / 200;
-		rc2.bottom += rc.bottom / 200;
+		rc2.left += clientRectangle.right / 15;
+		rc2.right -= clientRectangle.right / 15;
+		rc2.top += clientRectangle.bottom / 200;
+		rc2.top += clientRectangle.bottom / 200;
+		rc2.bottom += clientRectangle.bottom / 200;
 		wsprintf((LPWSTR)szPRL[0], TEXT("株価；%d"), price[A - 1][his - 1]);
 		wsprintf((LPWSTR)szPRL[3], szPR[A * 2 + 13]);
 		wsprintf((LPWSTR)szPRL[4], szPR[A * 2 + 14]);
@@ -1992,13 +1991,13 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		/*初期の枠を作るスクリプト開始*/
 
 		for (o = 0; o<his; o++){
-			pt[A - 1][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left - rc.right / 300;
+			pt[A - 1][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left - clientRectangle.right / 300;
 		}
 
 		SelectObject(hdc, hPen);
 		for (i = 0; i<2; i++){
 			for (q = 0; q<number / 2; q++){
-				Rectangle(hdc, rc.right*q * 2 / number, rc.bottom*i / 2, rc.right*(q + 1) * 2 / number, rc.bottom*(i + 1) / 2);
+				Rectangle(hdc, clientRectangle.right*q * 2 / number, clientRectangle.bottom*i / 2, clientRectangle.right*(q + 1) * 2 / number, clientRectangle.bottom*(i + 1) / 2);
 			}
 		}
 
@@ -2020,11 +2019,11 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		rc41.left = rc40.left;
 		rc41.right = rc40.right;
 		rc41.bottom = rc40.bottom;
-		rc41.top = rc40.top + rc.bottom / 100;
+		rc41.top = rc40.top + clientRectangle.bottom / 100;
 
 		SelectObject(hdc, hBrushT);
 
-		RoundRect(hdc, rc2.left, rc2.top - rc.bottom / 200, rc2.right, rc2.bottom, (rc.right + rc.bottom) / 50, (rc.right + rc.bottom) / 50);
+		RoundRect(hdc, rc2.left, rc2.top - clientRectangle.bottom / 200, rc2.right, rc2.bottom, (clientRectangle.right + clientRectangle.bottom) / 50, (clientRectangle.right + clientRectangle.bottom) / 50);
 
 		SelectObject(hdc, hPen);
 
@@ -2060,32 +2059,32 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 	}
 	if (A == 6){
 		rc0.left = 0;
-		rc0.top = rc.bottom / 16;
-		rc0.right = rc.right / number;
-		rc0.bottom = rc.bottom / 9;
+		rc0.top = clientRectangle.bottom / 16;
+		rc0.right = clientRectangle.right / number;
+		rc0.bottom = clientRectangle.bottom / 9;
 		rc1.left = rc0.right;
 		rc1.top = rc0.top;
-		rc1.right = rc.right / number * 2;
+		rc1.right = clientRectangle.right / number * 2;
 		rc1.bottom = rc0.bottom;
 		rc2.top = 2;
 		rc2.left = 2;
-		rc2.bottom = rc0.top - rc.bottom / 80;
+		rc2.bottom = rc0.top - clientRectangle.bottom / 80;
 		rc2.right = rc1.right;
-		rc3.top = rc0.bottom + rc.bottom / 40;
-		rc3.left = rc0.left + rc.right / 80;
-		rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
-		rc3.right = rc1.right - rc.right / 80;
-		rc4.left = rc1.right + rc.right / 20;
-		rc4.top = rc.bottom / 60;
+		rc3.top = rc0.bottom + clientRectangle.bottom / 40;
+		rc3.left = rc0.left + clientRectangle.right / 80;
+		rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
+		rc3.right = rc1.right - clientRectangle.right / 80;
+		rc4.left = rc1.right + clientRectangle.right / 20;
+		rc4.top = clientRectangle.bottom / 60;
 		rc4.bottom = rc0.top;
-		rc4.right = rc.right / number * 2 * 2 - rc.right / 100;
+		rc4.right = clientRectangle.right / number * 2 * 2 - clientRectangle.right / 100;
 		/*時計処理start*/
 		TCHAR sur[10];
 		SelectObject(hdc, hFont2);
 		wsprintf(sur, TEXT("%3d"), Tm / 1000);
 
 		SetTextColor(hdc, RGB(0, 51, 0));
-		TextOut(hdc, rc1.right + rc.right / 50, rc4.top + rc4.top * 3 / 4, sur, lstrlen(sur));
+		TextOut(hdc, rc1.right + clientRectangle.right / 50, rc4.top + rc4.top * 3 / 4, sur, lstrlen(sur));
 		SelectObject(hdc, hPen);
 		SelectObject(hdc, hBrushW);
 		Rectangle(hdc, rc4.left, rc4.top, rc4.right, rc4.bottom);
@@ -2102,12 +2101,12 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		/*ニュース処理start*/
 		SelectObject(hdc, hFont1);
 		SetTextColor(hdc, RGB(153, 102, 0));
-		TextOut(hdc, rc1.right + rc.right / 50, rc4.top + rc4.top * 3, TEXT("～ニュース～"), lstrlen(TEXT("～ニュース～")));
+		TextOut(hdc, rc1.right + clientRectangle.right / 50, rc4.top + rc4.top * 3, TEXT("～ニュース～"), lstrlen(TEXT("～ニュース～")));
 
-		rc6.top = rc0.bottom + rc.bottom / 40;
-		rc6.left = rc0.left + rc.right / 160 + rc.right / 3;
-		rc6.bottom = rc.bottom / 2 - rc.bottom / 10;
-		rc6.right = rc1.right - rc.right / 32 + rc.right / 3;
+		rc6.top = rc0.bottom + clientRectangle.bottom / 40;
+		rc6.left = rc0.left + clientRectangle.right / 160 + clientRectangle.right / 3;
+		rc6.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 10;
+		rc6.right = rc1.right - clientRectangle.right / 32 + clientRectangle.right / 3;
 
 		SelectObject(hdc, hFont6);
 		DrawText(hdc, S, lstrlen(S), &rc6, DT_CENTER | DT_WORDBREAK);
@@ -2115,20 +2114,20 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 		SelectObject(hdc, hFont3);
 		DrawText(hdc, Sb, lstrlen(Sb), &rc6, DT_CENTER | DT_WORDBREAK);
 
-		rc23.left = rc.right / 2 + rc.right / 10;
-		rc23.right = rc.right * 2 / 3 - rc.right / 30;
-		rc23.top = rc.bottom * 2 / 7;
-		rc23.bottom = rc.bottom / 2 - rc.bottom / 10;
+		rc23.left = clientRectangle.right / 2 + clientRectangle.right / 10;
+		rc23.right = clientRectangle.right * 2 / 3 - clientRectangle.right / 30;
+		rc23.top = clientRectangle.bottom * 2 / 7;
+		rc23.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 10;
 
-		rc24.left = rc.right / 3;
-		rc24.right = rc.right * 3 / 5 - rc.right / 10;
-		rc24.top = rc.bottom * 2 / 7;
-		rc24.bottom = rc.bottom / 2;
+		rc24.left = clientRectangle.right / 3;
+		rc24.right = clientRectangle.right * 3 / 5 - clientRectangle.right / 10;
+		rc24.top = clientRectangle.bottom * 2 / 7;
+		rc24.bottom = clientRectangle.bottom / 2;
 
-		rc25.left = rc.right / 2 + rc.right / 20;
-		rc25.right = rc.right * 2 / 3 + rc.right / 50;
-		rc25.top = rc.bottom / 2 - rc.bottom / 10;
-		rc25.bottom = rc.bottom / 2;
+		rc25.left = clientRectangle.right / 2 + clientRectangle.right / 20;
+		rc25.right = clientRectangle.right * 2 / 3 + clientRectangle.right / 50;
+		rc25.top = clientRectangle.bottom / 2 - clientRectangle.bottom / 10;
+		rc25.bottom = clientRectangle.bottom / 2;
 
 		if (DQ != 1){
 
@@ -2140,7 +2139,7 @@ void Ftime(int A, HWND hWnd, RECT rc, HDC hdc){
 			Rectangle(hdc, rc24.left, rc24.top, rc24.right, rc24.bottom);
 
 			SelectObject(hdc, hPen);
-			Ellipse(hdc, rc23.left + (rc23.right - rc23.left) / 2 - ((rc23.bottom - rc.bottom / 23) - (rc23.top - rc.bottom / 100)) / 2 - rc.bottom / 100, rc23.top - rc.bottom / 100 - rc.bottom / 100, (rc23.right - rc23.left) / 2 + ((rc23.bottom - rc.bottom / 23) - (rc23.top - rc.bottom / 100)) / 2 + rc23.left + rc.bottom / 100, rc23.bottom - rc.bottom / 23 + rc.bottom / 100);
+			Ellipse(hdc, rc23.left + (rc23.right - rc23.left) / 2 - ((rc23.bottom - clientRectangle.bottom / 23) - (rc23.top - clientRectangle.bottom / 100)) / 2 - clientRectangle.bottom / 100, rc23.top - clientRectangle.bottom / 100 - clientRectangle.bottom / 100, (rc23.right - rc23.left) / 2 + ((rc23.bottom - clientRectangle.bottom / 23) - (rc23.top - clientRectangle.bottom / 100)) / 2 + rc23.left + clientRectangle.bottom / 100, rc23.bottom - clientRectangle.bottom / 23 + clientRectangle.bottom / 100);
 
 			SelectObject(hdc, hFont5);
 			SelectObject(hdc, hPen);
