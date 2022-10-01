@@ -5,17 +5,11 @@
 #include <Windows.h>
 #include <iostream>
 
-//#include "resource.h"
-
 #include <time.h>
 
 
 #define ID_MYTIMER 100
 #define ID_MYTIMER2 200
-
-
-
-
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 ATOM InitApp(HINSTANCE);
@@ -121,11 +115,13 @@ BOOL InitInstance(HINSTANCE hInst, int nCmdShow)
 }
 //それぞれの企業の株価の増減分
 static int companyAStockPriceChangeAmount, companyBStockPriceChangeAmount, companyCStockPriceChangeAmount, companyDStockPriceChangeAmount, companyEStockPriceChangeAmount;
+
 //ウィンドウプロシージャ
 //それぞれの企業の株価 一次元目で企業を指定、二次元目で期間を指定
-static int stockPrices[5][HH + 1];/*株価の数+1*/
+static int stockPrices[5][HH + 1];
+
 //画面に表示する期間の数
-int his = HH;
+const int his = HH;
 static int EV = 0;
 TCHAR S[100];
 TCHAR Sb[30];
@@ -141,7 +137,7 @@ static HFONT hFont1, hFont2, hFont3;
 static HFONT hFont4, hFont5, hFont6;
 PAINTSTRUCT ps;
 HDC hdc;
-int Tm, DTM;
+int currentRemainingTime, limitedTime;
 static TCHAR lpOut[10];
 TCHAR szPR[25][10];
 TCHAR Rate[15], Yrate[4];
@@ -153,7 +149,6 @@ int TEST = 1;
 int Rmax = 135;
 int Rmin = 85;
 int Rpr = 110;
-int Spr = 110;
 int nD = 98;
 int nLOOP[130];
 
@@ -181,13 +176,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 	int i, q;
 	i = 0;
-	q = 0;
 	int o;
-	static int test = 100;
 	int id;
 
-	static int Max, min;
-	static int bpty[10];
+	static int maxStockPriceInPeriod, minStockPriceInPeriod;
 
 	static int XX;
 
@@ -199,7 +191,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 	switch (msg) {
 	case WM_CREATE:
-		for (o = 0; o<nD; o++){
+		for (o = 0; o < nD; o++) {
 			nLOOP[o] = 0;
 		}
 		hPen10 = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
@@ -207,12 +199,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		hPen4 = (HPEN)GetStockObject(NULL_PEN);
 		hBrushw = (HBRUSH)GetStockObject(WHITE_BRUSH);
 		hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
-		DTM = 10000;
-		Tm = DTM;
+		limitedTime = 10000;
+		currentRemainingTime = limitedTime;
 		XO = 1;
 		TEST = 0;
 		Rpr = 110;
-		Spr = 110;
 		rc0.left = 0;
 		rc0.top = clientRectangle.bottom / 16;
 		rc0.right = clientRectangle.right / number;
@@ -231,25 +222,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		rc3.right = rc1.right - clientRectangle.right / 35;
 
 		/*それぞれの全期間での株価の初期化*/
-		for (o = 0; o<HH; o++){
+		for (o = 0; o < HH; o++) {
 			stockPrices[0][o] = 15000;
 		}
-		for (o = 0; o<HH; o++){
+		for (o = 0; o < HH; o++) {
 			stockPrices[1][o] = 15000;
 		}
-		for (o = 0; o<HH; o++){
+		for (o = 0; o < HH; o++) {
 			stockPrices[2][o] = 15000;
 		}
-		for (o = 0; o<HH; o++){
+		for (o = 0; o < HH; o++) {
 			stockPrices[3][o] = 15000;
 		}
-		for (o = 0; o<HH; o++){
+		for (o = 0; o < HH; o++) {
 			stockPrices[4][o] = 15000;
 		}
 		SetTimer(hWnd, ID_MYTIMER, 200, NULL);
 
 		srand((unsigned)time(NULL));
-		for (o = 0; o<5; o++){
+		for (o = 0; o < 5; o++) {
 			wsprintf((LPWSTR)szPR[0 + o * 2], TEXT("売；%d"), stockPrices[0 + o][his - 1] - spread[o]);
 			wsprintf((LPWSTR)szPR[1 + o * 2], TEXT("買；%d"), stockPrices[0 + o][his - 1] + spread[o]);
 		}
@@ -266,32 +257,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		hFont5 = MyCreateFont(50, SHIFTJIS_CHARSET, TEXT("ＭＳ 明朝"));
 		hFont6 = MyCreateFont(25, SHIFTJIS_CHARSET, TEXT("ＭＳ 明朝"));
 
-		for (o = 0; o<his; o++){
+		for (o = 0; o < his; o++) {
 			stockPriceChartGraphPoint[0][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
-			stockPriceChartGraphPoint[0][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left;
-
-		}
-		for (o = 0; o<his; o++){
+			stockPriceChartGraphPoint[0][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left;
 			stockPriceChartGraphPoint[1][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
-			stockPriceChartGraphPoint[1][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left + clientRectangle.right * 2 / 3;
-
-		}
-		for (o = 0; o<his; o++){
+			stockPriceChartGraphPoint[1][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left + clientRectangle.right * 2 / 3;
 			stockPriceChartGraphPoint[2][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
-			stockPriceChartGraphPoint[2][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left;
-
-		}
-		for (o = 0; o<his; o++){
+			stockPriceChartGraphPoint[2][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left;
 			stockPriceChartGraphPoint[3][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
-			stockPriceChartGraphPoint[3][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left + clientRectangle.right / 3;
-
-		}
-		for (o = 0; o<his; o++){
+			stockPriceChartGraphPoint[3][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left + clientRectangle.right / 3;
 			stockPriceChartGraphPoint[4][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
-			stockPriceChartGraphPoint[4][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left + clientRectangle.right * 2 / 3;
-
+			stockPriceChartGraphPoint[4][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left + clientRectangle.right * 2 / 3;
 		}
-
 		hBmp = (HBITMAP)LoadImage(hInst,	//インスタンスハンドル
 			TEXT("ReSt.bmp"),						//イメージの名前
 			IMAGE_BITMAP,					//イメージタイプ
@@ -338,11 +315,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		SelectObject(hdc, hBrushw);
 		Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 
-		if (!(EV<his + 3)){
-			if (XO == 1){
+		if (!(EV < his + 3)) {
+			if (XO == 1) {
 				Ftime(1, hWnd, clientRectangle, hdc);
 				Ftime(2, hWnd, clientRectangle, hdc);
-				if (DQ != 1){
+				if (DQ != 1) {
 					Ftime(3, hWnd, clientRectangle, hdc);
 					Ftime(5, hWnd, clientRectangle, hdc);
 				}
@@ -350,7 +327,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				Ftime(6, hWnd, clientRectangle, hdc);
 			}
 
-			if (XO == 0){
+			if (XO == 0) {
 				bmph = clientRectangle.bottom / 9;
 				bmpw = bmph;
 				SelectObject(hdc, hBrushw);
@@ -358,7 +335,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				SelectObject(hdc, hFont5);
 				wsprintf((LPWSTR)CON, TEXT("\n今からの取引はできません。\n少々お待ちください。"));
 				DrawText(hdc, CON, -1, &clientRectangle, DT_CENTER);
-				wsprintf((LPWSTR)CON, TEXT("\n\n\n\n\n次回の制限時間；%d秒"), DTM / 1000);
+				wsprintf((LPWSTR)CON, TEXT("\n\n\n\n\n次回の制限時間；%d秒"), limitedTime / 1000);
 				DrawText(hdc, CON, -1, &clientRectangle, DT_CENTER);
 
 				SelectObject(hdc_mem, hBmp);
@@ -380,7 +357,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		}
 		SelectObject(hdc, hBrush);
 
-		if (EV<his + 3){
+		if (EV < his + 3) {
 			SelectObject(hdc, hBrushw);
 
 			Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
@@ -388,20 +365,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			SelectObject(hdc, hFont5);
 			wsprintf((LPWSTR)YOM, TEXT("\n読み込み中です。\n少々お待ちください。"));
 			DrawText(hdc, YOM, -1, &clientRectangle, DT_CENTER);
-			wsprintf((LPWSTR)YOM, TEXT("\n\n\n\n\n%d％完了"), Qw * 100 / (his + 1 + DTM / 1000));
+			wsprintf((LPWSTR)YOM, TEXT("\n\n\n\n\n%d％完了"), Qw * 100 / (his + 1 + limitedTime / 1000));
 			DrawText(hdc, YOM, -1, &clientRectangle, DT_CENTER);
 		}
 		EndPaint(hWnd, &ps);
 
 		break;
 	case WM_TIMER:
-		if (EV == his + 3){
+		if (EV == his + 3) {
 			KillTimer(hWnd, ID_MYTIMER);
 			SetTimer(hWnd, ID_MYTIMER2, 1000, NULL);
 		}
 		Qw++;
 
-		if (XO == 1){
+		if (XO == 1) {
 
 			rc0.left = 0;
 			rc0.top = clientRectangle.bottom / 16;
@@ -425,12 +402,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			rc4.bottom = rc0.top;
 			rc4.right = clientRectangle.right / number * 2 * 2 - clientRectangle.right / 100;
 
-			if (EV<his + 2){
-				Tm -= DTM - 1000;
+			if (EV < his + 2) {
+				currentRemainingTime -= limitedTime - 1000;
 
 			}
 
-			Tm -= 1000;
+			currentRemainingTime -= 1000;
 
 			RECT rc5;
 			rc5.left = clientRectangle.right / 3;
@@ -441,13 +418,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 			InvalidateRect(hWnd, &rc5, 0);
 
-			if (EV<his + 3){
+			if (EV < his + 3) {
 				InvalidateRect(hWnd, NULL, 0);
 			}
 
-			if (Tm == 0){
+			if (currentRemainingTime == 0) {
 
-				if (!(EV<his + 2)){
+				if (!(EV < his + 2)) {
 					XO = 0;
 					TEST = 1;
 				}
@@ -455,7 +432,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 				EV++;
 
-				if (EV == 2){
+				if (EV == 2) {
 					stockPrices[0][his] = 15000;
 					stockPrices[1][his] = 15000;
 					stockPrices[2][his] = 15000;
@@ -466,280 +443,186 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				o = 0;
 
 				/**goto文を使っています。注意！**/
+				if (DQ != 1) {
+				loop:
+					XX = rand() % nD;
 
-				if (DQ != 1){
-					loop:
-						XX = rand() % nD;
-
-						if (XX == 108){
-							goto loop;
-						}
-						if (XX == 110){
-							goto loop;
-						}
-						if (XX == 111){
-							goto loop;
-						}
-						if (XX == 112){
-							goto loop;
-						}
-						if (XX >= 123 && XX <= 130){
-							goto loop;
-						}
+					if (XX == 108) {
+						goto loop;
+					}
+					if (XX == 110) {
+						goto loop;
+					}
+					if (XX == 111) {
+						goto loop;
+					}
+					if (XX == 112) {
+						goto loop;
+					}
+					if (XX >= 123 && XX <= 130) {
+						goto loop;
+					}
 
 
-						if (nLOOP[XX] == 1){
-							o++;
-							if (o == 1000000){
-								Data(1000);
-								goto out;
+					if (nLOOP[XX] == 1) {
+						o++;
+						if (o == 1000000) {
+							Data(1000);
+							goto out;
+						}
+						goto loop;
+					}
+					if (!(EV < his + 3)) {
+						nLOOP[XX] = 1;
+					}
+					if (!(EV < his + 3)) {
+						if (NE == 36) {
+							Data(34);
+							nLOOP[34] = 1;
+							NE = 0;
+						}
+						else {
+							Data(XX);
+						}
+					}
+				out:
+					/*
+					try {
+						while (true) {
+							XX = rand() % nD;
+							if (XX == 108) {
+								throw std::string(std::to_string(XX));
+								continue;
 							}
-							goto loop;
-						}
-						if (!(EV<his + 3)){
-							nLOOP[XX] = 1;
-						}
-						if (!(EV<his + 3)){
-							if (NE == 36){	
-								Data(34);
-								nLOOP[34] = 1;
-								NE = 0;
+							if (XX == 110) {
+								throw std::string(std::to_string(XX));
+								continue;
 							}
-							else{
-								Data(XX);
+							if (XX == 111) {
+								throw std::string(std::to_string(XX));
+								continue;
+							}
+							if (XX == 112) {
+								throw std::string(std::to_string(XX));
+								continue;
+							}
+							if (XX >= 123 && XX <= 130) {
+								throw std::string(std::to_string(XX));
+								continue;
+							}
+
+
+							if (nLOOP[XX] == 1) {
+								o++;
+								if (o == 1000000) {
+									Data(1000);
+									break;
+								}
+								continue;
+							}
+							if (!(EV < his + 3)) {
+								nLOOP[XX] = 1;
+							}
+							if (!(EV < his + 3)) {
+								if (NE == 36) {
+									Data(34);
+									nLOOP[34] = 1;
+									NE = 0;
+								}
+								else {
+									Data(XX);
+								}
 							}
 						}
-					out:
-						o = 1;
+					}
+					catch (std::string errorMessage) {
+						std::cout << errorMessage << std::endl;
+					}*/
+					o = 1;
 				}
 
-				if (DQ == 1){
-					Eloop:
-						XX = rand() % EnD;
-						if (nLOOP[XX] == 1){
-							o++;
-							if (o == 100000000){
-								EData(1000);
-								goto Eout;
-							}
-							goto Eloop;
+				if (DQ == 1) {
+				Eloop:
+					XX = rand() % EnD;
+					if (nLOOP[XX] == 1) {
+						o++;
+						if (o == 100000000) {
+							EData(1000);
+							goto Eout;
 						}
-						if (!(EV<his + 3)){
-							nLOOP[XX] = 1;
-						}
-						EData(XX);
-					Eout:
-						o = 1;
+						goto Eloop;
+					}
+					if (!(EV < his + 3)) {
+						nLOOP[XX] = 1;
+					}
+					EData(XX);
+				Eout:
+					o = 1;
 				}
 
 				/**goto文を使っています。注意！**/
 
 				/////////////////////////////////////////////////////////////
 
-				for (q = 0; q<5; q++){
+				for (q = 0; q < 5; q++) {
 
-					for (o = 0; o<his; o++){
+					for (o = 0; o < his; o++) {
 						stockPrices[q][o] = stockPrices[q][o + 1];
 					}
 
 					wsprintf((LPWSTR)szPR[0], TEXT("株価；%d"), stockPrices[q][his - 1] - spread[q]);
 
-					for (o = 0; o<his; o++){
-						if (o == 0){
-							Max = stockPrices[q][o];
+					for (o = 0; o < his; o++) {
+						if (o == 0) {
+							maxStockPriceInPeriod = stockPrices[q][o];
 						}
-						else if (stockPrices[q][o]>Max){
-							Max = stockPrices[q][o];
-						}
-					}
-
-					for (o = 0; o<his; o++){
-						if (o == 0){
-							min = stockPrices[q][o];
-						}
-						else if (stockPrices[q][o]<min){
-							min = stockPrices[q][o];
+						else if (stockPrices[q][o] > maxStockPriceInPeriod) {
+							maxStockPriceInPeriod = stockPrices[q][o];
 						}
 					}
 
-					if (Max != min){
-						if (q<2){
-							for (o = 0; o<his; o++){
-								i = (stockPrices[q][o] - min) * 100 / (Max - min)*((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+					for (o = 0; o < his; o++) {
+						if (o == 0) {
+							minStockPriceInPeriod = stockPrices[q][o];
+						}
+						else if (stockPrices[q][o] < minStockPriceInPeriod) {
+							minStockPriceInPeriod = stockPrices[q][o];
+						}
+					}
+
+					if (maxStockPriceInPeriod != minStockPriceInPeriod) {
+						if (q < 2) {
+							for (o = 0; o < his; o++) {
+								i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
 								stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100;
 							}
 						}
-						else{
-							for (o = 0; o<his; o++){
-								i = (stockPrices[q][o] - min) * 100 / (Max - min)*((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+						else {
+							for (o = 0; o < his; o++) {
+								i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
 								stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100 + clientRectangle.bottom / 2;
 							}
 						}
 					}
-					else{
-						if (q<2){
-							for (o = 0; o<his; o++){
+					else {
+						if (q < 2) {
+							for (o = 0; o < his; o++) {
 								stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
 							}
 						}
-						else{
-							for (o = 0; o<his; o++){
+						else {
+							for (o = 0; o < his; o++) {
 								stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
 							}
 						}
 					}
 
-					wsprintf(szPR[q * 2 + 15], TEXT("%d"), Max);
-					wsprintf(szPR[q * 2 + 16], TEXT("%d"), min);
+					wsprintf(szPR[q * 2 + 15], TEXT("%d"), maxStockPriceInPeriod);
+					wsprintf(szPR[q * 2 + 16], TEXT("%d"), minStockPriceInPeriod);
 
 				}
 
-				Tm = DTM;
-
-				/*為替start*/
-
-				Spr = Rpr;
-
-				int Z;
-				int ZZ, SZ;
-				Z = rand() % 12;
-				if (DQ != 1){
-					if (Z == 0){
-						if (Rpr<130){
-							Rpr += 0;
-							companyAStockPriceChangeAmount += 0;
-							companyBStockPriceChangeAmount -= 0;
-
-							companyDStockPriceChangeAmount -= 0;
-							companyEStockPriceChangeAmount -= 0;
-						}
-						if (Rpr == 130){
-							Rpr += 0;
-							companyAStockPriceChangeAmount += 0;
-							companyBStockPriceChangeAmount -= 0;
-
-							companyDStockPriceChangeAmount -= 0;
-							companyEStockPriceChangeAmount -= 0;
-						}
-					}
-					else if (Z <= 2){
-						if (Rpr<135){
-							Rpr += 5;
-							companyAStockPriceChangeAmount += 0;
-							companyBStockPriceChangeAmount -= 0;
-
-							companyDStockPriceChangeAmount -= 0;
-							companyEStockPriceChangeAmount -= 0;
-						}
-					}
-					else if (Z <= 8){
-					}
-					else if (Z <= 10){
-						if (Rpr>85){
-							Rpr -= 5;
-							companyAStockPriceChangeAmount -= 0;
-							companyBStockPriceChangeAmount += 0;
-
-							companyDStockPriceChangeAmount += 0;
-							companyEStockPriceChangeAmount += 0;
-						}
-					}
-					else if (Z == 11){
-						if (Rpr>90){
-							Rpr -= 10;
-							companyAStockPriceChangeAmount -= 0;
-							companyBStockPriceChangeAmount += 0;
-							companyDStockPriceChangeAmount += 0;
-							companyEStockPriceChangeAmount += 0;
-						}
-						if (Rpr == 90){
-							Rpr -= 5;
-							companyAStockPriceChangeAmount -= 0;
-							companyBStockPriceChangeAmount += 0;
-
-							companyDStockPriceChangeAmount += 0;
-							companyEStockPriceChangeAmount += 0;
-						}
-					}
-				}
-
-				ZZ = rand() % 5;
-				SZ = Z + ZZ - 2;
-
-				if (SZ <= 0){
-					wsprintf((LPWSTR)Yrate, TEXT(""));
-					rR = 255;
-					rG = 0;
-					rB = 51;
-					if (Rpr>135){
-						wsprintf((LPWSTR)Yrate, TEXT(""));
-						rR = 51;
-						rG = 255;
-						rB = 0;
-					}
-				}
-				else if (SZ <= 2){
-					wsprintf((LPWSTR)Yrate, TEXT(""));
-					rR = 255;
-					rG = 204;
-					rB = 0;
-				}
-				else if (SZ <= 7){
-					wsprintf((LPWSTR)Yrate, TEXT(""));
-					rR = 51;
-					rG = 255;
-					rB = 0;
-				}
-				else if (SZ <= 10){
-					wsprintf((LPWSTR)Yrate, TEXT(""));
-					rR = 0;
-					rG = 102;
-					rB = 153;
-				}
-				else if (SZ >= 11){
-					wsprintf((LPWSTR)Yrate, TEXT(""));
-					rR = 0;
-					rG = 0;
-					rB = 51;
-					if (Rpr<85){
-						wsprintf((LPWSTR)Yrate, TEXT(""));
-						rR = 51;
-						rG = 255;
-						rB = 0;
-					}
-				}
-
-				if (Rpr>Rmax){
-					Rpr = 135;
-				}
-				if (Rpr<Rmin){
-					Rpr = 85;
-				}
-
-				if (NE == 36){
-					Rpr = 150;
-				}
-
-				if (nNE == 1){
-					Rpr = 100;
-				}
-
-				if (nNE == 1 || NE == 32){
-					wsprintf((LPWSTR)Yrate, TEXT(""));
-					rR = 0;
-					rG = 0;
-					rB = 51;
-					if (nNE == 11){
-						nNE = 0;
-					}
-					if (NE == 32){
-						o = 50;
-					}
-				}
-
-				o = 0;
-
-				wsprintf((LPWSTR)Rate, TEXT(""), Spr);
+				currentRemainingTime = limitedTime;
 
 				/*Unknown*/
 				stockPrices[0][his] = stockPrices[0][his - 1] + companyAStockPriceChangeAmount;
@@ -752,46 +635,45 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 				/*為替+ニュースまとめstart*/
 
-				for (o = 0; o<5; o++){
+				for (o = 0; o < 5; o++) {
 					q = stockPrices[o][HH] % 1000;
-					if (q >= 500){
+					if (q >= 500) {
 						stockPrices[o][HH] += 1000;
 					}
 					stockPrices[o][HH] -= q;
 				}
 
-				if (EV<his + 3){
-					for (o = 0; o<5; o++){
-						if (stockPrices[o][HH]<12000){
+				if (EV < his + 3) {
+					for (o = 0; o < 5; o++) {
+						if (stockPrices[o][HH] < 12000) {
 							stockPrices[o][HH] = 12000;
 						}
 					}
 
-					for (o = 0; o<5; o++){
-						if (stockPrices[o][HH]>18000){
+					for (o = 0; o < 5; o++) {
+						if (stockPrices[o][HH] > 18000) {
 							stockPrices[o][HH] = 18000;
 						}
 					}
 
 				}
-				if (EV>HH - 2){
-					for (o = 0; o<5; o++){
-						if (stockPrices[o][his - 1]<100){
+				if (EV > HH - 2) {
+					for (o = 0; o < 5; o++) {
+						if (stockPrices[o][his - 1] < 100) {
 							AS[o] = 2;
 						}
-						if (AS[o]>0){ AS[o]--; }
+						if (AS[o] > 0) { AS[o]--; }
 					}
 				}
 				int r;
-				int w;
-				for (w = 0; w<5; w++){
-					if (AS[w]>0){
-						for (o = 0; o<HH + 1; o++){
+				for (int w = 0; w < 5; w++) {
+					if (AS[w] > 0) {
+						for (o = 0; o < HH + 1; o++) {
 							r = rand() % 4001 - 2000;
 							stockPrices[w][o] = 15000 + r;
 
 							q = stockPrices[w][o] % 1000;
-							if (q >= 500){
+							if (q >= 500) {
 								stockPrices[w][o] += 1000;
 							}
 							stockPrices[w][o] -= q;
@@ -801,32 +683,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				/*為替+ニュースまとめend*/
 				/*為替end*/
 				InvalidateRect(hWnd, NULL, 0);
-			}/**Tm==0**/
+			}/**currentRemainingTime==0**/
 			/*株価・チャート移動のためのスクリプトend*/
-		}
-		else
-		if (TEST == 200){
-			SendMessage(hWnd, WM_PAINT, 0, 0);
 		}
 		break;
 	case WM_CHAR:
-		if (wp == VK_ESCAPE){
-			if (XO == 0){ XO = 1; InvalidateRect(hWnd, &clientRectangle, 0); break; }
-			if (XO == 1){ XO = 0; }
+		if (wp == VK_ESCAPE) {
+			if (XO == 0) XO = 1; InvalidateRect(hWnd, &clientRectangle, 0); break;
+			XO = 0;
 		}
-		if (wp == VK_RETURN){
-			DTM += 10000;
-			Tm = DTM;
+		if (wp == VK_RETURN) {
+			if (limitedTime == 1000) limitedTime -= 1000;
+			limitedTime += 10000;
+			currentRemainingTime = limitedTime;
 			InvalidateRect(hWnd, NULL, 0);
 
 		}
-		if (wp == VK_SPACE){
-			DTM -= 10000;
-			if (DTM<1000){
-				DTM = 1000;
+		if (wp == VK_SPACE) {
+			limitedTime -= 10000;
+			if (limitedTime < 1000) {
+				limitedTime = 1000;
 			}
 			InvalidateRect(hWnd, NULL, 0);
-			Tm = DTM;
+			currentRemainingTime = limitedTime;
 		}
 		break;
 	default:
@@ -848,8 +727,8 @@ HFONT MyCreateFont(int nHeight, DWORD dwCharSet, LPCTSTR lpName)
 		lpName));
 }
 
-void Data(int XX){
-	if (EV<his + 3){
+void Data(int XX) {
+	if (EV < his + 3) {
 		companyAStockPriceChangeAmount = (rand() % 7 - 3) * 700;
 		companyBStockPriceChangeAmount = (rand() % 7 - 3) * 700;
 		companyCStockPriceChangeAmount = (rand() % 7 - 3) * 700;
@@ -858,7 +737,7 @@ void Data(int XX){
 
 
 	}
-	else{
+	else {
 		if (XX == 0) {
 			wsprintf(S, TEXT("本州と九州を結ぶ新しい橋が完成"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
@@ -1752,7 +1631,7 @@ void Data(int XX){
 		}
 		NE = XX;
 
-		if (XX == 1000){
+		if (XX == 1000) {
 			wsprintf(S, TEXT("最後の株価を表示しています。"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			//KillTimer(hWnd,ID_MYTIMER2);
@@ -1765,8 +1644,8 @@ void Data(int XX){
 	return;
 }
 
-void EData(int XX){
-	if (EV<his + 3){
+void EData(int XX) {
+	if (EV < his + 3) {
 		companyAStockPriceChangeAmount = (rand() % 7 - 3) * 700;
 		companyBStockPriceChangeAmount = (rand() % 7 - 3) * 700;
 		companyCStockPriceChangeAmount = (rand() % 7 - 3) * 700;
@@ -1775,72 +1654,72 @@ void EData(int XX){
 
 
 	}
-	else{
+	else {
 		companyAStockPriceChangeAmount = 0;
 		companyBStockPriceChangeAmount = 0;
 		companyDStockPriceChangeAmount = 0;
-		if (XX == 0){
+		if (XX == 0) {
 			wsprintf(S, TEXT("スーパーハイブリッド車が開発された！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 2000;
 		}
-		if (XX == 1){
+		if (XX == 1) {
 			wsprintf(S, TEXT("汗をかくと冷たくなる「スーパークールシャツ」が開発された！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyDStockPriceChangeAmount = 2000;
 
 		}
-		if (XX == 2){
+		if (XX == 2) {
 			wsprintf(S, TEXT("すべての高層ビルに震度7に耐える耐震工事を義務付ける法律ができた！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyBStockPriceChangeAmount = 2000;
 		}
-		if (XX == 3){
+		if (XX == 3) {
 			wsprintf(S, TEXT("東南海大地震が起きて名古屋中心の沿岸部が壊滅的な被害を受けた！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -4000;
 			companyBStockPriceChangeAmount = 1000;
 			companyDStockPriceChangeAmount = 1000;
 		}
-		if (XX == 4){
+		if (XX == 4) {
 			wsprintf(S, TEXT("太陽光で動くソーラー自動車が発売された！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 2000;
 		}
-		if (XX == 5){
+		if (XX == 5) {
 			wsprintf(S, TEXT("世界的に景気が良くなった！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 3000;
 			companyBStockPriceChangeAmount = 3000;
 			companyDStockPriceChangeAmount = -1000;
 		}
-		if (XX == 6){
+		if (XX == 6) {
 			wsprintf(S, TEXT("円安になった！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 3000;
 			companyDStockPriceChangeAmount = -2000;
 		}
-		if (XX == 7){
+		if (XX == 7) {
 			wsprintf(S, TEXT("中国と日本の関係が悪化し、一切の貿易が停止した！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -2000;
 			companyDStockPriceChangeAmount = -8000;
 		}
-		if (XX == 8){
+		if (XX == 8) {
 			wsprintf(S, TEXT("所得税が上がった！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 		}
-		if (XX == 9){
+		if (XX == 9) {
 			wsprintf(S, TEXT("急激な円高になった！"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = 0;
 			companyDStockPriceChangeAmount = 2000;
 		}
-		if (XX == 1000){
+		if (XX == 1000) {
 			wsprintf(S, TEXT("最後の株価を表示しています。"), XX);
 			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			KillTimer(hWnd, ID_MYTIMER2);
@@ -1849,7 +1728,7 @@ void EData(int XX){
 	return;
 }
 
-void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, HDC hdc){
+void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, HDC hdc) {
 
 	HPEN hPen, hPen2, hPen3;
 	HBRUSH hBrush, hBrushW, hBrushT;
@@ -1865,10 +1744,10 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 	hPen2 = CreatePen(PS_SOLID, 4, RGB(0, 0, 0));
 	int Tr = 0, Tg = 0, Tb = 0;
 
-	if (companyAStockPriceChangeAmount != 6){
+	if (companyAStockPriceChangeAmount != 6) {
 		SelectObject(hdc, hBrush);
 
-		if (companyAStockPriceChangeAmount == 1){
+		if (companyAStockPriceChangeAmount == 1) {
 			rc0.left = 0;
 			rc0.top = clientRectangle.bottom / 16;
 			rc0.right = clientRectangle.right / number;
@@ -1888,7 +1767,7 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 			wsprintf((LPWSTR)szPRL[2], TEXT("トヨタ自動車"));
 			Tr = 204;
 		}
-		if (companyAStockPriceChangeAmount == 2){
+		if (companyAStockPriceChangeAmount == 2) {
 
 			rc0.left = clientRectangle.right * 2 / 3;
 			rc0.top = clientRectangle.bottom / 16;
@@ -1907,11 +1786,11 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
 			rc3.right = rc1.right - clientRectangle.right / 40;
 			wsprintf((LPWSTR)szPRL[2], TEXT("ユニクロ"));
-			if (DQ == 1){ wsprintf((LPWSTR)szPRL[2], TEXT("鹿島建設")); }
+			if (DQ == 1) { wsprintf((LPWSTR)szPRL[2], TEXT("鹿島建設")); }
 			Tr = 255;
 			Tg = 255;
 		}
-		if (companyAStockPriceChangeAmount == 3){
+		if (companyAStockPriceChangeAmount == 3) {
 			rc0.left = 0;
 			rc0.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
 			rc0.right = clientRectangle.right / number;
@@ -1934,7 +1813,7 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 			Tg = 255;
 			Tb = 255;
 		}
-		if (companyAStockPriceChangeAmount == 4){
+		if (companyAStockPriceChangeAmount == 4) {
 			rc0.left = 0 + clientRectangle.right / 3;
 			rc0.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
 			rc0.right = clientRectangle.right / number + clientRectangle.right / 3;
@@ -1952,11 +1831,11 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40 + clientRectangle.bottom / 2;
 			rc3.right = rc1.right - clientRectangle.right / 40;
 			wsprintf((LPWSTR)szPRL[2], TEXT("イトーヨーカドー"));
-			if (DQ == 1){ wsprintf((LPWSTR)szPRL[2], TEXT("ユニクロ")); }
+			if (DQ == 1) { wsprintf((LPWSTR)szPRL[2], TEXT("ユニクロ")); }
 			Tr = 51;
 			Tg = 204;
 		}
-		if (companyAStockPriceChangeAmount == 5){
+		if (companyAStockPriceChangeAmount == 5) {
 			rc0.left = clientRectangle.right * 2 / 3;
 			rc0.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
 			rc0.right = clientRectangle.right * 2 / 3 + clientRectangle.right / number;
@@ -1991,14 +1870,14 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 
 		/*初期の枠を作るスクリプト開始*/
 
-		for (o = 0; o<his; o++){
-			stockPriceChartGraphPoint[companyAStockPriceChangeAmount - 1][o].x = (rc3.right - rc3.left) / (his)*(o + 1) + rc3.left - clientRectangle.right / 300;
+		for (o = 0; o < his; o++) {
+			stockPriceChartGraphPoint[companyAStockPriceChangeAmount - 1][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left - clientRectangle.right / 300;
 		}
 
 		SelectObject(hdc, hPen);
-		for (i = 0; i<2; i++){
-			for (q = 0; q<number / 2; q++){
-				Rectangle(hdc, clientRectangle.right*q * 2 / number, clientRectangle.bottom*i / 2, clientRectangle.right*(q + 1) * 2 / number, clientRectangle.bottom*(i + 1) / 2);
+		for (i = 0; i < 2; i++) {
+			for (q = 0; q < number / 2; q++) {
+				Rectangle(hdc, clientRectangle.right * q * 2 / number, clientRectangle.bottom * i / 2, clientRectangle.right * (q + 1) * 2 / number, clientRectangle.bottom * (i + 1) / 2);
 			}
 		}
 
@@ -2058,7 +1937,7 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 		TextOut(hdc, rc3.right, rc3.bottom - 20, szPRL[4], lstrlen(szPRL[4]));
 
 	}
-	if (companyAStockPriceChangeAmount == 6){
+	if (companyAStockPriceChangeAmount == 6) {
 		rc0.left = 0;
 		rc0.top = clientRectangle.bottom / 16;
 		rc0.right = clientRectangle.right / number;
@@ -2082,7 +1961,7 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 		/*時計処理start*/
 		TCHAR sur[10];
 		SelectObject(hdc, hFont2);
-		wsprintf(sur, TEXT("%3d"), Tm / 1000);
+		wsprintf(sur, TEXT("%3d"), currentRemainingTime / 1000);
 
 		SetTextColor(hdc, RGB(0, 51, 0));
 		TextOut(hdc, rc1.right + clientRectangle.right / 50, rc4.top + rc4.top * 3 / 4, sur, lstrlen(sur));
@@ -2096,7 +1975,7 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 
 		SelectObject(hdc, hBrushW);
 
-		Rectangle(hdc, rc4.right - (DTM - Tm)*(rc4.right - rc4.left) / DTM, rc4.top, rc4.right, rc4.bottom);
+		Rectangle(hdc, rc4.right - (limitedTime - currentRemainingTime) * (rc4.right - rc4.left) / limitedTime, rc4.top, rc4.right, rc4.bottom);
 
 		/*時計処理end*/
 		/*ニュース処理start*/
@@ -2130,7 +2009,7 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 		rc25.top = clientRectangle.bottom / 2 - clientRectangle.bottom / 10;
 		rc25.bottom = clientRectangle.bottom / 2;
 
-		if (DQ != 1){
+		if (DQ != 1) {
 
 			SelectObject(hdc, hBrushW);
 			SelectObject(hdc, hPen3);
@@ -2160,8 +2039,8 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 			DrawText(hdc, Urate, lstrlen(Urate), &rc25, DT_CENTER | DT_WORDBREAK);
 		}
 	}
-	if (companyAStockPriceChangeAmount != 6){
-		if (AS[companyAStockPriceChangeAmount - 1]>0){
+	if (companyAStockPriceChangeAmount != 6) {
+		if (AS[companyAStockPriceChangeAmount - 1] > 0) {
 			SelectObject(hdc, hBrushw);
 			Rectangle(hdc, rc0.left, rc0.top, rc1.right, rc3.bottom);
 			SelectObject(hdc, hFont3);
