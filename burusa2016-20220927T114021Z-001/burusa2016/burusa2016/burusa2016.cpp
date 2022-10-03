@@ -1,6 +1,6 @@
 // win01.cpp
 
-#define HH 10
+#define stockPriceChartGraphPointNumber 10
 
 #include <Windows.h>
 #include <iostream>
@@ -20,7 +20,6 @@ void EData(int);
 void Ftime(int, HWND, RECT, HDC);
 
 LPCTSTR lpszClassName = TEXT("win01");	//ウィンドウクラス
-
 
 HINSTANCE hInst;
 
@@ -116,18 +115,17 @@ BOOL InitInstance(HINSTANCE hInst, int nCmdShow)
 //それぞれの企業の株価の増減分
 static int companyAStockPriceChangeAmount, companyBStockPriceChangeAmount, companyCStockPriceChangeAmount, companyDStockPriceChangeAmount, companyEStockPriceChangeAmount;
 
-//ウィンドウプロシージャ
 //それぞれの企業の株価 一次元目で企業を指定、二次元目で期間を指定
-static int stockPrices[5][HH + 1];
+static int stockPrices[5][stockPriceChartGraphPointNumber + 1];
 
 //画面に表示する期間の数
-const int his = HH;
+const int his = stockPriceChartGraphPointNumber;
 static int EV = 0;
-TCHAR S[100];
-TCHAR Sb[30];
-static int number = 6;/*株価の数*/
+TCHAR messageEventTitle[100];
+TCHAR messageEventNumber[30];
+const static int number = 6;/*株価の数*/
 int spread[5] = { 10, 20, 30, 40, 50 };
-static POINT stockPriceChartGraphPoint[5][HH];
+static POINT stockPriceChartGraphPoint[5][stockPriceChartGraphPointNumber];
 //文字色について扱うグローバル変数
 int rR, rG, rB;
 //nNEは意味のない？
@@ -138,13 +136,12 @@ static HFONT hFont4, hFont5, hFont6;
 PAINTSTRUCT ps;
 HDC hdc;
 int currentRemainingTime, limitedTime;
-static TCHAR lpOut[10];
-TCHAR szPR[25][10];
-TCHAR Rate[15], Yrate[4];
-TCHAR Urate[] = TEXT("為替レート\n次回予測");
-TCHAR CON[] = TEXT("\n今からの取引はできません。\n少々お待ちください。");
-TCHAR YOM[] = TEXT("\n読み込み中です。\n少々お待ちください。");
-int TEST = 1;
+TCHAR eachCompanyMaxStockPriceInPeriod[10][10];
+TCHAR messageWaitForMinute[] = TEXT("\n今からの取引はできません。\n少々お待ちください。");
+TCHAR messageNextLimitTime[] = TEXT("\n\n\n\n\n次回の制限時間；%d秒");
+TCHAR messageCompanyBankruptcy[] = TEXT("\nこの会社は倒産しました。\n株のカードをボードに戻してください。");
+TCHAR messageLoadingPleaseWait[] = TEXT("\n読み込み中です。\n少々お待ちください。");
+TCHAR messageLoadProgress[] = TEXT("\n\n\n\n\n%d完了");
 
 int Rmax = 135;
 int Rmin = 85;
@@ -152,12 +149,12 @@ int Rpr = 110;
 int nD = 98;
 int nLOOP[130];
 
-RECT rc23, rc24, rc25, rc26;
 int CT;
-static int AAB, XO;
+static int AAB;
+bool XO;
 HPEN hPen4, hPen5;
 int Qw;
-int DQ = 0;
+
 int EnD = 10;
 static int AS[5];
 
@@ -168,6 +165,7 @@ int bmpw, bmph;
 HPEN hPen10;
 int YXO;
 
+//ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	RECT clientRectangle;
@@ -201,8 +199,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 		limitedTime = 10000;
 		currentRemainingTime = limitedTime;
-		XO = 1;
-		TEST = 0;
+		XO = true;
 		Rpr = 110;
 		rc0.left = 0;
 		rc0.top = clientRectangle.bottom / 16;
@@ -222,33 +219,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		rc3.right = rc1.right - clientRectangle.right / 35;
 
 		/*それぞれの全期間での株価の初期化*/
-		for (o = 0; o < HH; o++) {
+		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[0][o] = 15000;
 		}
-		for (o = 0; o < HH; o++) {
+		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[1][o] = 15000;
 		}
-		for (o = 0; o < HH; o++) {
+		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[2][o] = 15000;
 		}
-		for (o = 0; o < HH; o++) {
+		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[3][o] = 15000;
 		}
-		for (o = 0; o < HH; o++) {
+		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[4][o] = 15000;
 		}
 		SetTimer(hWnd, ID_MYTIMER, 200, NULL);
 
 		srand((unsigned)time(NULL));
-		for (o = 0; o < 5; o++) {
-			wsprintf((LPWSTR)szPR[0 + o * 2], TEXT("売；%d"), stockPrices[0 + o][his - 1] - spread[o]);
-			wsprintf((LPWSTR)szPR[1 + o * 2], TEXT("買；%d"), stockPrices[0 + o][his - 1] + spread[o]);
-		}
-		wsprintf((LPWSTR)szPR[10], TEXT("トヨタ自動車"));
-		wsprintf((LPWSTR)szPR[11], TEXT("ユニクロ"));
-		wsprintf((LPWSTR)szPR[12], TEXT("森永製菓"));
-		wsprintf((LPWSTR)szPR[13], TEXT("イトーヨーカドー"));
-		wsprintf((LPWSTR)szPR[14], TEXT("ＪＴＢ"));
 
 		hFont1 = MyCreateFont(36, SHIFTJIS_CHARSET, TEXT("ＭＳ 明朝"));
 		hFont2 = MyCreateFont(15, SHIFTJIS_CHARSET, TEXT("ＭＳ 明朝"));
@@ -316,27 +304,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 
 		if (!(EV < his + 3)) {
-			if (XO == 1) {
+			if (XO) {
 				Ftime(1, hWnd, clientRectangle, hdc);
 				Ftime(2, hWnd, clientRectangle, hdc);
-				if (DQ != 1) {
-					Ftime(3, hWnd, clientRectangle, hdc);
-					Ftime(5, hWnd, clientRectangle, hdc);
-				}
+				Ftime(3, hWnd, clientRectangle, hdc);
+				Ftime(5, hWnd, clientRectangle, hdc);
 				Ftime(4, hWnd, clientRectangle, hdc);
 				Ftime(6, hWnd, clientRectangle, hdc);
 			}
 
-			if (XO == 0) {
+			if (!XO) {
 				bmph = clientRectangle.bottom / 9;
 				bmpw = bmph;
 				SelectObject(hdc, hBrushw);
 				Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 				SelectObject(hdc, hFont5);
-				wsprintf((LPWSTR)CON, TEXT("\n今からの取引はできません。\n少々お待ちください。"));
-				DrawText(hdc, CON, -1, &clientRectangle, DT_CENTER);
-				wsprintf((LPWSTR)CON, TEXT("\n\n\n\n\n次回の制限時間；%d秒"), limitedTime / 1000);
-				DrawText(hdc, CON, -1, &clientRectangle, DT_CENTER);
+				wsprintf((LPWSTR)messageWaitForMinute, TEXT("\n今からの取引はできません。\n少々お待ちください。"));
+				DrawText(hdc, messageWaitForMinute, -1, &clientRectangle, DT_CENTER);
+				wsprintf((LPWSTR)messageNextLimitTime, TEXT("\n\n\n\n\n次回の制限時間；%d秒"), limitedTime / 1000);
+				DrawText(hdc, messageNextLimitTime, -1, &clientRectangle, DT_CENTER);
 
 				SelectObject(hdc_mem, hBmp);
 
@@ -363,10 +349,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 			SelectObject(hdc, hPen5);
 			SelectObject(hdc, hFont5);
-			wsprintf((LPWSTR)YOM, TEXT("\n読み込み中です。\n少々お待ちください。"));
-			DrawText(hdc, YOM, -1, &clientRectangle, DT_CENTER);
-			wsprintf((LPWSTR)YOM, TEXT("\n\n\n\n\n%d％完了"), Qw * 100 / (his + 1 + limitedTime / 1000));
-			DrawText(hdc, YOM, -1, &clientRectangle, DT_CENTER);
+			wsprintf((LPWSTR)messageLoadingPleaseWait, TEXT("\n読み込み中です。\n少々お待ちください。"));
+			DrawText(hdc, messageLoadingPleaseWait, -1, &clientRectangle, DT_CENTER);
+			wsprintf((LPWSTR)messageLoadProgress, TEXT("\n\n\n\n\n%d％完了"), Qw * 100 / (his + 1 + limitedTime / 1000));
+			DrawText(hdc, messageLoadProgress, -1, &clientRectangle, DT_CENTER);
 		}
 		EndPaint(hWnd, &ps);
 
@@ -378,7 +364,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		}
 		Qw++;
 
-		if (XO == 1) {
+		if (XO) {
 
 			rc0.left = 0;
 			rc0.top = clientRectangle.bottom / 16;
@@ -425,8 +411,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			if (currentRemainingTime == 0) {
 
 				if (!(EV < his + 2)) {
-					XO = 0;
-					TEST = 1;
+					XO = false;
 				}
 				/*株価・チャート移動のためのスクリプトstart*/
 
@@ -443,7 +428,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				o = 0;
 
 				/**goto文を使っています。注意！**/
-				if (DQ != 1) {
+				
 				loop:
 					XX = rand() % nD;
 
@@ -539,26 +524,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						std::cout << errorMessage << std::endl;
 					}*/
 					o = 1;
-				}
+				
 
-				if (DQ == 1) {
-				Eloop:
-					XX = rand() % EnD;
-					if (nLOOP[XX] == 1) {
-						o++;
-						if (o == 100000000) {
-							EData(1000);
-							goto Eout;
-						}
-						goto Eloop;
-					}
-					if (!(EV < his + 3)) {
-						nLOOP[XX] = 1;
-					}
-					EData(XX);
-				Eout:
-					o = 1;
-				}
+				
 
 				/**goto文を使っています。注意！**/
 
@@ -569,8 +537,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					for (o = 0; o < his; o++) {
 						stockPrices[q][o] = stockPrices[q][o + 1];
 					}
-
-					wsprintf((LPWSTR)szPR[0], TEXT("株価；%d"), stockPrices[q][his - 1] - spread[q]);
 
 					for (o = 0; o < his; o++) {
 						if (o == 0) {
@@ -617,8 +583,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						}
 					}
 
-					wsprintf(szPR[q * 2 + 15], TEXT("%d"), maxStockPriceInPeriod);
-					wsprintf(szPR[q * 2 + 16], TEXT("%d"), minStockPriceInPeriod);
+					wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), maxStockPriceInPeriod);
+					wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), minStockPriceInPeriod);
 
 				}
 
@@ -636,28 +602,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				/*為替+ニュースまとめstart*/
 
 				for (o = 0; o < 5; o++) {
-					q = stockPrices[o][HH] % 1000;
+					q = stockPrices[o][stockPriceChartGraphPointNumber] % 1000;
 					if (q >= 500) {
-						stockPrices[o][HH] += 1000;
+						stockPrices[o][stockPriceChartGraphPointNumber] += 1000;
 					}
-					stockPrices[o][HH] -= q;
+					stockPrices[o][stockPriceChartGraphPointNumber] -= q;
 				}
 
 				if (EV < his + 3) {
 					for (o = 0; o < 5; o++) {
-						if (stockPrices[o][HH] < 12000) {
-							stockPrices[o][HH] = 12000;
+						if (stockPrices[o][stockPriceChartGraphPointNumber] < 12000) {
+							stockPrices[o][stockPriceChartGraphPointNumber] = 12000;
 						}
 					}
 
 					for (o = 0; o < 5; o++) {
-						if (stockPrices[o][HH] > 18000) {
-							stockPrices[o][HH] = 18000;
+						if (stockPrices[o][stockPriceChartGraphPointNumber] > 18000) {
+							stockPrices[o][stockPriceChartGraphPointNumber] = 18000;
 						}
 					}
 
 				}
-				if (EV > HH - 2) {
+				if (EV > stockPriceChartGraphPointNumber - 2) {
 					for (o = 0; o < 5; o++) {
 						if (stockPrices[o][his - 1] < 100) {
 							AS[o] = 2;
@@ -668,7 +634,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				int r;
 				for (int w = 0; w < 5; w++) {
 					if (AS[w] > 0) {
-						for (o = 0; o < HH + 1; o++) {
+						for (o = 0; o < stockPriceChartGraphPointNumber + 1; o++) {
 							r = rand() % 4001 - 2000;
 							stockPrices[w][o] = 15000 + r;
 
@@ -689,8 +655,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		break;
 	case WM_CHAR:
 		if (wp == VK_ESCAPE) {
-			if (XO == 0) XO = 1; InvalidateRect(hWnd, &clientRectangle, 0); break;
-			XO = 0;
+			if (!XO) XO = true; InvalidateRect(hWnd, &clientRectangle, 0); break;
+			XO = false;
 		}
 		if (wp == VK_RETURN) {
 			if (limitedTime == 1000) limitedTime -= 1000;
@@ -739,8 +705,8 @@ void Data(int XX) {
 	}
 	else {
 		if (XX == 0) {
-			wsprintf(S, TEXT("本州と九州を結ぶ新しい橋が完成"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("本州と九州を結ぶ新しい橋が完成"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 1000;
@@ -748,8 +714,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 1) {
-			wsprintf(S, TEXT("南海トラフ地震が発生"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("南海トラフ地震が発生"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -0;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = -4000;
@@ -757,8 +723,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -5000;
 		}
 		if (XX == 2) {
-			wsprintf(S, TEXT("タイで大洪水が発生"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("タイで大洪水が発生"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -4000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = 000;
@@ -766,8 +732,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 3) {
-			wsprintf(S, TEXT("日本全国で米が不作"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("日本全国で米が不作"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -775,8 +741,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 4) {
-			wsprintf(S, TEXT("愛知県に巨大台風が上陸"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("愛知県に巨大台風が上陸"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -784,8 +750,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 5) {
-			wsprintf(S, TEXT("ハワイで大規模な火山噴火"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("ハワイで大規模な火山噴火"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -793,8 +759,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -5000;
 		}
 		if (XX == 6) {
-			wsprintf(S, TEXT("九州地方で地震が発生"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("九州地方で地震が発生"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -802,8 +768,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 7) {
-			wsprintf(S, TEXT("京都が集中豪雨で大きな被害"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("京都が集中豪雨で大きな被害"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -811,8 +777,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 8) {
-			wsprintf(S, TEXT("鎌倉が世界遺産に"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("鎌倉が世界遺産に"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -820,8 +786,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 9) {
-			wsprintf(S, TEXT("富士山が世界遺産に"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("富士山が世界遺産に"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -829,8 +795,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 10) {
-			wsprintf(S, TEXT("日本を訪れる外国人が3000万人を超える"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("日本を訪れる外国人が3000万人を超える"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -838,8 +804,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 6000;
 		}
 		if (XX == 11) {
-			wsprintf(S, TEXT("伊勢志摩サミットが開催"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("伊勢志摩サミットが開催"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -847,8 +813,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 12) {
-			wsprintf(S, TEXT("フランスでテロ"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("フランスでテロ"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -856,8 +822,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -4000;
 		}
 		if (XX == 13) {
-			wsprintf(S, TEXT("電気料金が値上げ"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("電気料金が値上げ"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -865,8 +831,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 14) {
-			wsprintf(S, TEXT("石油の値段が上がる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("石油の値段が上がる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -874,8 +840,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 15) {
-			wsprintf(S, TEXT("石油の値段が下がる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("石油の値段が下がる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -883,8 +849,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 16) {
-			wsprintf(S, TEXT("鉄の値段が上がる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("鉄の値段が上がる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -892,8 +858,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 17) {
-			wsprintf(S, TEXT("鉄の値段が下がる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("鉄の値段が下がる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -901,8 +867,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 18) {
-			wsprintf(S, TEXT("今年の冬は暖冬になると予想"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("今年の冬は暖冬になると予想"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = 000;
@@ -910,8 +876,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 19) {
-			wsprintf(S, TEXT("今年の夏は過去最高の猛暑になると予想"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("今年の夏は過去最高の猛暑になると予想"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 2000;
@@ -919,8 +885,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 20) {
-			wsprintf(S, TEXT("北陸新幹線が開通"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("北陸新幹線が開通"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -928,8 +894,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 21) {
-			wsprintf(S, TEXT("海外で日本食ブーム"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("海外で日本食ブーム"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 1000;
@@ -937,8 +903,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 22) {
-			wsprintf(S, TEXT("日本を舞台にしたディズニー映画が大ヒット"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("日本を舞台にしたディズニー映画が大ヒット"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -946,8 +912,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 23) {
-			wsprintf(S, TEXT("ハワイでテロ"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("ハワイでテロ"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -955,8 +921,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -5000;
 		}
 		if (XX == 24) {
-			wsprintf(S, TEXT("ドローンの新技術が開発"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("ドローンの新技術が開発"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -964,8 +930,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 25) {
-			wsprintf(S, TEXT("錦織圭がオリンピックで金メダル"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("錦織圭がオリンピックで金メダル"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 5000;
 			companyCStockPriceChangeAmount = 000;
@@ -973,8 +939,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 26) {
-			wsprintf(S, TEXT("中国の軍艦と日本の漁船が衝突"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("中国の軍艦と日本の漁船が衝突"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = 000;
@@ -982,8 +948,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 27) {
-			wsprintf(S, TEXT("日本海で大量の石油が発見"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("日本海で大量の石油が発見"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 2000;
 			companyCStockPriceChangeAmount = 1000;
@@ -991,8 +957,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 28) {
-			wsprintf(S, TEXT("富士山噴火の危険が高まる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("富士山噴火の危険が高まる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1000,8 +966,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 29) {
-			wsprintf(S, TEXT("中国で日本製品が大ブーム"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("中国で日本製品が大ブーム"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 4000;
 			companyCStockPriceChangeAmount = 3000;
@@ -1009,8 +975,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 30) {
-			wsprintf(S, TEXT("中国人の爆買いが流行"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("中国人の爆買いが流行"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = -3000;
@@ -1019,16 +985,16 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 5000;
 		}
 		if (XX == 31) {
-			wsprintf(S, TEXT("首相が靖国神社参拝"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("首相が靖国神社参拝"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -4000;
 			companyCStockPriceChangeAmount = -1000;
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 32) {
-			wsprintf(S, TEXT("「石油が20年後に無くなる」と国連が発表"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("「石油が20年後に無くなる」と国連が発表"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -2000;
@@ -1036,8 +1002,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -5000;
 		}
 		if (XX == 33) {
-			wsprintf(S, TEXT("中国が歴史問題を理由に日中間の往来を制限"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("中国が歴史問題を理由に日中間の往来を制限"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -4000;
 			companyBStockPriceChangeAmount = -4000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1045,8 +1011,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -6000;
 		}
 		if (XX == 34) {
-			wsprintf(S, TEXT("日本で中華料理が大ブーム"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("日本で中華料理が大ブーム"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1054,8 +1020,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 35) {
-			wsprintf(S, TEXT("イタリアで大地震が発生"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("イタリアで大地震が発生"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1063,8 +1029,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 36) {
-			wsprintf(S, TEXT("消費税が15％に増税"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("消費税が15％に増税"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -2000;
@@ -1072,8 +1038,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 37) {
-			wsprintf(S, TEXT("韓国で新型インフルエンザが大流行"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("韓国で新型インフルエンザが大流行"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1081,8 +1047,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 38) {
-			wsprintf(S, TEXT("本州で大規模な停電"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("本州で大規模な停電"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -3000;
@@ -1090,8 +1056,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 39) {
-			wsprintf(S, TEXT("サッカーワールドカップが大阪で開催"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("サッカーワールドカップが大阪で開催"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1099,8 +1065,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 40) {
-			wsprintf(S, TEXT("広島で土砂災害"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("広島で土砂災害"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1108,8 +1074,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 41) {
-			wsprintf(S, TEXT("エボラ出血熱がヨーロッパで大流行"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("エボラ出血熱がヨーロッパで大流行"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -5000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -2000;
@@ -1117,8 +1083,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -7000;
 		}
 		if (XX == 42) {
-			wsprintf(S, TEXT("高速道路料金が無料に"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("高速道路料金が無料に"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1126,8 +1092,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 43) {
-			wsprintf(S, TEXT("新幹線の事故が相次ぐ"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("新幹線の事故が相次ぐ"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1135,8 +1101,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 44) {
-			wsprintf(S, TEXT("北朝鮮のミサイルが神奈川県沖に落下"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("北朝鮮のミサイルが神奈川県沖に落下"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = -3000;
@@ -1144,8 +1110,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 45) {
-			wsprintf(S, TEXT("上野動物園でパンダの赤ちゃんが生まれる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("上野動物園でパンダの赤ちゃんが生まれる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1153,8 +1119,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 46) {
-			wsprintf(S, TEXT("富岡製糸場が世界遺産に"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("富岡製糸場が世界遺産に"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1162,8 +1128,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 47) {
-			wsprintf(S, TEXT("リニアモーターカーが開通"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("リニアモーターカーが開通"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1171,8 +1137,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 48) {
-			wsprintf(S, TEXT("成田国際空港の国際線が2倍に増える"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("成田国際空港の国際線が2倍に増える"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1180,8 +1146,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 5000;
 		}
 		if (XX == 49) {
-			wsprintf(S, TEXT("中東で大規模な反政府デモ"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("中東で大規模な反政府デモ"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1189,8 +1155,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 50) {
-			wsprintf(S, TEXT("インドの道路が整備される"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("インドの道路が整備される"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 2000;
 			companyCStockPriceChangeAmount = 000;
@@ -1198,8 +1164,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 51) {
-			wsprintf(S, TEXT("アメリカが「30年でCO2排出量を半分にする」と発表"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("アメリカが「30年でCO2排出量を半分にする」と発表"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 7000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1207,8 +1173,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 52) {
-			wsprintf(S, TEXT("野菜の価格が昨年の2倍に"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("野菜の価格が昨年の2倍に"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1216,8 +1182,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 53) {
-			wsprintf(S, TEXT("デング熱の大流行により東南アジアへの渡航が制限"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("デング熱の大流行により東南アジアへの渡航が制限"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1225,8 +1191,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 54) {
-			wsprintf(S, TEXT("ソマリアの海賊が消滅"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("ソマリアの海賊が消滅"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 2000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1234,8 +1200,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 55) {
-			wsprintf(S, TEXT("日本の人口が増加"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("日本の人口が増加"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 4000;
 			companyCStockPriceChangeAmount = 4000;
@@ -1243,8 +1209,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 56) {
-			wsprintf(S, TEXT("札幌オリンピック開催が決定"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("札幌オリンピック開催が決定"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 4000;
 			companyBStockPriceChangeAmount = 3000;
 			companyCStockPriceChangeAmount = 2000;
@@ -1252,8 +1218,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 57) {
-			wsprintf(S, TEXT("東京スカイツリーが事故により営業を停止"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("東京スカイツリーが事故により営業を停止"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1261,8 +1227,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 58) {
-			wsprintf(S, TEXT("ガソリン税が廃止"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("ガソリン税が廃止"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 4000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1270,8 +1236,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 59) {
-			wsprintf(S, TEXT("ディズニーランドにリニューアルオープン"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("ディズニーランドにリニューアルオープン"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 0000;
@@ -1279,8 +1245,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 60) {
-			wsprintf(S, TEXT("石油の新しい採掘方法が開発"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("石油の新しい採掘方法が開発"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 3000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1288,8 +1254,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 61) {
-			wsprintf(S, TEXT("燃費不正問題でヨーロッパの大手自動車メーカーが倒産"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("燃費不正問題でヨーロッパの大手自動車メーカーが倒産"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1297,8 +1263,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 62) {
-			wsprintf(S, TEXT("アメリカの大統領が広島訪問"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("アメリカの大統領が広島訪問"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1306,8 +1272,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 63) {
-			wsprintf(S, TEXT("コーヒー豆の値段が下がる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("コーヒー豆の値段が下がる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 2000;
@@ -1315,8 +1281,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 64) {
-			wsprintf(S, TEXT("国連が「排気ガスを40年間で50％削減する」と発表"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("国連が「排気ガスを40年間で50％削減する」と発表"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 6000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1324,8 +1290,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 65) {
-			wsprintf(S, TEXT("アメリカで忍者ブーム"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("アメリカで忍者ブーム"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1333,8 +1299,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 66) {
-			wsprintf(S, TEXT("中国で大規模な反日デモ"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("中国で大規模な反日デモ"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = 000;
@@ -1342,8 +1308,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 67) {
-			wsprintf(S, TEXT("ヨーロッパで日本のファッションが注目"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("ヨーロッパで日本のファッションが注目"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 5000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1351,8 +1317,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 68) {
-			wsprintf(S, TEXT("新国立競技場が完成"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("新国立競技場が完成"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 5000;
 			companyCStockPriceChangeAmount = 5000;
@@ -1360,8 +1326,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 5000;
 		}
 		if (XX == 69) {
-			wsprintf(S, TEXT("政府が「50年間で日本の車の半分をエコカーにする」と発表"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("政府が「50年間で日本の車の半分をエコカーにする」と発表"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 7000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1369,8 +1335,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 70) {
-			wsprintf(S, TEXT("東南アジアで低価格の洋服が流行"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("東南アジアで低価格の洋服が流行"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 4000;
 			companyCStockPriceChangeAmount = 000;
@@ -1378,8 +1344,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 71) {
-			wsprintf(S, TEXT("「チョコレートががん予防になる」という研究結果が発表"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("「チョコレートががん予防になる」という研究結果が発表"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 3000;
@@ -1387,8 +1353,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 72) {
-			wsprintf(S, TEXT("アメリカでとんこつラーメンが大ヒット"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("アメリカでとんこつラーメンが大ヒット"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1396,8 +1362,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 73) {
-			wsprintf(S, TEXT("冷凍食品による食中毒が多発"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("冷凍食品による食中毒が多発"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1405,8 +1371,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 74) {
-			wsprintf(S, TEXT("スターウォーズの新作が公開"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("スターウォーズの新作が公開"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1414,8 +1380,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 75) {
-			wsprintf(S, TEXT("大手企業が会員の個人情報を流出"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("大手企業が会員の個人情報を流出"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1423,8 +1389,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 76) {
-			wsprintf(S, TEXT("日本の化粧品の新商品がアジアでヒット"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("日本の化粧品の新商品がアジアでヒット"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1432,8 +1398,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 77) {
-			wsprintf(S, TEXT("サウジアラビアで自爆テロが多発"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("サウジアラビアで自爆テロが多発"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1441,8 +1407,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 78) {
-			wsprintf(S, TEXT("中国の人件費が上がる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("中国の人件費が上がる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1450,8 +1416,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 79) {
-			wsprintf(S, TEXT("駄菓子メーカーの賞味期限偽装が発覚"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("駄菓子メーカーの賞味期限偽装が発覚"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = -5000;
@@ -1459,8 +1425,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 80) {
-			wsprintf(S, TEXT("日本のオリンピック選手が国民栄誉賞"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("日本のオリンピック選手が国民栄誉賞"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1468,8 +1434,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 81) {
-			wsprintf(S, TEXT("人工知能の開発をする企業への補助金制度が決定"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("人工知能の開発をする企業への補助金制度が決定"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 4000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1477,8 +1443,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 82) {
-			wsprintf(S, TEXT("アメリカ政府が海外からの輸入を大幅に制限"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("アメリカ政府が海外からの輸入を大幅に制限"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -7000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -2000;
@@ -1486,8 +1452,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 83) {
-			wsprintf(S, TEXT("ガソリンが大幅に値上げ"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("ガソリンが大幅に値上げ"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -2000;
@@ -1495,8 +1461,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 84) {
-			wsprintf(S, TEXT("東京に乗り物博物館がオープン"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("東京に乗り物博物館がオープン"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1504,8 +1470,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 85) {
-			wsprintf(S, TEXT("東京でピカソ展が開催"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("東京でピカソ展が開催"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1513,8 +1479,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 86) {
-			wsprintf(S, TEXT("安全上の問題からドローンの使用が禁止に"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("安全上の問題からドローンの使用が禁止に"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1522,8 +1488,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 87) {
-			wsprintf(S, TEXT("大雪で成田空港の飛行機が1日中欠航"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("大雪で成田空港の飛行機が1日中欠航"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1531,8 +1497,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -4000;
 		}
 		if (XX == 88) {
-			wsprintf(S, TEXT("箱根で火山が噴火"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("箱根で火山が噴火"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1540,8 +1506,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -4000;
 		}
 		if (XX == 89) {
-			wsprintf(S, TEXT("韓国の大統領が竹島に上陸"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("韓国の大統領が竹島に上陸"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1549,8 +1515,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 90) {
-			wsprintf(S, TEXT("北海道新幹線が開通"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("北海道新幹線が開通"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1558,8 +1524,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 91) {
-			wsprintf(S, TEXT("マグロが例年の2倍発生"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("マグロが例年の2倍発生"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1567,8 +1533,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 92) {
-			wsprintf(S, TEXT("フィリピンで軍事クーデターが発生"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("フィリピンで軍事クーデターが発生"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1576,8 +1542,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 93) {
-			wsprintf(S, TEXT("養殖によるウナギの大量生産が始まる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("養殖によるウナギの大量生産が始まる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1585,8 +1551,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 94) {
-			wsprintf(S, TEXT("名古屋港が2倍に広がる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("名古屋港が2倍に広がる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 6000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1594,8 +1560,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 95) {
-			wsprintf(S, TEXT("明日はバレンタインデーだ"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("明日はバレンタインデーだ"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 3000;
@@ -1603,8 +1569,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 96) {
-			wsprintf(S, TEXT("牛乳の価格が下がる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("牛乳の価格が下がる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1612,8 +1578,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 97) {
-			wsprintf(S, TEXT("牛乳の価格が上がる"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("牛乳の価格が上がる"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1621,8 +1587,8 @@ void Data(int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 98) {
-			wsprintf(S, TEXT("本州と九州を結ぶ新しい橋が完成"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("本州と九州を結ぶ新しい橋が完成"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1632,9 +1598,8 @@ void Data(int XX) {
 		NE = XX;
 
 		if (XX == 1000) {
-			wsprintf(S, TEXT("最後の株価を表示しています。"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
-			//KillTimer(hWnd,ID_MYTIMER2);
+			wsprintf(messageEventTitle, TEXT("最後の株価を表示しています。"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 		}
 
 	}
@@ -1659,82 +1624,89 @@ void EData(int XX) {
 		companyBStockPriceChangeAmount = 0;
 		companyDStockPriceChangeAmount = 0;
 		if (XX == 0) {
-			wsprintf(S, TEXT("スーパーハイブリッド車が開発された！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("スーパーハイブリッド車が開発された！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 2000;
 		}
 		if (XX == 1) {
-			wsprintf(S, TEXT("汗をかくと冷たくなる「スーパークールシャツ」が開発された！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("汗をかくと冷たくなる「スーパークールシャツ」が開発された！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyDStockPriceChangeAmount = 2000;
 
 		}
 		if (XX == 2) {
-			wsprintf(S, TEXT("すべての高層ビルに震度7に耐える耐震工事を義務付ける法律ができた！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("すべての高層ビルに震度7に耐える耐震工事を義務付ける法律ができた！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyBStockPriceChangeAmount = 2000;
 		}
 		if (XX == 3) {
-			wsprintf(S, TEXT("東南海大地震が起きて名古屋中心の沿岸部が壊滅的な被害を受けた！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("東南海大地震が起きて名古屋中心の沿岸部が壊滅的な被害を受けた！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -4000;
 			companyBStockPriceChangeAmount = 1000;
 			companyDStockPriceChangeAmount = 1000;
 		}
 		if (XX == 4) {
-			wsprintf(S, TEXT("太陽光で動くソーラー自動車が発売された！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("太陽光で動くソーラー自動車が発売された！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 2000;
 		}
 		if (XX == 5) {
-			wsprintf(S, TEXT("世界的に景気が良くなった！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("世界的に景気が良くなった！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 3000;
 			companyBStockPriceChangeAmount = 3000;
 			companyDStockPriceChangeAmount = -1000;
 		}
 		if (XX == 6) {
-			wsprintf(S, TEXT("円安になった！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("円安になった！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = 3000;
 			companyDStockPriceChangeAmount = -2000;
 		}
 		if (XX == 7) {
-			wsprintf(S, TEXT("中国と日本の関係が悪化し、一切の貿易が停止した！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("中国と日本の関係が悪化し、一切の貿易が停止した！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -2000;
 			companyDStockPriceChangeAmount = -8000;
 		}
 		if (XX == 8) {
-			wsprintf(S, TEXT("所得税が上がった！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("所得税が上がった！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 		}
 		if (XX == 9) {
-			wsprintf(S, TEXT("急激な円高になった！"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("急激な円高になった！"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = 0;
 			companyDStockPriceChangeAmount = 2000;
 		}
 		if (XX == 1000) {
-			wsprintf(S, TEXT("最後の株価を表示しています。"), XX);
-			wsprintf(Sb, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+			wsprintf(messageEventTitle, TEXT("最後の株価を表示しています。"), XX);
+			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
 			KillTimer(hWnd, ID_MYTIMER2);
 		}
 	}
 	return;
 }
 
-void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, HDC hdc) {
+/**
+* それぞれの株価の表示を担う関数
+* param@ A:企業の番号(1~5), hWnd:ウィンドウハンドル, rc:画面全体のビットマップ長方形, hdc:ウィンドウコンテクスト
+*/
+
+void Ftime(int A, HWND hWnd, RECT rc, HDC hdc) {
 
 	HPEN hPen, hPen2, hPen3;
 	HBRUSH hBrush, hBrushW, hBrushT;
-	RECT rc0, rc1, rc2, rc3, rc4, rc6;
-	TCHAR szPRL[5][10];
-	int o, i, q;
+	RECT rc0{}, rc1{}, rc2{}, rc3{}, rc4{}, rc6{};
+	TCHAR companyName[10]{};
+	TCHAR companyStockPrice[10]{};
+	TCHAR maxCompanyStockPrice[10]{};
+	TCHAR minCompanyStockPrice[10]{};
 
 	hPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
 	hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
@@ -1742,142 +1714,139 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 	hBrushT = (HBRUSH)GetStockObject(DC_BRUSH);
 	hPen3 = (HPEN)GetStockObject(NULL_PEN);
 	hPen2 = CreatePen(PS_SOLID, 4, RGB(0, 0, 0));
-	int Tr = 0, Tg = 0, Tb = 0;
+	int companyNameTitleColorRed = 0, companyNameTitleColorGreen = 0, companyNameTitleColorBlue = 0;
 
-	if (companyAStockPriceChangeAmount != 6) {
+	if (A != 6) {
 		SelectObject(hdc, hBrush);
-
-		if (companyAStockPriceChangeAmount == 1) {
+		if (A == 1) {
 			rc0.left = 0;
-			rc0.top = clientRectangle.bottom / 16;
-			rc0.right = clientRectangle.right / number;
-			rc0.bottom = clientRectangle.bottom / 9;
+			rc0.top = rc.bottom / 16;
+			rc0.right = rc.right / number;
+			rc0.bottom = rc.bottom / 9;
 			rc1.left = rc0.right;
 			rc1.top = rc0.top;
-			rc1.right = clientRectangle.right / number * 2;
+			rc1.right = rc.right / number * 2;
 			rc1.bottom = rc0.bottom;
 			rc2.top = 2;
 			rc2.left = 2;
-			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
+			rc2.bottom = rc0.top - rc.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
-			rc3.left = rc0.left + clientRectangle.right / 40;
-			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
-			rc3.right = rc1.right - clientRectangle.right / 40;
-			wsprintf((LPWSTR)szPRL[2], TEXT("トヨタ自動車"));
-			Tr = 204;
+			rc3.top = rc0.bottom + rc.bottom / 40;
+			rc3.left = rc0.left + rc.right / 40;
+			rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
+			rc3.right = rc1.right - rc.right / 40;
+			wsprintf((LPWSTR)companyName, TEXT("トヨタ自動車"));
+			companyNameTitleColorRed = 204;
 		}
-		if (companyAStockPriceChangeAmount == 2) {
+		if (A == 2) {
 
-			rc0.left = clientRectangle.right * 2 / 3;
-			rc0.top = clientRectangle.bottom / 16;
-			rc0.right = clientRectangle.right * 2 / 3 + clientRectangle.right / number;
-			rc0.bottom = clientRectangle.bottom / 9;
-			rc1.left = clientRectangle.right * 2 / 3 + clientRectangle.right / number;
-			rc1.top = clientRectangle.bottom / 16;
-			rc1.right = clientRectangle.right * 2 / 3 + clientRectangle.right / number * 2;
+			rc0.left = rc.right * 2 / 3;
+			rc0.top = rc.bottom / 16;
+			rc0.right = rc.right * 2 / 3 + rc.right / number;
+			rc0.bottom = rc.bottom / 9;
+			rc1.left = rc.right * 2 / 3 + rc.right / number;
+			rc1.top = rc.bottom / 16;
+			rc1.right = rc.right * 2 / 3 + rc.right / number * 2;
 			rc1.bottom = rc0.bottom;
 			rc2.top = 2;
-			rc2.left = 2 + clientRectangle.right * 2 / 3;
-			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
+			rc2.left = 2 + rc.right * 2 / 3;
+			rc2.bottom = rc0.top - rc.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
-			rc3.left = rc0.left + clientRectangle.right / 40;
-			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
-			rc3.right = rc1.right - clientRectangle.right / 40;
-			wsprintf((LPWSTR)szPRL[2], TEXT("ユニクロ"));
-			if (DQ == 1) { wsprintf((LPWSTR)szPRL[2], TEXT("鹿島建設")); }
-			Tr = 255;
-			Tg = 255;
+			rc3.top = rc0.bottom + rc.bottom / 40;
+			rc3.left = rc0.left + rc.right / 40;
+			rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
+			rc3.right = rc1.right - rc.right / 40;
+			wsprintf((LPWSTR)companyName, TEXT("ユニクロ"));
+			companyNameTitleColorRed = 255;
+			companyNameTitleColorGreen = 255;
 		}
-		if (companyAStockPriceChangeAmount == 3) {
+		if (A == 3) {
 			rc0.left = 0;
-			rc0.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
-			rc0.right = clientRectangle.right / number;
-			rc0.bottom = clientRectangle.bottom / 9 + clientRectangle.bottom / 2;
+			rc0.top = rc.bottom / 16 + rc.bottom / 2;
+			rc0.right = rc.right / number;
+			rc0.bottom = rc.bottom / 9 + rc.bottom / 2;
 			rc1.left = rc0.right;
-			rc1.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
-			rc1.right = clientRectangle.right / number * 2;
-			rc1.bottom = clientRectangle.bottom / 9 + clientRectangle.bottom / 2;
-			rc2.top = 2 + clientRectangle.bottom / 2;
+			rc1.top = rc.bottom / 16 + rc.bottom / 2;
+			rc1.right = rc.right / number * 2;
+			rc1.bottom = rc.bottom / 9 + rc.bottom / 2;
+			rc2.top = 2 + rc.bottom / 2;
 			rc2.left = 2;
-			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
+			rc2.bottom = rc0.top - rc.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
-			rc3.left = rc0.left + clientRectangle.right / 40;
-			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40 + clientRectangle.bottom / 2;
-			rc3.right = rc1.right - clientRectangle.right / 40;
-			wsprintf((LPWSTR)szPRL[2], TEXT("森永製菓"));
+			rc3.top = rc0.bottom + rc.bottom / 40;
+			rc3.left = rc0.left + rc.right / 40;
+			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
+			rc3.right = rc1.right - rc.right / 40;
+			wsprintf((LPWSTR)companyName, TEXT("森永製菓"));
 
-			Tr = 102;
-			Tg = 255;
-			Tb = 255;
+			companyNameTitleColorRed = 102;
+			companyNameTitleColorGreen = 255;
+			companyNameTitleColorBlue = 255;
 		}
-		if (companyAStockPriceChangeAmount == 4) {
-			rc0.left = 0 + clientRectangle.right / 3;
-			rc0.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
-			rc0.right = clientRectangle.right / number + clientRectangle.right / 3;
-			rc0.bottom = clientRectangle.bottom / 9 + clientRectangle.bottom / 2;
+		if (A == 4) {
+			rc0.left = 0 + rc.right / 3;
+			rc0.top = rc.bottom / 16 + rc.bottom / 2;
+			rc0.right = rc.right / number + rc.right / 3;
+			rc0.bottom = rc.bottom / 9 + rc.bottom / 2;
 			rc1.left = rc0.right;
 			rc1.top = rc0.top;
-			rc1.right = clientRectangle.right / number * 2 + clientRectangle.right / 3;
+			rc1.right = rc.right / number * 2 + rc.right / 3;
 			rc1.bottom = rc0.bottom;
-			rc2.top = 2 + clientRectangle.bottom / 2;
-			rc2.left = 2 + clientRectangle.right / 3;
-			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
+			rc2.top = 2 + rc.bottom / 2;
+			rc2.left = 2 + rc.right / 3;
+			rc2.bottom = rc0.top - rc.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
-			rc3.left = rc0.left + clientRectangle.right / 40;
-			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40 + clientRectangle.bottom / 2;
-			rc3.right = rc1.right - clientRectangle.right / 40;
-			wsprintf((LPWSTR)szPRL[2], TEXT("イトーヨーカドー"));
-			if (DQ == 1) { wsprintf((LPWSTR)szPRL[2], TEXT("ユニクロ")); }
-			Tr = 51;
-			Tg = 204;
+			rc3.top = rc0.bottom + rc.bottom / 40;
+			rc3.left = rc0.left + rc.right / 40;
+			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
+			rc3.right = rc1.right - rc.right / 40;
+			wsprintf((LPWSTR)companyName, TEXT("イトーヨーカドー"));
+			companyNameTitleColorRed = 51;
+			companyNameTitleColorGreen = 204;
 		}
-		if (companyAStockPriceChangeAmount == 5) {
-			rc0.left = clientRectangle.right * 2 / 3;
-			rc0.top = clientRectangle.bottom / 16 + clientRectangle.bottom / 2;
-			rc0.right = clientRectangle.right * 2 / 3 + clientRectangle.right / number;
-			rc0.bottom = clientRectangle.bottom / 9 + clientRectangle.bottom / 2;
-			rc1.left = clientRectangle.right * 2 / 3 + clientRectangle.right / number;
+		if (A == 5) {
+			rc0.left = rc.right * 2 / 3;
+			rc0.top = rc.bottom / 16 + rc.bottom / 2;
+			rc0.right = rc.right * 2 / 3 + rc.right / number;
+			rc0.bottom = rc.bottom / 9 + rc.bottom / 2;
+			rc1.left = rc.right * 2 / 3 + rc.right / number;
 			rc1.top = rc0.top;
-			rc1.right = clientRectangle.right * 2 / 3 + clientRectangle.right / number * 2;
+			rc1.right = rc.right * 2 / 3 + rc.right / number * 2;
 			rc1.bottom = rc0.bottom;
-			rc2.top = 2 + clientRectangle.bottom / 2;
-			rc2.left = 2 + clientRectangle.right * 2 / 3;
-			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
+			rc2.top = 2 + rc.bottom / 2;
+			rc2.left = 2 + rc.right * 2 / 3;
+			rc2.bottom = rc0.top - rc.bottom / 80;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
-			rc3.left = rc0.left + clientRectangle.right / 40;
-			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40 + clientRectangle.bottom / 2;
-			rc3.right = rc1.right - clientRectangle.right / 40;
-			wsprintf((LPWSTR)szPRL[2], TEXT("ＪＴＢ"));
-			Tr = 211;
-			Tg = 211;
-			Tb = 211;
+			rc3.top = rc0.bottom + rc.bottom / 40;
+			rc3.left = rc0.left + rc.right / 40;
+			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
+			rc3.right = rc1.right - rc.right / 40;
+			wsprintf((LPWSTR)companyName, TEXT("ＪＴＢ"));
+			companyNameTitleColorRed = 211;
+			companyNameTitleColorGreen = 211;
+			companyNameTitleColorBlue = 211;
 		}
-		SetDCBrushColor(hdc, RGB(Tr, Tg, Tb));
+		SetDCBrushColor(hdc, RGB(companyNameTitleColorRed, companyNameTitleColorGreen, companyNameTitleColorBlue));
 
-		rc2.left += clientRectangle.right / 15;
-		rc2.right -= clientRectangle.right / 15;
-		rc2.top += clientRectangle.bottom / 200;
-		rc2.top += clientRectangle.bottom / 200;
-		rc2.bottom += clientRectangle.bottom / 200;
-		wsprintf((LPWSTR)szPRL[0], TEXT("株価；%d"), stockPrices[companyAStockPriceChangeAmount - 1][his - 1]);
-		wsprintf((LPWSTR)szPRL[3], szPR[companyAStockPriceChangeAmount * 2 + 13]);
-		wsprintf((LPWSTR)szPRL[4], szPR[companyAStockPriceChangeAmount * 2 + 14]);
+		rc2.left += rc.right / 15;
+		rc2.right -= rc.right / 15;
+		rc2.top += rc.bottom / 200;
+		rc2.top += rc.bottom / 200;
+		rc2.bottom += rc.bottom / 200;
+		wsprintf((LPWSTR)companyStockPrice, TEXT("株価：%d"), stockPrices[A - 1][his - 1]);
+		wsprintf((LPWSTR)maxCompanyStockPrice, eachCompanyMaxStockPriceInPeriod[A * 2 - 2]);	//maxStockPriceInPeriod
+		wsprintf((LPWSTR)minCompanyStockPrice, eachCompanyMaxStockPriceInPeriod[A * 2 - 2]);	//minStockPriceInPeriod
 
 		/*初期の枠を作るスクリプト開始*/
 
-		for (o = 0; o < his; o++) {
-			stockPriceChartGraphPoint[companyAStockPriceChangeAmount - 1][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left - clientRectangle.right / 300;
+		for (int i = 0; i < his; i++) {
+			stockPriceChartGraphPoint[A - 1][i].x = (rc3.right - rc3.left) / (his) * (i + 1) + rc3.left - rc.right / 300;
 		}
 
 		SelectObject(hdc, hPen);
-		for (i = 0; i < 2; i++) {
-			for (q = 0; q < number / 2; q++) {
-				Rectangle(hdc, clientRectangle.right * q * 2 / number, clientRectangle.bottom * i / 2, clientRectangle.right * (q + 1) * 2 / number, clientRectangle.bottom * (i + 1) / 2);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < number / 2; j++) {
+				Rectangle(hdc, rc.right * j * 2 / number, rc.bottom * i / 2, rc.right * (j + 1) * 2 / number, rc.bottom * (i + 1) / 2);
 			}
 		}
 
@@ -1886,24 +1855,22 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 
 		SelectObject(hdc, hBrushW);
 		SelectObject(hdc, hPen3);
-		Rectangle(hdc, rc0.left, rc0.top, rc0.right, rc0.bottom);
-		Rectangle(hdc, rc1.left, rc1.top, rc1.right, rc1.bottom);
 
-		RECT rc40;
+		RECT rc40{};
 		rc40.left = (rc0.left + rc1.left) / 2;
 		rc40.right = (rc0.right + rc1.right) / 2;
 		rc40.bottom = (rc0.bottom + rc1.bottom) / 2;
 		rc40.top = (rc0.top + rc1.top) / 2;
 
-		RECT rc41;
+		RECT rc41{};
 		rc41.left = rc40.left;
 		rc41.right = rc40.right;
 		rc41.bottom = rc40.bottom;
-		rc41.top = rc40.top + clientRectangle.bottom / 100;
+		rc41.top = rc40.top + rc.bottom / 100;
 
 		SelectObject(hdc, hBrushT);
 
-		RoundRect(hdc, rc2.left, rc2.top - clientRectangle.bottom / 200, rc2.right, rc2.bottom, (clientRectangle.right + clientRectangle.bottom) / 50, (clientRectangle.right + clientRectangle.bottom) / 50);
+		RoundRect(hdc, rc2.left, rc2.top - rc.bottom / 200, rc2.right, rc2.bottom, (rc.right + rc.bottom) / 50, (rc.right + rc.bottom) / 50);
 
 		SelectObject(hdc, hPen);
 
@@ -1913,7 +1880,7 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 
 		SetTextColor(hdc, RGB(0, 0, 0));
 
-		DrawText(hdc, szPRL[2], -1, &rc2, DT_CENTER);
+		DrawText(hdc, companyName, -1, &rc2, DT_CENTER);
 
 
 		SelectObject(hdc, hBrushW);
@@ -1923,48 +1890,48 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 		Rectangle(hdc, rc3.left, rc3.top, rc3.right, rc3.bottom);
 
 		SetTextColor(hdc, RGB(0, 0, 255));
-		DrawText(hdc, szPRL[0], -1, &rc41, DT_CENTER);
+		DrawText(hdc, companyStockPrice, -1, &rc41, DT_CENTER);
 
 		/*数字処理end*/
 
 		SelectObject(hdc, hPen2);
 
-		Polyline(hdc, stockPriceChartGraphPoint[companyAStockPriceChangeAmount - 1], HH);
+		Polyline(hdc, stockPriceChartGraphPoint[A - 1], stockPriceChartGraphPointNumber);
 		SelectObject(hdc, hFont3);
 		SetTextColor(hdc, RGB(255, 102, 51));
-		TextOut(hdc, rc3.right, rc3.top, szPRL[3], lstrlen(szPRL[3]));
+		TextOut(hdc, rc3.right, rc3.top, maxCompanyStockPrice, lstrlen(maxCompanyStockPrice));
 		SetTextColor(hdc, RGB(102, 102, 255));
-		TextOut(hdc, rc3.right, rc3.bottom - 20, szPRL[4], lstrlen(szPRL[4]));
+		TextOut(hdc, rc3.right, rc3.bottom - 20, minCompanyStockPrice, lstrlen(minCompanyStockPrice));
 
 	}
-	if (companyAStockPriceChangeAmount == 6) {
+	if (A == 6) {
 		rc0.left = 0;
-		rc0.top = clientRectangle.bottom / 16;
-		rc0.right = clientRectangle.right / number;
-		rc0.bottom = clientRectangle.bottom / 9;
+		rc0.top = rc.bottom / 16;
+		rc0.right = rc.right / number;
+		rc0.bottom = rc.bottom / 9;
 		rc1.left = rc0.right;
 		rc1.top = rc0.top;
-		rc1.right = clientRectangle.right / number * 2;
+		rc1.right = rc.right / number * 2;
 		rc1.bottom = rc0.bottom;
 		rc2.top = 2;
 		rc2.left = 2;
-		rc2.bottom = rc0.top - clientRectangle.bottom / 80;
+		rc2.bottom = rc0.top - rc.bottom / 80;
 		rc2.right = rc1.right;
-		rc3.top = rc0.bottom + clientRectangle.bottom / 40;
-		rc3.left = rc0.left + clientRectangle.right / 80;
-		rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
-		rc3.right = rc1.right - clientRectangle.right / 80;
-		rc4.left = rc1.right + clientRectangle.right / 20;
-		rc4.top = clientRectangle.bottom / 60;
+		rc3.top = rc0.bottom + rc.bottom / 40;
+		rc3.left = rc0.left + rc.right / 80;
+		rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
+		rc3.right = rc1.right - rc.right / 80;
+		rc4.left = rc1.right + rc.right / 20;
+		rc4.top = rc.bottom / 60;
 		rc4.bottom = rc0.top;
-		rc4.right = clientRectangle.right / number * 2 * 2 - clientRectangle.right / 100;
+		rc4.right = rc.right / number * 2 * 2 - rc.right / 100;
 		/*時計処理start*/
 		TCHAR sur[10];
 		SelectObject(hdc, hFont2);
 		wsprintf(sur, TEXT("%3d"), currentRemainingTime / 1000);
 
 		SetTextColor(hdc, RGB(0, 51, 0));
-		TextOut(hdc, rc1.right + clientRectangle.right / 50, rc4.top + rc4.top * 3 / 4, sur, lstrlen(sur));
+		TextOut(hdc, rc1.right + rc.right / 50, rc4.top + rc4.top * 3 / 4, sur, lstrlen(sur));
 		SelectObject(hdc, hPen);
 		SelectObject(hdc, hBrushW);
 		Rectangle(hdc, rc4.left, rc4.top, rc4.right, rc4.bottom);
@@ -1981,71 +1948,26 @@ void Ftime(int companyAStockPriceChangeAmount, HWND hWnd, RECT clientRectangle, 
 		/*ニュース処理start*/
 		SelectObject(hdc, hFont1);
 		SetTextColor(hdc, RGB(153, 102, 0));
-		TextOut(hdc, rc1.right + clientRectangle.right / 50, rc4.top + rc4.top * 3, TEXT("～ニュース～"), lstrlen(TEXT("～ニュース～")));
+		TextOut(hdc, rc1.right + rc.right / 50, rc4.top + rc4.top * 3, TEXT("～ニュース～"), lstrlen(TEXT("～ニュース～")));
 
-		rc6.top = rc0.bottom + clientRectangle.bottom / 40;
-		rc6.left = rc0.left + clientRectangle.right / 160 + clientRectangle.right / 3;
-		rc6.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 10;
-		rc6.right = rc1.right - clientRectangle.right / 32 + clientRectangle.right / 3;
+		rc6.top = rc0.bottom + rc.bottom / 40;
+		rc6.left = rc0.left + rc.right / 160 + rc.right / 3;
+		rc6.bottom = rc.bottom / 2 - rc.bottom / 10;
+		rc6.right = rc1.right - rc.right / 32 + rc.right / 3;
 
 		SelectObject(hdc, hFont6);
-		DrawText(hdc, S, lstrlen(S), &rc6, DT_CENTER | DT_WORDBREAK);
+		DrawText(hdc, messageEventTitle, lstrlen(messageEventTitle), &rc6, DT_CENTER | DT_WORDBREAK);
 
 		SelectObject(hdc, hFont3);
-		DrawText(hdc, Sb, lstrlen(Sb), &rc6, DT_CENTER | DT_WORDBREAK);
-
-		rc23.left = clientRectangle.right / 2 + clientRectangle.right / 10;
-		rc23.right = clientRectangle.right * 2 / 3 - clientRectangle.right / 30;
-		rc23.top = clientRectangle.bottom * 2 / 7;
-		rc23.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 10;
-
-		rc24.left = clientRectangle.right / 3;
-		rc24.right = clientRectangle.right * 3 / 5 - clientRectangle.right / 10;
-		rc24.top = clientRectangle.bottom * 2 / 7;
-		rc24.bottom = clientRectangle.bottom / 2;
-
-		rc25.left = clientRectangle.right / 2 + clientRectangle.right / 20;
-		rc25.right = clientRectangle.right * 2 / 3 + clientRectangle.right / 50;
-		rc25.top = clientRectangle.bottom / 2 - clientRectangle.bottom / 10;
-		rc25.bottom = clientRectangle.bottom / 2;
-
-		if (DQ != 1) {
-
-			SelectObject(hdc, hBrushW);
-			SelectObject(hdc, hPen3);
-
-			Rectangle(hdc, rc23.left, rc23.top, rc23.right, rc23.bottom);
-
-			Rectangle(hdc, rc24.left, rc24.top, rc24.right, rc24.bottom);
-
-			SelectObject(hdc, hPen);
-			Ellipse(hdc, rc23.left + (rc23.right - rc23.left) / 2 - ((rc23.bottom - clientRectangle.bottom / 23) - (rc23.top - clientRectangle.bottom / 100)) / 2 - clientRectangle.bottom / 100, rc23.top - clientRectangle.bottom / 100 - clientRectangle.bottom / 100, (rc23.right - rc23.left) / 2 + ((rc23.bottom - clientRectangle.bottom / 23) - (rc23.top - clientRectangle.bottom / 100)) / 2 + rc23.left + clientRectangle.bottom / 100, rc23.bottom - clientRectangle.bottom / 23 + clientRectangle.bottom / 100);
-
-			SelectObject(hdc, hFont5);
-			SelectObject(hdc, hPen);
-
-			SetTextColor(hdc, RGB(rR, rG, rB));
-
-			DrawText(hdc, Yrate, lstrlen(Yrate), &rc23, DT_CENTER | DT_WORDBREAK);
-
-			SelectObject(hdc, hFont6);
-			SetTextColor(hdc, RGB(102, 51, 255));
-
-			DrawText(hdc, Rate, lstrlen(Rate), &rc24, DT_CENTER | DT_WORDBREAK);
-
-			SetTextColor(hdc, RGB(51, 102, 0));
-			SelectObject(hdc, hFont6);
-
-			DrawText(hdc, Urate, lstrlen(Urate), &rc25, DT_CENTER | DT_WORDBREAK);
-		}
+		DrawText(hdc, messageEventNumber, lstrlen(messageEventNumber), &rc6, DT_CENTER | DT_WORDBREAK);
 	}
-	if (companyAStockPriceChangeAmount != 6) {
-		if (AS[companyAStockPriceChangeAmount - 1] > 0) {
+	if (A != 6) {
+		if (AS[A - 1] > 0) {
 			SelectObject(hdc, hBrushw);
 			Rectangle(hdc, rc0.left, rc0.top, rc1.right, rc3.bottom);
-			SelectObject(hdc, hFont3);
-			wsprintf((LPWSTR)CON, TEXT("\nこの会社は倒産しました。\n株のカードをボードに戻してください。"));
-			DrawText(hdc, CON, -1, &rc3, DT_CENTER);
+			SelectObject(hdc, hFont2);
+			wsprintf((LPWSTR)messageCompanyBankruptcy, TEXT("\nこの会社は倒産しました。\n株のカードをボードに戻してください。"));
+			DrawText(hdc, messageCompanyBankruptcy, -1, &rc3, DT_CENTER);
 		}
 	}
 
