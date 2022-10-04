@@ -16,7 +16,6 @@ ATOM InitApp(HINSTANCE);
 BOOL InitInstance(HINSTANCE, int);
 HFONT MyCreateFont(int, DWORD, LPCTSTR);
 void Data(int);
-void EData(int);
 void Ftime(int, HWND, RECT, HDC);
 
 LPCTSTR lpszClassName = TEXT("win01");	//ÉEÉBÉìÉhÉEÉNÉâÉX
@@ -143,19 +142,13 @@ TCHAR messageCompanyBankruptcy[] = TEXT("\nÇ±ÇÃâÔé–ÇÕì|éYÇµÇ‹ÇµÇΩÅB\näîÇÃÉJÅ[ÉhÇ
 TCHAR messageLoadingPleaseWait[] = TEXT("\nì«Ç›çûÇ›íÜÇ≈Ç∑ÅB\nè≠ÅXÇ®ë“ÇøÇ≠ÇæÇ≥Ç¢ÅB");
 TCHAR messageLoadProgress[] = TEXT("\n\n\n\n\n%däÆóπ");
 
-int Rmax = 135;
-int Rmin = 85;
-int Rpr = 110;
-int nD = 98;
-int nLOOP[130];
+const int nD = 98;
+bool nLOOP[130];
 
-int CT;
-static int AAB;
 bool XO;
 HPEN hPen4, hPen5;
 int Qw;
 
-int EnD = 10;
 static int AS[5];
 
 static HBITMAP hBmp;
@@ -163,7 +156,6 @@ BITMAP bmp_info;
 static HDC hdc_mem;
 int bmpw, bmph;
 HPEN hPen10;
-int YXO;
 
 //ÉEÉBÉìÉhÉEÉvÉçÉVÅ[ÉWÉÉ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
@@ -190,7 +182,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 	switch (msg) {
 	case WM_CREATE:
 		for (o = 0; o < nD; o++) {
-			nLOOP[o] = 0;
+			nLOOP[o] = false;
 		}
 		hPen10 = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
 		hPen5 = (HPEN)GetStockObject(BLACK_PEN);
@@ -200,7 +192,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		limitedTime = 10000;
 		currentRemainingTime = limitedTime;
 		XO = true;
-		Rpr = 110;
 		rc0.left = 0;
 		rc0.top = clientRectangle.bottom / 16;
 		rc0.right = clientRectangle.right / number;
@@ -296,7 +287,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		PostQuitMessage(0);
 		break;
 	case WM_PAINT:
-		YXO = 0;
 		hdc = BeginPaint(hWnd, &ps);
 
 		SelectObject(hdc, hPen4);
@@ -338,7 +328,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					150,
 					150,//ì]ëóå≥yç¿ïW
 					SRCCOPY);	//ÉâÉXÉ^Å[ÉIÉyÉåÅ[ÉVÉáÉìÉRÅ[Éh
-				YXO = 1;
 			}
 		}
 		SelectObject(hdc, hBrush);
@@ -432,7 +421,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				loop:
 					XX = rand() % nD;
 
-					if (XX == 108) {
+					/*if (XX == 108) {
 						goto loop;
 					}
 					if (XX == 110) {
@@ -446,10 +435,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					}
 					if (XX >= 123 && XX <= 130) {
 						goto loop;
-					}
+					}*/
 
 
-					if (nLOOP[XX] == 1) {
+					if (nLOOP[XX] == true) {
 						o++;
 						if (o == 1000000) {
 							Data(1000);
@@ -458,12 +447,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						goto loop;
 					}
 					if (!(EV < his + 3)) {
-						nLOOP[XX] = 1;
-					}
-					if (!(EV < his + 3)) {
+						nLOOP[XX] = true;
 						if (NE == 36) {
 							Data(34);
-							nLOOP[34] = 1;
+							nLOOP[34] = true;
 							NE = 0;
 						}
 						else {
@@ -524,10 +511,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						std::cout << errorMessage << std::endl;
 					}*/
 					o = 1;
-				
-
-				
-
 				/**gotoï∂ÇégÇ¡ÇƒÇ¢Ç‹Ç∑ÅBíçà”ÅI**/
 
 				/////////////////////////////////////////////////////////////
@@ -1606,90 +1589,6 @@ void Data(int XX) {
 
 
 
-	return;
-}
-
-void EData(int XX) {
-	if (EV < his + 3) {
-		companyAStockPriceChangeAmount = (rand() % 7 - 3) * 700;
-		companyBStockPriceChangeAmount = (rand() % 7 - 3) * 700;
-		companyCStockPriceChangeAmount = (rand() % 7 - 3) * 700;
-		companyDStockPriceChangeAmount = (rand() % 7 - 3) * 700;
-		companyEStockPriceChangeAmount = (rand() % 7 - 3) * 700;
-
-
-	}
-	else {
-		companyAStockPriceChangeAmount = 0;
-		companyBStockPriceChangeAmount = 0;
-		companyDStockPriceChangeAmount = 0;
-		if (XX == 0) {
-			wsprintf(messageEventTitle, TEXT("ÉXÅ[ÉpÅ[ÉnÉCÉuÉäÉbÉhé‘Ç™äJî≠Ç≥ÇÍÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyAStockPriceChangeAmount = 2000;
-		}
-		if (XX == 1) {
-			wsprintf(messageEventTitle, TEXT("äæÇÇ©Ç≠Ç∆ó‚ÇΩÇ≠Ç»ÇÈÅuÉXÅ[ÉpÅ[ÉNÅ[ÉãÉVÉÉÉcÅvÇ™äJî≠Ç≥ÇÍÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyDStockPriceChangeAmount = 2000;
-
-		}
-		if (XX == 2) {
-			wsprintf(messageEventTitle, TEXT("Ç∑Ç◊ÇƒÇÃçÇëwÉrÉãÇ…êkìx7Ç…ëœÇ¶ÇÈëœêkçHéñÇã`ñ±ïtÇØÇÈñ@ó•Ç™Ç≈Ç´ÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyBStockPriceChangeAmount = 2000;
-		}
-		if (XX == 3) {
-			wsprintf(messageEventTitle, TEXT("ìåìÏäCëÂínêkÇ™ãNÇ´Çƒñºå√âÆíÜêSÇÃâàä›ïîÇ™âÛñ≈ìIÇ»îÌäQÇéÛÇØÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyAStockPriceChangeAmount = -4000;
-			companyBStockPriceChangeAmount = 1000;
-			companyDStockPriceChangeAmount = 1000;
-		}
-		if (XX == 4) {
-			wsprintf(messageEventTitle, TEXT("ëæózåıÇ≈ìÆÇ≠É\Å[ÉâÅ[é©ìÆé‘Ç™î≠îÑÇ≥ÇÍÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyAStockPriceChangeAmount = 2000;
-		}
-		if (XX == 5) {
-			wsprintf(messageEventTitle, TEXT("ê¢äEìIÇ…åiãCÇ™ó«Ç≠Ç»Ç¡ÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyAStockPriceChangeAmount = 3000;
-			companyBStockPriceChangeAmount = 3000;
-			companyDStockPriceChangeAmount = -1000;
-		}
-		if (XX == 6) {
-			wsprintf(messageEventTitle, TEXT("â~à¿Ç…Ç»Ç¡ÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyAStockPriceChangeAmount = 3000;
-			companyDStockPriceChangeAmount = -2000;
-		}
-		if (XX == 7) {
-			wsprintf(messageEventTitle, TEXT("íÜçëÇ∆ì˙ñ{ÇÃä÷åWÇ™à´âªÇµÅAàÍêÿÇÃñfà’Ç™í‚é~ÇµÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyAStockPriceChangeAmount = -1000;
-			companyBStockPriceChangeAmount = -2000;
-			companyDStockPriceChangeAmount = -8000;
-		}
-		if (XX == 8) {
-			wsprintf(messageEventTitle, TEXT("èäìæê≈Ç™è„Ç™Ç¡ÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyAStockPriceChangeAmount = -1000;
-			companyBStockPriceChangeAmount = -1000;
-		}
-		if (XX == 9) {
-			wsprintf(messageEventTitle, TEXT("ã}åÉÇ»â~çÇÇ…Ç»Ç¡ÇΩÅI"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			companyAStockPriceChangeAmount = -3000;
-			companyBStockPriceChangeAmount = 0;
-			companyDStockPriceChangeAmount = 2000;
-		}
-		if (XX == 1000) {
-			wsprintf(messageEventTitle, TEXT("ç≈å„ÇÃäîâøÇï\é¶ÇµÇƒÇ¢Ç‹Ç∑ÅB"), XX);
-			wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nÉCÉxÉìÉgî‘çÜÅG%d"), XX);
-			KillTimer(hWnd, ID_MYTIMER2);
-		}
-	}
 	return;
 }
 

@@ -1,5 +1,5 @@
 ﻿  burusa2016.cpp
-C:\Users\中村凜　19年度生\Desktop\burusa\burusa2016-20220927T114021Z-001\burusa2016\burusa2016\burusa2016.cpp(64,3): warning C4302: '型キャスト': 'LPWSTR' から 'WORD' へ切り詰めます。
-C:\Users\中村凜　19年度生\Desktop\burusa\burusa2016-20220927T114021Z-001\burusa2016\burusa2016\burusa2016.cpp(70,3): warning C4302: '型キャスト': 'LPWSTR' から 'WORD' へ切り詰めます。
-C:\Users\中村凜　19年度生\Desktop\burusa\burusa2016-20220927T114021Z-001\burusa2016\burusa2016\burusa2016.cpp(79,3): warning C4302: '型キャスト': 'LPWSTR' から 'WORD' へ切り詰めます。
+C:\Users\中村凜　19年度生\Desktop\burusa\burusa2016-20220927T114021Z-001\burusa2016\burusa2016\burusa2016.cpp(63,3): warning C4302: '型キャスト': 'LPWSTR' から 'WORD' へ切り詰めます。
+C:\Users\中村凜　19年度生\Desktop\burusa\burusa2016-20220927T114021Z-001\burusa2016\burusa2016\burusa2016.cpp(69,3): warning C4302: '型キャスト': 'LPWSTR' から 'WORD' へ切り詰めます。
+C:\Users\中村凜　19年度生\Desktop\burusa\burusa2016-20220927T114021Z-001\burusa2016\burusa2016\burusa2016.cpp(78,3): warning C4302: '型キャスト': 'LPWSTR' から 'WORD' へ切り詰めます。
   burusa2016.vcxproj -> C:\Users\中村凜　19年度生\Desktop\burusa\burusa2016-20220927T114021Z-001\burusa2016\Debug\burusa2016.exe
