@@ -16,7 +16,7 @@ ATOM InitApp(HINSTANCE);
 BOOL InitInstance(HINSTANCE, int);
 HFONT MyCreateFont(int, DWORD, LPCTSTR);
 void Data(int);
-void Ftime(int, HWND, RECT, HDC);
+void Ftime(int, RECT, HDC);
 
 LPCTSTR lpszClassName = TEXT("win01");	//ウィンドウクラス
 
@@ -295,12 +295,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 		if (!(EV < his + 3)) {
 			if (XO) {
-				Ftime(1, hWnd, clientRectangle, hdc);
-				Ftime(2, hWnd, clientRectangle, hdc);
-				Ftime(3, hWnd, clientRectangle, hdc);
-				Ftime(5, hWnd, clientRectangle, hdc);
-				Ftime(4, hWnd, clientRectangle, hdc);
-				Ftime(6, hWnd, clientRectangle, hdc);
+				Ftime(1, clientRectangle, hdc);
+				Ftime(2, clientRectangle, hdc);
+				Ftime(3, clientRectangle, hdc);
+				Ftime(5, clientRectangle, hdc);
+				Ftime(4, clientRectangle, hdc);
+				Ftime(6, clientRectangle, hdc);
 			}
 
 			if (!XO) {
@@ -417,100 +417,100 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				o = 0;
 
 				/**goto文を使っています。注意！**/
-				
-				loop:
-					XX = rand() % nD;
 
-					/*if (XX == 108) {
-						goto loop;
-					}
-					if (XX == 110) {
-						goto loop;
-					}
-					if (XX == 111) {
-						goto loop;
-					}
-					if (XX == 112) {
-						goto loop;
-					}
-					if (XX >= 123 && XX <= 130) {
-						goto loop;
-					}*/
+			loop:
+				XX = rand() % nD;
+
+				/*if (XX == 108) {
+					goto loop;
+				}
+				if (XX == 110) {
+					goto loop;
+				}
+				if (XX == 111) {
+					goto loop;
+				}
+				if (XX == 112) {
+					goto loop;
+				}
+				if (XX >= 123 && XX <= 130) {
+					goto loop;
+				}*/
 
 
-					if (nLOOP[XX] == true) {
-						o++;
-						if (o == 1000000) {
-							Data(1000);
-							goto out;
+				if (nLOOP[XX] == true) {
+					o++;
+					if (o == 1000000) {
+						Data(1000);
+						goto out;
+					}
+					goto loop;
+				}
+				if (!(EV < his + 3)) {
+					nLOOP[XX] = true;
+					if (NE == 36) {
+						Data(34);
+						nLOOP[34] = true;
+						NE = 0;
+					}
+					else {
+						Data(XX);
+					}
+				}
+			out:
+				/*
+				try {
+					while (true) {
+						XX = rand() % nD;
+						if (XX == 108) {
+							throw std::string(std::to_string(XX));
+							continue;
 						}
-						goto loop;
-					}
-					if (!(EV < his + 3)) {
-						nLOOP[XX] = true;
-						if (NE == 36) {
-							Data(34);
-							nLOOP[34] = true;
-							NE = 0;
+						if (XX == 110) {
+							throw std::string(std::to_string(XX));
+							continue;
 						}
-						else {
-							Data(XX);
+						if (XX == 111) {
+							throw std::string(std::to_string(XX));
+							continue;
 						}
-					}
-				out:
-					/*
-					try {
-						while (true) {
-							XX = rand() % nD;
-							if (XX == 108) {
-								throw std::string(std::to_string(XX));
-								continue;
-							}
-							if (XX == 110) {
-								throw std::string(std::to_string(XX));
-								continue;
-							}
-							if (XX == 111) {
-								throw std::string(std::to_string(XX));
-								continue;
-							}
-							if (XX == 112) {
-								throw std::string(std::to_string(XX));
-								continue;
-							}
-							if (XX >= 123 && XX <= 130) {
-								throw std::string(std::to_string(XX));
-								continue;
-							}
+						if (XX == 112) {
+							throw std::string(std::to_string(XX));
+							continue;
+						}
+						if (XX >= 123 && XX <= 130) {
+							throw std::string(std::to_string(XX));
+							continue;
+						}
 
 
-							if (nLOOP[XX] == 1) {
-								o++;
-								if (o == 1000000) {
-									Data(1000);
-									break;
-								}
-								continue;
+						if (nLOOP[XX] == 1) {
+							o++;
+							if (o == 1000000) {
+								Data(1000);
+								break;
 							}
-							if (!(EV < his + 3)) {
-								nLOOP[XX] = 1;
+							continue;
+						}
+						if (!(EV < his + 3)) {
+							nLOOP[XX] = 1;
+						}
+						if (!(EV < his + 3)) {
+							if (NE == 36) {
+								Data(34);
+								nLOOP[34] = 1;
+								NE = 0;
 							}
-							if (!(EV < his + 3)) {
-								if (NE == 36) {
-									Data(34);
-									nLOOP[34] = 1;
-									NE = 0;
-								}
-								else {
-									Data(XX);
-								}
+							else {
+								Data(XX);
 							}
 						}
 					}
-					catch (std::string errorMessage) {
-						std::cout << errorMessage << std::endl;
-					}*/
-					o = 1;
+				}
+				catch (std::string errorMessage) {
+					std::cout << errorMessage << std::endl;
+				}*/
+				o = 1;
 				/**goto文を使っています。注意！**/
 
 				/////////////////////////////////////////////////////////////
@@ -676,7 +676,7 @@ HFONT MyCreateFont(int nHeight, DWORD dwCharSet, LPCTSTR lpName)
 		lpName));
 }
 
-void Data(int XX) {
+void Data(const int XX) {
 	if (EV < his + 3) {
 		companyAStockPriceChangeAmount = (rand() % 7 - 3) * 700;
 		companyBStockPriceChangeAmount = (rand() % 7 - 3) * 700;
@@ -1497,7 +1497,7 @@ void Data(int XX) {
 * param@ A:企業の番号(1~5), hWnd:ウィンドウハンドル, rc:画面全体のビットマップ長方形, hdc:ウィンドウコンテクスト
 */
 
-void Ftime(int A, HWND hWnd, RECT rc, HDC hdc) {
+void Ftime(const int A, const RECT rc, const HDC hdc) {
 
 	HPEN hPen, hPen2, hPen3;
 	HBRUSH hBrush, hBrushW, hBrushT;
