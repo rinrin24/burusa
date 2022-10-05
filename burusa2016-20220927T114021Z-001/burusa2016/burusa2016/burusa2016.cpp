@@ -1501,7 +1501,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 
 	HPEN hPen, hPen2, hPen3;
 	HBRUSH hBrush, hBrushW, hBrushT;
-	RECT rc0{}, rc1{}, rc2{}, rc3{}, rc4{}, rc6{};
+	RECT rc0{}, rc1{}, companyNameTitleRectangle{}, companyStockPriceGraphRectangle{}, timerRectangle{}, eventTitleRectangle{};
 	TCHAR companyName[10]{};
 	TCHAR companyStockPrice[10]{};
 	TCHAR maxCompanyStockPrice[10]{};
@@ -1526,14 +1526,14 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc1.top = rc0.top;
 			rc1.right = rc.right / number * 2;
 			rc1.bottom = rc0.bottom;
-			rc2.top = 2;
-			rc2.left = 2;
-			rc2.bottom = rc0.top - rc.bottom / 80;
-			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
-			rc3.right = rc1.right - rc.right / 40;
+			companyNameTitleRectangle.top = 2;
+			companyNameTitleRectangle.left = 2;
+			companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
+			companyNameTitleRectangle.right = rc1.right;
+			companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
+			companyStockPriceGraphRectangle.left = rc0.left + rc.right / 40;
+			companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40;
+			companyStockPriceGraphRectangle.right = rc1.right - rc.right / 40;
 			wsprintf((LPWSTR)companyName, TEXT("トヨタ自動車"));
 			companyNameTitleColorRed = 204;
 		}
@@ -1547,14 +1547,14 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc1.top = rc.bottom / 16;
 			rc1.right = rc.right * 2 / 3 + rc.right / number * 2;
 			rc1.bottom = rc0.bottom;
-			rc2.top = 2;
-			rc2.left = 2 + rc.right * 2 / 3;
-			rc2.bottom = rc0.top - rc.bottom / 80;
-			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
-			rc3.right = rc1.right - rc.right / 40;
+			companyNameTitleRectangle.top = 2;
+			companyNameTitleRectangle.left = 2 + rc.right * 2 / 3;
+			companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
+			companyNameTitleRectangle.right = rc1.right;
+			companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
+			companyStockPriceGraphRectangle.left = rc0.left + rc.right / 40;
+			companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40;
+			companyStockPriceGraphRectangle.right = rc1.right - rc.right / 40;
 			wsprintf((LPWSTR)companyName, TEXT("ユニクロ"));
 			companyNameTitleColorRed = 255;
 			companyNameTitleColorGreen = 255;
@@ -1568,14 +1568,14 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc1.top = rc.bottom / 16 + rc.bottom / 2;
 			rc1.right = rc.right / number * 2;
 			rc1.bottom = rc.bottom / 9 + rc.bottom / 2;
-			rc2.top = 2 + rc.bottom / 2;
-			rc2.left = 2;
-			rc2.bottom = rc0.top - rc.bottom / 80;
-			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
-			rc3.right = rc1.right - rc.right / 40;
+			companyNameTitleRectangle.top = 2 + rc.bottom / 2;
+			companyNameTitleRectangle.left = 2;
+			companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
+			companyNameTitleRectangle.right = rc1.right;
+			companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
+			companyStockPriceGraphRectangle.left = rc0.left + rc.right / 40;
+			companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
+			companyStockPriceGraphRectangle.right = rc1.right - rc.right / 40;
 			wsprintf((LPWSTR)companyName, TEXT("森永製菓"));
 
 			companyNameTitleColorRed = 102;
@@ -1591,14 +1591,14 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc1.top = rc0.top;
 			rc1.right = rc.right / number * 2 + rc.right / 3;
 			rc1.bottom = rc0.bottom;
-			rc2.top = 2 + rc.bottom / 2;
-			rc2.left = 2 + rc.right / 3;
-			rc2.bottom = rc0.top - rc.bottom / 80;
-			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
-			rc3.right = rc1.right - rc.right / 40;
+			companyNameTitleRectangle.top = 2 + rc.bottom / 2;
+			companyNameTitleRectangle.left = 2 + rc.right / 3;
+			companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
+			companyNameTitleRectangle.right = rc1.right;
+			companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
+			companyStockPriceGraphRectangle.left = rc0.left + rc.right / 40;
+			companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
+			companyStockPriceGraphRectangle.right = rc1.right - rc.right / 40;
 			wsprintf((LPWSTR)companyName, TEXT("イトーヨーカドー"));
 			companyNameTitleColorRed = 51;
 			companyNameTitleColorGreen = 204;
@@ -1612,14 +1612,14 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc1.top = rc0.top;
 			rc1.right = rc.right * 2 / 3 + rc.right / number * 2;
 			rc1.bottom = rc0.bottom;
-			rc2.top = 2 + rc.bottom / 2;
-			rc2.left = 2 + rc.right * 2 / 3;
-			rc2.bottom = rc0.top - rc.bottom / 80;
-			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + rc.bottom / 40;
-			rc3.left = rc0.left + rc.right / 40;
-			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
-			rc3.right = rc1.right - rc.right / 40;
+			companyNameTitleRectangle.top = 2 + rc.bottom / 2;
+			companyNameTitleRectangle.left = 2 + rc.right * 2 / 3;
+			companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
+			companyNameTitleRectangle.right = rc1.right;
+			companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
+			companyStockPriceGraphRectangle.left = rc0.left + rc.right / 40;
+			companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
+			companyStockPriceGraphRectangle.right = rc1.right - rc.right / 40;
 			wsprintf((LPWSTR)companyName, TEXT("ＪＴＢ"));
 			companyNameTitleColorRed = 211;
 			companyNameTitleColorGreen = 211;
@@ -1627,11 +1627,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		}
 		SetDCBrushColor(hdc, RGB(companyNameTitleColorRed, companyNameTitleColorGreen, companyNameTitleColorBlue));
 
-		rc2.left += rc.right / 15;
-		rc2.right -= rc.right / 15;
-		rc2.top += rc.bottom / 200;
-		rc2.top += rc.bottom / 200;
-		rc2.bottom += rc.bottom / 200;
+		companyNameTitleRectangle.left += rc.right / 15;
+		companyNameTitleRectangle.right -= rc.right / 15;
+		companyNameTitleRectangle.top += rc.bottom / 200;
+		companyNameTitleRectangle.top += rc.bottom / 200;
+		companyNameTitleRectangle.bottom += rc.bottom / 200;
 		wsprintf((LPWSTR)companyStockPrice, TEXT("株価：%d"), stockPrices[A - 1][his - 1]);
 		wsprintf((LPWSTR)maxCompanyStockPrice, eachCompanyMaxStockPriceInPeriod[A * 2 - 2]);	//maxStockPriceInPeriod
 		wsprintf((LPWSTR)minCompanyStockPrice, eachCompanyMaxStockPriceInPeriod[A * 2 - 2]);	//minStockPriceInPeriod
@@ -1639,7 +1639,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		/*初期の枠を作るスクリプト開始*/
 
 		for (int i = 0; i < his; i++) {
-			stockPriceChartGraphPoint[A - 1][i].x = (rc3.right - rc3.left) / (his) * (i + 1) + rc3.left - rc.right / 300;
+			stockPriceChartGraphPoint[A - 1][i].x = (companyStockPriceGraphRectangle.right - companyStockPriceGraphRectangle.left) / (his) * (i + 1) + companyStockPriceGraphRectangle.left - rc.right / 300;
 		}
 
 		SelectObject(hdc, hPen);
@@ -1669,7 +1669,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 
 		SelectObject(hdc, hBrushT);
 
-		RoundRect(hdc, rc2.left, rc2.top - rc.bottom / 200, rc2.right, rc2.bottom, (rc.right + rc.bottom) / 50, (rc.right + rc.bottom) / 50);
+		RoundRect(hdc, companyNameTitleRectangle.left, companyNameTitleRectangle.top - rc.bottom / 200, companyNameTitleRectangle.right, companyNameTitleRectangle.bottom, (rc.right + rc.bottom) / 50, (rc.right + rc.bottom) / 50);
 
 		SelectObject(hdc, hPen);
 
@@ -1679,14 +1679,14 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 
 		SetTextColor(hdc, RGB(0, 0, 0));
 
-		DrawText(hdc, companyName, -1, &rc2, DT_CENTER);
+		DrawText(hdc, companyName, -1, &companyNameTitleRectangle, DT_CENTER);
 
 
 		SelectObject(hdc, hBrushW);
 
 		SelectObject(hdc, hPen);
 
-		Rectangle(hdc, rc3.left, rc3.top, rc3.right, rc3.bottom);
+		Rectangle(hdc, companyStockPriceGraphRectangle.left, companyStockPriceGraphRectangle.top, companyStockPriceGraphRectangle.right, companyStockPriceGraphRectangle.bottom);
 
 		SetTextColor(hdc, RGB(0, 0, 255));
 		DrawText(hdc, companyStockPrice, -1, &rc41, DT_CENTER);
@@ -1698,9 +1698,9 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		Polyline(hdc, stockPriceChartGraphPoint[A - 1], stockPriceChartGraphPointNumber);
 		SelectObject(hdc, hFont3);
 		SetTextColor(hdc, RGB(255, 102, 51));
-		TextOut(hdc, rc3.right, rc3.top, maxCompanyStockPrice, lstrlen(maxCompanyStockPrice));
+		TextOut(hdc, companyStockPriceGraphRectangle.right, companyStockPriceGraphRectangle.top, maxCompanyStockPrice, lstrlen(maxCompanyStockPrice));
 		SetTextColor(hdc, RGB(102, 102, 255));
-		TextOut(hdc, rc3.right, rc3.bottom - 20, minCompanyStockPrice, lstrlen(minCompanyStockPrice));
+		TextOut(hdc, companyStockPriceGraphRectangle.right, companyStockPriceGraphRectangle.bottom - 20, minCompanyStockPrice, lstrlen(minCompanyStockPrice));
 
 	}
 	if (A == 6) {
@@ -1712,61 +1712,61 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		rc1.top = rc0.top;
 		rc1.right = rc.right / number * 2;
 		rc1.bottom = rc0.bottom;
-		rc2.top = 2;
-		rc2.left = 2;
-		rc2.bottom = rc0.top - rc.bottom / 80;
-		rc2.right = rc1.right;
-		rc3.top = rc0.bottom + rc.bottom / 40;
-		rc3.left = rc0.left + rc.right / 80;
-		rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
-		rc3.right = rc1.right - rc.right / 80;
-		rc4.left = rc1.right + rc.right / 20;
-		rc4.top = rc.bottom / 60;
-		rc4.bottom = rc0.top;
-		rc4.right = rc.right / number * 2 * 2 - rc.right / 100;
+		companyNameTitleRectangle.top = 2;
+		companyNameTitleRectangle.left = 2;
+		companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
+		companyNameTitleRectangle.right = rc1.right;
+		companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
+		companyStockPriceGraphRectangle.left = rc0.left + rc.right / 80;
+		companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40;
+		companyStockPriceGraphRectangle.right = rc1.right - rc.right / 80;
+		timerRectangle.left = rc1.right + rc.right / 20;
+		timerRectangle.top = rc.bottom / 60;
+		timerRectangle.bottom = rc0.top;
+		timerRectangle.right = rc.right / number * 2 * 2 - rc.right / 100;
 		/*時計処理start*/
 		TCHAR sur[10];
 		SelectObject(hdc, hFont2);
 		wsprintf(sur, TEXT("%3d"), currentRemainingTime / 1000);
 
 		SetTextColor(hdc, RGB(0, 51, 0));
-		TextOut(hdc, rc1.right + rc.right / 50, rc4.top + rc4.top * 3 / 4, sur, lstrlen(sur));
+		TextOut(hdc, rc1.right + rc.right / 50, timerRectangle.top + timerRectangle.top * 3 / 4, sur, lstrlen(sur));
 		SelectObject(hdc, hPen);
 		SelectObject(hdc, hBrushW);
-		Rectangle(hdc, rc4.left, rc4.top, rc4.right, rc4.bottom);
+		Rectangle(hdc, timerRectangle.left, timerRectangle.top, timerRectangle.right, timerRectangle.bottom);
 		hBrush = CreateSolidBrush(RGB(204, 255, 102));
 		SelectObject(hdc, hBrush);
 
-		Rectangle(hdc, rc4.left, rc4.top, rc4.right, rc4.bottom);
+		Rectangle(hdc, timerRectangle.left, timerRectangle.top, timerRectangle.right, timerRectangle.bottom);
 
 		SelectObject(hdc, hBrushW);
 
-		Rectangle(hdc, rc4.right - (limitedTime - currentRemainingTime) * (rc4.right - rc4.left) / limitedTime, rc4.top, rc4.right, rc4.bottom);
+		Rectangle(hdc, timerRectangle.right - (limitedTime - currentRemainingTime) * (timerRectangle.right - timerRectangle.left) / limitedTime, timerRectangle.top, timerRectangle.right, timerRectangle.bottom);
 
 		/*時計処理end*/
 		/*ニュース処理start*/
 		SelectObject(hdc, hFont1);
 		SetTextColor(hdc, RGB(153, 102, 0));
-		TextOut(hdc, rc1.right + rc.right / 50, rc4.top + rc4.top * 3, TEXT("～ニュース～"), lstrlen(TEXT("～ニュース～")));
+		TextOut(hdc, rc1.right + rc.right / 50, timerRectangle.top + timerRectangle.top * 3, TEXT("～ニュース～"), lstrlen(TEXT("～ニュース～")));
 
-		rc6.top = rc0.bottom + rc.bottom / 40;
-		rc6.left = rc0.left + rc.right / 160 + rc.right / 3;
-		rc6.bottom = rc.bottom / 2 - rc.bottom / 10;
-		rc6.right = rc1.right - rc.right / 32 + rc.right / 3;
+		eventTitleRectangle.top = rc0.bottom + rc.bottom / 40;
+		eventTitleRectangle.left = rc0.left + rc.right / 160 + rc.right / 3;
+		eventTitleRectangle.bottom = rc.bottom / 2 - rc.bottom / 10;
+		eventTitleRectangle.right = rc1.right - rc.right / 32 + rc.right / 3;
 
 		SelectObject(hdc, hFont6);
-		DrawText(hdc, messageEventTitle, lstrlen(messageEventTitle), &rc6, DT_CENTER | DT_WORDBREAK);
+		DrawText(hdc, messageEventTitle, lstrlen(messageEventTitle), &eventTitleRectangle, DT_CENTER | DT_WORDBREAK);
 
 		SelectObject(hdc, hFont3);
-		DrawText(hdc, messageEventNumber, lstrlen(messageEventNumber), &rc6, DT_CENTER | DT_WORDBREAK);
+		DrawText(hdc, messageEventNumber, lstrlen(messageEventNumber), &eventTitleRectangle, DT_CENTER | DT_WORDBREAK);
 	}
 	if (A != 6) {
 		if (AS[A - 1] > 0) {
 			SelectObject(hdc, hBrushw);
-			Rectangle(hdc, rc0.left, rc0.top, rc1.right, rc3.bottom);
+			Rectangle(hdc, rc0.left, rc0.top, rc1.right, companyStockPriceGraphRectangle.bottom);
 			SelectObject(hdc, hFont2);
 			wsprintf((LPWSTR)messageCompanyBankruptcy, TEXT("\nこの会社は倒産しました。\n株のカードをボードに戻してください。"));
-			DrawText(hdc, messageCompanyBankruptcy, -1, &rc3, DT_CENTER);
+			DrawText(hdc, messageCompanyBankruptcy, -1, &companyStockPriceGraphRectangle, DT_CENTER);
 		}
 	}
 
