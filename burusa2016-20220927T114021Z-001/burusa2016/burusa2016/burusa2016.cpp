@@ -18,7 +18,7 @@ HFONT MyCreateFont(int, DWORD, LPCTSTR);
 void Data(int);
 void Ftime(int, RECT, HDC);
 
-LPCTSTR lpszClassName = TEXT("win01");	//ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX
+LPCTSTR lpszClassName = TEXT("win01");	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹
 
 HINSTANCE hInst;
 
@@ -48,17 +48,17 @@ int WINAPI WinMain(HINSTANCE hCurInst, HINSTANCE hPrevInst,
 	return (int)msg.wParam;
 }
 
-//ƒEƒBƒ“ƒhƒEEƒNƒ‰ƒX‚Ì“o˜^
+//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ»ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
 
 ATOM InitApp(HINSTANCE hInst)
 {
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = WndProc;	//ƒvƒƒV[ƒWƒƒ–¼
+	wc.lpfnWndProc = WndProc;	//ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£å
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
-	wc.hInstance = hInst;//ƒCƒ“ƒXƒ^ƒ“ƒX
+	wc.hInstance = hInst;//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	wc.hIcon = (HICON)LoadImage(NULL,
 		MAKEINTRESOURCE(IDI_APPLICATION),
 		IMAGE_ICON,
@@ -72,7 +72,7 @@ ATOM InitApp(HINSTANCE hInst)
 		0,
 		LR_DEFAULTSIZE | LR_SHARED);
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-	wc.lpszMenuName = TEXT("MYMENU");	//ƒƒjƒ…[–¼
+	wc.lpszMenuName = TEXT("MYMENU");	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼å
 	wc.lpszClassName = lpszClassName;
 	wc.hIconSm = (HICON)LoadImage(NULL,
 		MAKEINTRESOURCE(IDI_APPLICATION),
@@ -84,7 +84,7 @@ ATOM InitApp(HINSTANCE hInst)
 	return (RegisterClassEx(&wc));
 }
 
-//ƒEƒBƒ“ƒhƒE‚Ì¶¬
+//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç”Ÿæˆ
 HWND hWnd;
 BOOL InitInstance(HINSTANCE hInst, int nCmdShow)
 {
@@ -95,15 +95,15 @@ BOOL InitInstance(HINSTANCE hInst, int nCmdShow)
 
 
 	hWnd = CreateWindow(lpszClassName,
-		TEXT("Ğ‰ï•”@•¶‰»Õ“W¦@Š”‰¿Ši„ˆÚ"), //ƒ^ƒCƒgƒ‹ƒo[‚É•\¦‚³‚ê‚Ü‚·
-		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, //ƒEƒBƒ“ƒhƒE‚Ìí—Ş
-		CW_USEDEFAULT,	//‚wÀ•W
-		CW_USEDEFAULT,	//‚xÀ•W
-		dispx,	//•
-		dispy,	//‚‚³
-		NULL, //eƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹Ae‚ğì‚é‚Æ‚«‚ÍNULL
-		NULL, //ƒƒjƒ…[ƒnƒ“ƒhƒ‹AƒNƒ‰ƒXƒƒjƒ…[‚ğg‚¤‚Æ‚«‚ÍNULL
-		hInst, //ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
+		TEXT("ç¤¾ä¼šéƒ¨ã€€æ–‡åŒ–ç¥­å±•ç¤ºã€€æ ªä¾¡æ ¼æ¨ç§»"), //ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¾ã™
+		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, //ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç¨®é¡
+		CW_USEDEFAULT,	//ï¼¸åº§æ¨™
+		CW_USEDEFAULT,	//ï¼¹åº§æ¨™
+		dispx,	//å¹…
+		dispy,	//é«˜ã•
+		NULL, //è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã€è¦ªã‚’ä½œã‚‹ã¨ãã¯NULL
+		NULL, //ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ³ãƒ‰ãƒ«ã€ã‚¯ãƒ©ã‚¹ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ä½¿ã†ã¨ãã¯NULL
+		hInst, //ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
 		NULL);
 	if (!hWnd)
 		return FALSE;
@@ -111,23 +111,23 @@ BOOL InitInstance(HINSTANCE hInst, int nCmdShow)
 	UpdateWindow(hWnd);
 	return TRUE;
 }
-//‚»‚ê‚¼‚ê‚ÌŠé‹Æ‚ÌŠ”‰¿‚Ì‘Œ¸•ª
+//ãã‚Œãã‚Œã®ä¼æ¥­ã®æ ªä¾¡ã®å¢—æ¸›åˆ†
 static int companyAStockPriceChangeAmount, companyBStockPriceChangeAmount, companyCStockPriceChangeAmount, companyDStockPriceChangeAmount, companyEStockPriceChangeAmount;
 
-//‚»‚ê‚¼‚ê‚ÌŠé‹Æ‚ÌŠ”‰¿ ˆêŸŒ³–Ú‚ÅŠé‹Æ‚ğw’èA“ñŸŒ³–Ú‚ÅŠúŠÔ‚ğw’è
+//ãã‚Œãã‚Œã®ä¼æ¥­ã®æ ªä¾¡ ä¸€æ¬¡å…ƒç›®ã§ä¼æ¥­ã‚’æŒ‡å®šã€äºŒæ¬¡å…ƒç›®ã§æœŸé–“ã‚’æŒ‡å®š
 static int stockPrices[5][stockPriceChartGraphPointNumber + 1];
 
-//‰æ–Ê‚É•\¦‚·‚éŠúŠÔ‚Ì”
+//ç”»é¢ã«è¡¨ç¤ºã™ã‚‹æœŸé–“ã®æ•°
 const int his = stockPriceChartGraphPointNumber;
 static int EV = 0;
 TCHAR messageEventTitle[100];
 TCHAR messageEventNumber[30];
-const static int number = 6;/*Š”‰¿‚Ì”*/
+const static int number = 6;/*æ ªä¾¡ã®æ•°*/
 int spread[5] = { 10, 20, 30, 40, 50 };
 static POINT stockPriceChartGraphPoint[5][stockPriceChartGraphPointNumber];
-//•¶šF‚É‚Â‚¢‚Äˆµ‚¤ƒOƒ[ƒoƒ‹•Ï”
+//æ–‡å­—è‰²ã«ã¤ã„ã¦æ‰±ã†ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 int rR, rG, rB;
-//nNE‚ÍˆÓ–¡‚Ì‚È‚¢H
+//nNEã¯æ„å‘³ã®ãªã„ï¼Ÿ
 int NE, nNE;
 HBRUSH hBrushw, hBrush;
 static HFONT hFont1, hFont2, hFont3;
@@ -136,11 +136,11 @@ PAINTSTRUCT ps;
 HDC hdc;
 int currentRemainingTime, limitedTime;
 TCHAR eachCompanyMaxStockPriceInPeriod[10][10];
-TCHAR messageWaitForMinute[] = TEXT("\n¡‚©‚ç‚Ìæˆø‚Í‚Å‚«‚Ü‚¹‚ñB\n­X‚¨‘Ò‚¿‚­‚¾‚³‚¢B");
-TCHAR messageNextLimitTime[] = TEXT("\n\n\n\n\nŸ‰ñ‚Ì§ŒÀŠÔG%d•b");
-TCHAR messageCompanyBankruptcy[] = TEXT("\n‚±‚Ì‰ïĞ‚Í“|Y‚µ‚Ü‚µ‚½B\nŠ”‚ÌƒJ[ƒh‚ğƒ{[ƒh‚É–ß‚µ‚Ä‚­‚¾‚³‚¢B");
-TCHAR messageLoadingPleaseWait[] = TEXT("\n“Ç‚İ‚İ’†‚Å‚·B\n­X‚¨‘Ò‚¿‚­‚¾‚³‚¢B");
-TCHAR messageLoadProgress[] = TEXT("\n\n\n\n\n%dŠ®—¹");
+TCHAR messageWaitForMinute[] = TEXT("\nä»Šã‹ã‚‰ã®å–å¼•ã¯ã§ãã¾ã›ã‚“ã€‚\nå°‘ã€…ãŠå¾…ã¡ãã ã•ã„ã€‚");
+TCHAR messageNextLimitTime[] = TEXT("\n\n\n\n\næ¬¡å›ã®åˆ¶é™æ™‚é–“ï¼›%dç§’");
+TCHAR messageCompanyBankruptcy[] = TEXT("\nã“ã®ä¼šç¤¾ã¯å€’ç”£ã—ã¾ã—ãŸã€‚\næ ªã®ã‚«ãƒ¼ãƒ‰ã‚’ãƒœãƒ¼ãƒ‰ã«æˆ»ã—ã¦ãã ã•ã„ã€‚");
+TCHAR messageLoadingPleaseWait[] = TEXT("\nèª­ã¿è¾¼ã¿ä¸­ã§ã™ã€‚\nå°‘ã€…ãŠå¾…ã¡ãã ã•ã„ã€‚");
+TCHAR messageLoadProgress[] = TEXT("\n\n\n\n\n%då®Œäº†");
 
 const int nD = 98;
 bool nLOOP[130];
@@ -157,7 +157,7 @@ static HDC hdc_mem;
 int bmpw, bmph;
 HPEN hPen10;
 
-//ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	RECT clientRectangle;
@@ -173,11 +173,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 	static int XX;
 
-	/*”šˆ—start*/
+	/*æ•°å­—å‡¦ç†start*/
 
 	GetClientRect(hWnd, &clientRectangle);
 
-	/*”šˆ—end*/
+	/*æ•°å­—å‡¦ç†end*/
 
 	switch (msg) {
 	case WM_CREATE:
@@ -209,7 +209,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
 		rc3.right = rc1.right - clientRectangle.right / 35;
 
-		/*‚»‚ê‚¼‚ê‚Ì‘SŠúŠÔ‚Å‚ÌŠ”‰¿‚Ì‰Šú‰»*/
+		/*ãã‚Œãã‚Œã®å…¨æœŸé–“ã§ã®æ ªä¾¡ã®åˆæœŸåŒ–*/
 		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[0][o] = 15000;
 		}
@@ -229,12 +229,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 		srand((unsigned)time(NULL));
 
-		hFont1 = MyCreateFont(36, SHIFTJIS_CHARSET, TEXT("‚l‚r –¾’©"));
-		hFont2 = MyCreateFont(15, SHIFTJIS_CHARSET, TEXT("‚l‚r –¾’©"));
-		hFont3 = MyCreateFont(10, SHIFTJIS_CHARSET, TEXT("‚l‚r –¾’©"));
-		hFont4 = MyCreateFont(40, SHIFTJIS_CHARSET, TEXT("‚l‚r –¾’©"));
-		hFont5 = MyCreateFont(50, SHIFTJIS_CHARSET, TEXT("‚l‚r –¾’©"));
-		hFont6 = MyCreateFont(25, SHIFTJIS_CHARSET, TEXT("‚l‚r –¾’©"));
+		hFont1 = MyCreateFont(36, SHIFTJIS_CHARSET, TEXT("ï¼­ï¼³ æ˜æœ"));
+		hFont2 = MyCreateFont(15, SHIFTJIS_CHARSET, TEXT("ï¼­ï¼³ æ˜æœ"));
+		hFont3 = MyCreateFont(10, SHIFTJIS_CHARSET, TEXT("ï¼­ï¼³ æ˜æœ"));
+		hFont4 = MyCreateFont(40, SHIFTJIS_CHARSET, TEXT("ï¼­ï¼³ æ˜æœ"));
+		hFont5 = MyCreateFont(50, SHIFTJIS_CHARSET, TEXT("ï¼­ï¼³ æ˜æœ"));
+		hFont6 = MyCreateFont(25, SHIFTJIS_CHARSET, TEXT("ï¼­ï¼³ æ˜æœ"));
 
 		for (o = 0; o < his; o++) {
 			stockPriceChartGraphPoint[0][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
@@ -248,12 +248,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			stockPriceChartGraphPoint[4][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
 			stockPriceChartGraphPoint[4][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left + clientRectangle.right * 2 / 3;
 		}
-		hBmp = (HBITMAP)LoadImage(hInst,	//ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-			TEXT("ReSt.bmp"),						//ƒCƒ[ƒW‚Ì–¼‘O
-			IMAGE_BITMAP,					//ƒCƒ[ƒWƒ^ƒCƒv
-			150,								//•
-			150,								//‚‚³
-			LR_LOADFROMFILE);				//ƒ[ƒhƒIƒvƒVƒ‡ƒ“
+		hBmp = (HBITMAP)LoadImage(hInst,	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+			TEXT("ReSt.bmp"),						//ã‚¤ãƒ¡ãƒ¼ã‚¸ã®åå‰
+			IMAGE_BITMAP,					//ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚¿ã‚¤ãƒ—
+			150,								//å¹…
+			150,								//é«˜ã•
+			LR_LOADFROMFILE);				//ãƒ­ãƒ¼ãƒ‰ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 
 		GetObject(hBmp, (int)sizeof(bmp_info), &bmp_info);
 		bmpw = bmp_info.bmWidth;
@@ -265,8 +265,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		break;
 	case WM_CLOSE:
 		id = MessageBox(hWnd,
-			TEXT("I—¹‚µ‚Ä‚à‚æ‚ë‚µ‚¢‚Å‚·‚©"),
-			TEXT("Šm”F"),
+			TEXT("çµ‚äº†ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã™ã‹"),
+			TEXT("ç¢ºèª"),
 			MB_YESNO | MB_ICONQUESTION);
 		if (id == IDYES) {
 			DestroyWindow(hWnd);
@@ -309,25 +309,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				SelectObject(hdc, hBrushw);
 				Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 				SelectObject(hdc, hFont5);
-				wsprintf((LPWSTR)messageWaitForMinute, TEXT("\n¡‚©‚ç‚Ìæˆø‚Í‚Å‚«‚Ü‚¹‚ñB\n­X‚¨‘Ò‚¿‚­‚¾‚³‚¢B"));
+				wsprintf((LPWSTR)messageWaitForMinute, TEXT("\nä»Šã‹ã‚‰ã®å–å¼•ã¯ã§ãã¾ã›ã‚“ã€‚\nå°‘ã€…ãŠå¾…ã¡ãã ã•ã„ã€‚"));
 				DrawText(hdc, messageWaitForMinute, -1, &clientRectangle, DT_CENTER);
-				wsprintf((LPWSTR)messageNextLimitTime, TEXT("\n\n\n\n\nŸ‰ñ‚Ì§ŒÀŠÔG%d•b"), limitedTime / 1000);
+				wsprintf((LPWSTR)messageNextLimitTime, TEXT("\n\n\n\n\næ¬¡å›ã®åˆ¶é™æ™‚é–“ï¼›%dç§’"), limitedTime / 1000);
 				DrawText(hdc, messageNextLimitTime, -1, &clientRectangle, DT_CENTER);
 
 				SelectObject(hdc_mem, hBmp);
 
 				Rectangle(hdc, clientRectangle.right / 2 - bmpw / 2, clientRectangle.bottom * 3 / 4 - bmph, clientRectangle.right / 2 + bmpw / 2, clientRectangle.bottom * 3 / 4);
-				StretchBlt(hdc,		//“]‘—æ
-					clientRectangle.right / 2 - bmpw / 2,	//“]‘—æxÀ•W
-					clientRectangle.bottom * 3 / 4 - bmph,	//“]‘—æyÀ•W
-					bmpw,		//“]‘—æ’·•ûŒ`‚Ì• 
-					bmph,		//“]‘—æ’·•ûŒ`‚Ì‚‚³ 
-					hdc_mem,	//“]‘—Œ³
-					0,			//“]‘—Œ³xÀ•W
+				StretchBlt(hdc,		//è»¢é€å…ˆ
+					clientRectangle.right / 2 - bmpw / 2,	//è»¢é€å…ˆxåº§æ¨™
+					clientRectangle.bottom * 3 / 4 - bmph,	//è»¢é€å…ˆyåº§æ¨™
+					bmpw,		//è»¢é€å…ˆé•·æ–¹å½¢ã®å¹… 
+					bmph,		//è»¢é€å…ˆé•·æ–¹å½¢ã®é«˜ã• 
+					hdc_mem,	//è»¢é€å…ƒ
+					0,			//è»¢é€å…ƒxåº§æ¨™
 					0,
 					150,
-					150,//“]‘—Œ³yÀ•W
-					SRCCOPY);	//ƒ‰ƒXƒ^[ƒIƒyƒŒ[ƒVƒ‡ƒ“ƒR[ƒh
+					150,//è»¢é€å…ƒyåº§æ¨™
+					SRCCOPY);	//ãƒ©ã‚¹ã‚¿ãƒ¼ã‚ªãƒšãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚³ãƒ¼ãƒ‰
 			}
 		}
 		SelectObject(hdc, hBrush);
@@ -338,9 +338,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 			SelectObject(hdc, hPen5);
 			SelectObject(hdc, hFont5);
-			wsprintf((LPWSTR)messageLoadingPleaseWait, TEXT("\n“Ç‚İ‚İ’†‚Å‚·B\n­X‚¨‘Ò‚¿‚­‚¾‚³‚¢B"));
+			wsprintf((LPWSTR)messageLoadingPleaseWait, TEXT("\nèª­ã¿è¾¼ã¿ä¸­ã§ã™ã€‚\nå°‘ã€…ãŠå¾…ã¡ãã ã•ã„ã€‚"));
 			DrawText(hdc, messageLoadingPleaseWait, -1, &clientRectangle, DT_CENTER);
-			wsprintf((LPWSTR)messageLoadProgress, TEXT("\n\n\n\n\n%d“Š®—¹"), Qw * 100 / (his + 1 + limitedTime / 1000));
+			wsprintf((LPWSTR)messageLoadProgress, TEXT("\n\n\n\n\n%dï¼…å®Œäº†"), Qw * 100 / (his + 1 + limitedTime / 1000));
 			DrawText(hdc, messageLoadProgress, -1, &clientRectangle, DT_CENTER);
 		}
 		EndPaint(hWnd, &ps);
@@ -402,7 +402,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				if (!(EV < his + 2)) {
 					XO = false;
 				}
-				/*Š”‰¿Eƒ`ƒƒ[ƒgˆÚ“®‚Ì‚½‚ß‚ÌƒXƒNƒŠƒvƒgstart*/
+				/*æ ªä¾¡ãƒ»ãƒãƒ£ãƒ¼ãƒˆç§»å‹•ã®ãŸã‚ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆstart*/
 
 				EV++;
 
@@ -416,7 +416,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 				o = 0;
 
-				/**goto•¶‚ğg‚Á‚Ä‚¢‚Ü‚·B’ˆÓI**/
+				/**gotoæ–‡ã‚’ä½¿ã£ã¦ã„ã¾ã™ã€‚æ³¨æ„ï¼**/
 
 			loop:
 				XX = rand() % nD;
@@ -511,7 +511,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					std::cout << errorMessage << std::endl;
 				}*/
 				o = 1;
-				/**goto•¶‚ğg‚Á‚Ä‚¢‚Ü‚·B’ˆÓI**/
+				/**gotoæ–‡ã‚’ä½¿ã£ã¦ã„ã¾ã™ã€‚æ³¨æ„ï¼**/
 
 				/////////////////////////////////////////////////////////////
 
@@ -582,7 +582,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 				/*Unknown*/
 
-				/*ˆ×‘Ö+ƒjƒ…[ƒX‚Ü‚Æ‚ßstart*/
+				/*ç‚ºæ›¿+ãƒ‹ãƒ¥ãƒ¼ã‚¹ã¾ã¨ã‚start*/
 
 				for (o = 0; o < 5; o++) {
 					q = stockPrices[o][stockPriceChartGraphPointNumber] % 1000;
@@ -629,11 +629,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						}
 					}
 				}
-				/*ˆ×‘Ö+ƒjƒ…[ƒX‚Ü‚Æ‚ßend*/
-				/*ˆ×‘Öend*/
+				/*ç‚ºæ›¿+ãƒ‹ãƒ¥ãƒ¼ã‚¹ã¾ã¨ã‚end*/
+				/*ç‚ºæ›¿end*/
 				InvalidateRect(hWnd, NULL, 0);
 			}/**currentRemainingTime==0**/
-			/*Š”‰¿Eƒ`ƒƒ[ƒgˆÚ“®‚Ì‚½‚ß‚ÌƒXƒNƒŠƒvƒgend*/
+			/*æ ªä¾¡ãƒ»ãƒãƒ£ãƒ¼ãƒˆç§»å‹•ã®ãŸã‚ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆend*/
 		}
 		break;
 	case WM_CHAR:
@@ -688,7 +688,7 @@ void Data(const int XX) {
 	}
 	else {
 		if (XX == 0) {
-			wsprintf(messageEventTitle, TEXT("–{B‚Æ‹ãB‚ğŒ‹‚ÔV‚µ‚¢‹´‚ªŠ®¬"));
+			wsprintf(messageEventTitle, TEXT("æœ¬å·ã¨ä¹å·ã‚’çµã¶æ–°ã—ã„æ©‹ãŒå®Œæˆ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 1000;
@@ -696,7 +696,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 1) {
-			wsprintf(messageEventTitle, TEXT("“ìŠCƒgƒ‰ƒt’nk‚ª”­¶"));
+			wsprintf(messageEventTitle, TEXT("å—æµ·ãƒˆãƒ©ãƒ•åœ°éœ‡ãŒç™ºç”Ÿ"));
 			companyAStockPriceChangeAmount = -0;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = -4000;
@@ -704,7 +704,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -5000;
 		}
 		if (XX == 2) {
-			wsprintf(messageEventTitle, TEXT("ƒ^ƒC‚Å‘å^…‚ª”­¶"));
+			wsprintf(messageEventTitle, TEXT("ã‚¿ã‚¤ã§å¤§æ´ªæ°´ãŒç™ºç”Ÿ"));
 			companyAStockPriceChangeAmount = -4000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = 000;
@@ -712,7 +712,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 3) {
-			wsprintf(messageEventTitle, TEXT("“ú–{‘S‘‚Å•Ä‚ª•sì"));
+			wsprintf(messageEventTitle, TEXT("æ—¥æœ¬å…¨å›½ã§ç±³ãŒä¸ä½œ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -720,7 +720,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 4) {
-			wsprintf(messageEventTitle, TEXT("ˆ¤’mŒ§‚É‹‘å‘ä•—‚ªã—¤"));
+			wsprintf(messageEventTitle, TEXT("æ„›çŸ¥çœŒã«å·¨å¤§å°é¢¨ãŒä¸Šé™¸"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -728,7 +728,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 5) {
-			wsprintf(messageEventTitle, TEXT("ƒnƒƒC‚Å‘å‹K–Í‚È‰ÎR•¬‰Î"));
+			wsprintf(messageEventTitle, TEXT("ãƒãƒ¯ã‚¤ã§å¤§è¦æ¨¡ãªç«å±±å™´ç«"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -736,7 +736,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -5000;
 		}
 		if (XX == 6) {
-			wsprintf(messageEventTitle, TEXT("‹ãB’n•û‚Å’nk‚ª”­¶"));
+			wsprintf(messageEventTitle, TEXT("ä¹å·åœ°æ–¹ã§åœ°éœ‡ãŒç™ºç”Ÿ"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -744,7 +744,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 7) {
-			wsprintf(messageEventTitle, TEXT("‹“s‚ªW’†‹‰J‚Å‘å‚«‚È”íŠQ"));
+			wsprintf(messageEventTitle, TEXT("äº¬éƒ½ãŒé›†ä¸­è±ªé›¨ã§å¤§ããªè¢«å®³"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -752,7 +752,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 8) {
-			wsprintf(messageEventTitle, TEXT("Š™‘q‚ª¢ŠEˆâY‚É"));
+			wsprintf(messageEventTitle, TEXT("éŒå€‰ãŒä¸–ç•Œéºç”£ã«"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -760,7 +760,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 9) {
-			wsprintf(messageEventTitle, TEXT("•xmR‚ª¢ŠEˆâY‚É"));
+			wsprintf(messageEventTitle, TEXT("å¯Œå£«å±±ãŒä¸–ç•Œéºç”£ã«"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -768,7 +768,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 10) {
-			wsprintf(messageEventTitle, TEXT("“ú–{‚ğ–K‚ê‚éŠO‘l‚ª3000–œl‚ğ’´‚¦‚é"));
+			wsprintf(messageEventTitle, TEXT("æ—¥æœ¬ã‚’è¨ªã‚Œã‚‹å¤–å›½äººãŒ3000ä¸‡äººã‚’è¶…ãˆã‚‹"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -776,7 +776,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 6000;
 		}
 		if (XX == 11) {
-			wsprintf(messageEventTitle, TEXT("ˆÉ¨u–€ƒTƒ~ƒbƒg‚ªŠJÃ"));
+			wsprintf(messageEventTitle, TEXT("ä¼Šå‹¢å¿—æ‘©ã‚µãƒŸãƒƒãƒˆãŒé–‹å‚¬"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -784,7 +784,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 12) {
-			wsprintf(messageEventTitle, TEXT("ƒtƒ‰ƒ“ƒX‚Åƒeƒ"));
+			wsprintf(messageEventTitle, TEXT("ãƒ•ãƒ©ãƒ³ã‚¹ã§ãƒ†ãƒ­"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -792,7 +792,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -4000;
 		}
 		if (XX == 13) {
-			wsprintf(messageEventTitle, TEXT("“d‹C—¿‹à‚ª’lã‚°"));
+			wsprintf(messageEventTitle, TEXT("é›»æ°—æ–™é‡‘ãŒå€¤ä¸Šã’"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -800,7 +800,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 14) {
-			wsprintf(messageEventTitle, TEXT("Î–û‚Ì’l’i‚ªã‚ª‚é"));
+			wsprintf(messageEventTitle, TEXT("çŸ³æ²¹ã®å€¤æ®µãŒä¸ŠãŒã‚‹"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -808,7 +808,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 15) {
-			wsprintf(messageEventTitle, TEXT("Î–û‚Ì’l’i‚ª‰º‚ª‚é"));
+			wsprintf(messageEventTitle, TEXT("çŸ³æ²¹ã®å€¤æ®µãŒä¸‹ãŒã‚‹"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -816,7 +816,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 16) {
-			wsprintf(messageEventTitle, TEXT("“S‚Ì’l’i‚ªã‚ª‚é"));
+			wsprintf(messageEventTitle, TEXT("é‰„ã®å€¤æ®µãŒä¸ŠãŒã‚‹"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -824,7 +824,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 17) {
-			wsprintf(messageEventTitle, TEXT("“S‚Ì’l’i‚ª‰º‚ª‚é"));
+			wsprintf(messageEventTitle, TEXT("é‰„ã®å€¤æ®µãŒä¸‹ãŒã‚‹"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -832,7 +832,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 18) {
-			wsprintf(messageEventTitle, TEXT("¡”N‚Ì“~‚Í’g“~‚É‚È‚é‚Æ—\‘z"));
+			wsprintf(messageEventTitle, TEXT("ä»Šå¹´ã®å†¬ã¯æš–å†¬ã«ãªã‚‹ã¨äºˆæƒ³"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = 000;
@@ -840,7 +840,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 19) {
-			wsprintf(messageEventTitle, TEXT("¡”N‚Ì‰Ä‚Í‰ß‹Å‚‚Ì–Ò‹‚É‚È‚é‚Æ—\‘z"));
+			wsprintf(messageEventTitle, TEXT("ä»Šå¹´ã®å¤ã¯éå»æœ€é«˜ã®çŒ›æš‘ã«ãªã‚‹ã¨äºˆæƒ³"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 2000;
@@ -848,7 +848,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 20) {
-			wsprintf(messageEventTitle, TEXT("–k—¤VŠ²ü‚ªŠJ’Ê"));
+			wsprintf(messageEventTitle, TEXT("åŒ—é™¸æ–°å¹¹ç·šãŒé–‹é€š"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -856,7 +856,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 21) {
-			wsprintf(messageEventTitle, TEXT("ŠCŠO‚Å“ú–{Hƒu[ƒ€"));
+			wsprintf(messageEventTitle, TEXT("æµ·å¤–ã§æ—¥æœ¬é£Ÿãƒ–ãƒ¼ãƒ "));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 1000;
@@ -864,7 +864,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 22) {
-			wsprintf(messageEventTitle, TEXT("“ú–{‚ğ•‘‘ä‚É‚µ‚½ƒfƒBƒYƒj[‰f‰æ‚ª‘åƒqƒbƒg"));
+			wsprintf(messageEventTitle, TEXT("æ—¥æœ¬ã‚’èˆå°ã«ã—ãŸãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼æ˜ ç”»ãŒå¤§ãƒ’ãƒƒãƒˆ"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -872,7 +872,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 23) {
-			wsprintf(messageEventTitle, TEXT("ƒnƒƒC‚Åƒeƒ"));
+			wsprintf(messageEventTitle, TEXT("ãƒãƒ¯ã‚¤ã§ãƒ†ãƒ­"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -880,7 +880,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -5000;
 		}
 		if (XX == 24) {
-			wsprintf(messageEventTitle, TEXT("ƒhƒ[ƒ“‚ÌV‹Zp‚ªŠJ”­"));
+			wsprintf(messageEventTitle, TEXT("ãƒ‰ãƒ­ãƒ¼ãƒ³ã®æ–°æŠ€è¡“ãŒé–‹ç™º"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -888,7 +888,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 25) {
-			wsprintf(messageEventTitle, TEXT("‹ÑDŒ\‚ªƒIƒŠƒ“ƒsƒbƒN‚Å‹àƒƒ_ƒ‹"));
+			wsprintf(messageEventTitle, TEXT("éŒ¦ç¹”åœ­ãŒã‚ªãƒªãƒ³ãƒ”ãƒƒã‚¯ã§é‡‘ãƒ¡ãƒ€ãƒ«"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 5000;
 			companyCStockPriceChangeAmount = 000;
@@ -896,7 +896,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 26) {
-			wsprintf(messageEventTitle, TEXT("’†‘‚ÌŒRŠÍ‚Æ“ú–{‚Ì‹™‘D‚ªÕ“Ë"));
+			wsprintf(messageEventTitle, TEXT("ä¸­å›½ã®è»è‰¦ã¨æ—¥æœ¬ã®æ¼èˆ¹ãŒè¡çª"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = 000;
@@ -904,7 +904,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 27) {
-			wsprintf(messageEventTitle, TEXT("“ú–{ŠC‚Å‘å—Ê‚ÌÎ–û‚ª”­Œ©"));
+			wsprintf(messageEventTitle, TEXT("æ—¥æœ¬æµ·ã§å¤§é‡ã®çŸ³æ²¹ãŒç™ºè¦‹"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 2000;
 			companyCStockPriceChangeAmount = 1000;
@@ -912,7 +912,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 28) {
-			wsprintf(messageEventTitle, TEXT("•xmR•¬‰Î‚ÌŠëŒ¯‚ª‚‚Ü‚é"));
+			wsprintf(messageEventTitle, TEXT("å¯Œå£«å±±å™´ç«ã®å±é™ºãŒé«˜ã¾ã‚‹"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -920,7 +920,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 29) {
-			wsprintf(messageEventTitle, TEXT("’†‘‚Å“ú–{»•i‚ª‘åƒu[ƒ€"));
+			wsprintf(messageEventTitle, TEXT("ä¸­å›½ã§æ—¥æœ¬è£½å“ãŒå¤§ãƒ–ãƒ¼ãƒ "));
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 4000;
 			companyCStockPriceChangeAmount = 3000;
@@ -928,7 +928,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 30) {
-			wsprintf(messageEventTitle, TEXT("’†‘l‚Ì”š”ƒ‚¢‚ª—¬s"));
+			wsprintf(messageEventTitle, TEXT("ä¸­å›½äººã®çˆ†è²·ã„ãŒæµè¡Œ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = -3000;
@@ -937,14 +937,14 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 5000;
 		}
 		if (XX == 31) {
-			wsprintf(messageEventTitle, TEXT("ñ‘Š‚ª–õ‘_ĞQ”q"));
+			wsprintf(messageEventTitle, TEXT("é¦–ç›¸ãŒé–å›½ç¥ç¤¾å‚æ‹"));
 			companyAStockPriceChangeAmount = -4000;
 			companyCStockPriceChangeAmount = -1000;
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 32) {
-			wsprintf(messageEventTitle, TEXT("uÎ–û‚ª20”NŒã‚É–³‚­‚È‚év‚Æ‘˜A‚ª”­•\"));
+			wsprintf(messageEventTitle, TEXT("ã€ŒçŸ³æ²¹ãŒ20å¹´å¾Œã«ç„¡ããªã‚‹ã€ã¨å›½é€£ãŒç™ºè¡¨"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -2000;
@@ -952,7 +952,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -5000;
 		}
 		if (XX == 33) {
-			wsprintf(messageEventTitle, TEXT("’†‘‚ª—ğj–â‘è‚ğ——R‚É“ú’†ŠÔ‚Ì‰—ˆ‚ğ§ŒÀ"));
+			wsprintf(messageEventTitle, TEXT("ä¸­å›½ãŒæ­´å²å•é¡Œã‚’ç†ç”±ã«æ—¥ä¸­é–“ã®å¾€æ¥ã‚’åˆ¶é™"));
 			companyAStockPriceChangeAmount = -4000;
 			companyBStockPriceChangeAmount = -4000;
 			companyCStockPriceChangeAmount = -1000;
@@ -960,7 +960,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -6000;
 		}
 		if (XX == 34) {
-			wsprintf(messageEventTitle, TEXT("“ú–{‚Å’†‰Ø—¿—‚ª‘åƒu[ƒ€"));
+			wsprintf(messageEventTitle, TEXT("æ—¥æœ¬ã§ä¸­è¯æ–™ç†ãŒå¤§ãƒ–ãƒ¼ãƒ "));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -968,7 +968,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 35) {
-			wsprintf(messageEventTitle, TEXT("ƒCƒ^ƒŠƒA‚Å‘å’nk‚ª”­¶"));
+			wsprintf(messageEventTitle, TEXT("ã‚¤ã‚¿ãƒªã‚¢ã§å¤§åœ°éœ‡ãŒç™ºç”Ÿ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -976,7 +976,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 36) {
-			wsprintf(messageEventTitle, TEXT("Á”ïÅ‚ª15“‚É‘Å"));
+			wsprintf(messageEventTitle, TEXT("æ¶ˆè²»ç¨ãŒ15ï¼…ã«å¢—ç¨"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -2000;
@@ -984,7 +984,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 37) {
-			wsprintf(messageEventTitle, TEXT("ŠØ‘‚ÅVŒ^ƒCƒ“ƒtƒ‹ƒGƒ“ƒU‚ª‘å—¬s"));
+			wsprintf(messageEventTitle, TEXT("éŸ“å›½ã§æ–°å‹ã‚¤ãƒ³ãƒ•ãƒ«ã‚¨ãƒ³ã‚¶ãŒå¤§æµè¡Œ"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = 000;
@@ -992,7 +992,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 38) {
-			wsprintf(messageEventTitle, TEXT("–{B‚Å‘å‹K–Í‚È’â“d"));
+			wsprintf(messageEventTitle, TEXT("æœ¬å·ã§å¤§è¦æ¨¡ãªåœé›»"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -3000;
@@ -1000,7 +1000,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 39) {
-			wsprintf(messageEventTitle, TEXT("ƒTƒbƒJ[ƒ[ƒ‹ƒhƒJƒbƒv‚ª‘åã‚ÅŠJÃ"));
+			wsprintf(messageEventTitle, TEXT("ã‚µãƒƒã‚«ãƒ¼ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚«ãƒƒãƒ—ãŒå¤§é˜ªã§é–‹å‚¬"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1008,7 +1008,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 40) {
-			wsprintf(messageEventTitle, TEXT("L“‡‚Å“y»ĞŠQ"));
+			wsprintf(messageEventTitle, TEXT("åºƒå³¶ã§åœŸç ‚ç½å®³"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1016,7 +1016,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 41) {
-			wsprintf(messageEventTitle, TEXT("ƒGƒ{ƒ‰oŒŒ”M‚ªƒˆ[ƒƒbƒp‚Å‘å—¬s"));
+			wsprintf(messageEventTitle, TEXT("ã‚¨ãƒœãƒ©å‡ºè¡€ç†±ãŒãƒ¨ãƒ¼ãƒ­ãƒƒãƒ‘ã§å¤§æµè¡Œ"));
 			companyAStockPriceChangeAmount = -5000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -2000;
@@ -1024,7 +1024,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -7000;
 		}
 		if (XX == 42) {
-			wsprintf(messageEventTitle, TEXT("‚‘¬“¹˜H—¿‹à‚ª–³—¿‚É"));
+			wsprintf(messageEventTitle, TEXT("é«˜é€Ÿé“è·¯æ–™é‡‘ãŒç„¡æ–™ã«"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1032,7 +1032,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 43) {
-			wsprintf(messageEventTitle, TEXT("VŠ²ü‚Ì–ŒÌ‚ª‘ŠŸ‚®"));
+			wsprintf(messageEventTitle, TEXT("æ–°å¹¹ç·šã®äº‹æ•…ãŒç›¸æ¬¡ã"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1040,7 +1040,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 44) {
-			wsprintf(messageEventTitle, TEXT("–k’©‘N‚Ìƒ~ƒTƒCƒ‹‚ª_“ŞìŒ§‰«‚É—‰º"));
+			wsprintf(messageEventTitle, TEXT("åŒ—æœé®®ã®ãƒŸã‚µã‚¤ãƒ«ãŒç¥å¥ˆå·çœŒæ²–ã«è½ä¸‹"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = -3000;
@@ -1048,7 +1048,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 45) {
-			wsprintf(messageEventTitle, TEXT("ã–ì“®•¨‰€‚Åƒpƒ“ƒ_‚ÌÔ‚¿‚á‚ñ‚ª¶‚Ü‚ê‚é"));
+			wsprintf(messageEventTitle, TEXT("ä¸Šé‡å‹•ç‰©åœ’ã§ãƒ‘ãƒ³ãƒ€ã®èµ¤ã¡ã‚ƒã‚“ãŒç”Ÿã¾ã‚Œã‚‹"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1056,7 +1056,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 46) {
-			wsprintf(messageEventTitle, TEXT("•x‰ª»…ê‚ª¢ŠEˆâY‚É"));
+			wsprintf(messageEventTitle, TEXT("å¯Œå²¡è£½ç³¸å ´ãŒä¸–ç•Œéºç”£ã«"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1064,7 +1064,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 47) {
-			wsprintf(messageEventTitle, TEXT("ƒŠƒjƒAƒ‚[ƒ^[ƒJ[‚ªŠJ’Ê"));
+			wsprintf(messageEventTitle, TEXT("ãƒªãƒ‹ã‚¢ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚«ãƒ¼ãŒé–‹é€š"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1072,7 +1072,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 48) {
-			wsprintf(messageEventTitle, TEXT("¬“c‘Û‹ó`‚Ì‘Ûü‚ª2”{‚É‘‚¦‚é"));
+			wsprintf(messageEventTitle, TEXT("æˆç”°å›½éš›ç©ºæ¸¯ã®å›½éš›ç·šãŒ2å€ã«å¢—ãˆã‚‹"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1080,7 +1080,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 5000;
 		}
 		if (XX == 49) {
-			wsprintf(messageEventTitle, TEXT("’†“Œ‚Å‘å‹K–Í‚È”½­•{ƒfƒ‚"));
+			wsprintf(messageEventTitle, TEXT("ä¸­æ±ã§å¤§è¦æ¨¡ãªåæ”¿åºœãƒ‡ãƒ¢"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1088,7 +1088,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 50) {
-			wsprintf(messageEventTitle, TEXT("ƒCƒ“ƒh‚Ì“¹˜H‚ª®”õ‚³‚ê‚é"));
+			wsprintf(messageEventTitle, TEXT("ã‚¤ãƒ³ãƒ‰ã®é“è·¯ãŒæ•´å‚™ã•ã‚Œã‚‹"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 2000;
 			companyCStockPriceChangeAmount = 000;
@@ -1096,7 +1096,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 51) {
-			wsprintf(messageEventTitle, TEXT("ƒAƒƒŠƒJ‚ªu30”N‚ÅCO2”ro—Ê‚ğ”¼•ª‚É‚·‚év‚Æ”­•\"));
+			wsprintf(messageEventTitle, TEXT("ã‚¢ãƒ¡ãƒªã‚«ãŒã€Œ30å¹´ã§CO2æ’å‡ºé‡ã‚’åŠåˆ†ã«ã™ã‚‹ã€ã¨ç™ºè¡¨"));
 			companyAStockPriceChangeAmount = 7000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1104,7 +1104,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 52) {
-			wsprintf(messageEventTitle, TEXT("–ìØ‚Ì‰¿Ši‚ªğ”N‚Ì2”{‚É"));
+			wsprintf(messageEventTitle, TEXT("é‡èœã®ä¾¡æ ¼ãŒæ˜¨å¹´ã®2å€ã«"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1112,7 +1112,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 53) {
-			wsprintf(messageEventTitle, TEXT("ƒfƒ“ƒO”M‚Ì‘å—¬s‚É‚æ‚è“Œ“ìƒAƒWƒA‚Ö‚Ì“nq‚ª§ŒÀ"));
+			wsprintf(messageEventTitle, TEXT("ãƒ‡ãƒ³ã‚°ç†±ã®å¤§æµè¡Œã«ã‚ˆã‚Šæ±å—ã‚¢ã‚¸ã‚¢ã¸ã®æ¸¡èˆªãŒåˆ¶é™"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1120,7 +1120,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 54) {
-			wsprintf(messageEventTitle, TEXT("ƒ\ƒ}ƒŠƒA‚ÌŠC‘¯‚ªÁ–Å"));
+			wsprintf(messageEventTitle, TEXT("ã‚½ãƒãƒªã‚¢ã®æµ·è³ŠãŒæ¶ˆæ»…"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 2000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1128,7 +1128,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 55) {
-			wsprintf(messageEventTitle, TEXT("“ú–{‚ÌlŒû‚ª‘‰Á"));
+			wsprintf(messageEventTitle, TEXT("æ—¥æœ¬ã®äººå£ãŒå¢—åŠ "));
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 4000;
 			companyCStockPriceChangeAmount = 4000;
@@ -1136,7 +1136,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 56) {
-			wsprintf(messageEventTitle, TEXT("D–yƒIƒŠƒ“ƒsƒbƒNŠJÃ‚ªŒˆ’è"));
+			wsprintf(messageEventTitle, TEXT("æœ­å¹Œã‚ªãƒªãƒ³ãƒ”ãƒƒã‚¯é–‹å‚¬ãŒæ±ºå®š"));
 			companyAStockPriceChangeAmount = 4000;
 			companyBStockPriceChangeAmount = 3000;
 			companyCStockPriceChangeAmount = 2000;
@@ -1144,7 +1144,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 57) {
-			wsprintf(messageEventTitle, TEXT("“Œ‹ƒXƒJƒCƒcƒŠ[‚ª–ŒÌ‚É‚æ‚è‰c‹Æ‚ğ’â~"));
+			wsprintf(messageEventTitle, TEXT("æ±äº¬ã‚¹ã‚«ã‚¤ãƒ„ãƒªãƒ¼ãŒäº‹æ•…ã«ã‚ˆã‚Šå–¶æ¥­ã‚’åœæ­¢"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1152,7 +1152,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 58) {
-			wsprintf(messageEventTitle, TEXT("ƒKƒ\ƒŠƒ“Å‚ª”p~"));
+			wsprintf(messageEventTitle, TEXT("ã‚¬ã‚½ãƒªãƒ³ç¨ãŒå»ƒæ­¢"));
 			companyAStockPriceChangeAmount = 4000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1160,7 +1160,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 4000;
 		}
 		if (XX == 59) {
-			wsprintf(messageEventTitle, TEXT("ƒfƒBƒYƒj[ƒ‰ƒ“ƒh‚ÉƒŠƒjƒ…[ƒAƒ‹ƒI[ƒvƒ“"));
+			wsprintf(messageEventTitle, TEXT("ãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ãƒ©ãƒ³ãƒ‰ã«ãƒªãƒ‹ãƒ¥ãƒ¼ã‚¢ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 0000;
@@ -1168,7 +1168,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 60) {
-			wsprintf(messageEventTitle, TEXT("Î–û‚ÌV‚µ‚¢ÌŒ@•û–@‚ªŠJ”­"));
+			wsprintf(messageEventTitle, TEXT("çŸ³æ²¹ã®æ–°ã—ã„æ¡æ˜æ–¹æ³•ãŒé–‹ç™º"));
 			companyAStockPriceChangeAmount = 3000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1176,7 +1176,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 61) {
-			wsprintf(messageEventTitle, TEXT("”R”ï•s³–â‘è‚Åƒˆ[ƒƒbƒp‚Ì‘åè©“®Ôƒ[ƒJ[‚ª“|Y"));
+			wsprintf(messageEventTitle, TEXT("ç‡ƒè²»ä¸æ­£å•é¡Œã§ãƒ¨ãƒ¼ãƒ­ãƒƒãƒ‘ã®å¤§æ‰‹è‡ªå‹•è»Šãƒ¡ãƒ¼ã‚«ãƒ¼ãŒå€’ç”£"));
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1184,7 +1184,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 62) {
-			wsprintf(messageEventTitle, TEXT("ƒAƒƒŠƒJ‚Ì‘å“—Ì‚ªL“‡–K–â"));
+			wsprintf(messageEventTitle, TEXT("ã‚¢ãƒ¡ãƒªã‚«ã®å¤§çµ±é ˜ãŒåºƒå³¶è¨ªå•"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1192,7 +1192,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 63) {
-			wsprintf(messageEventTitle, TEXT("ƒR[ƒq[“¤‚Ì’l’i‚ª‰º‚ª‚é"));
+			wsprintf(messageEventTitle, TEXT("ã‚³ãƒ¼ãƒ’ãƒ¼è±†ã®å€¤æ®µãŒä¸‹ãŒã‚‹"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 2000;
@@ -1200,7 +1200,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 64) {
-			wsprintf(messageEventTitle, TEXT("‘˜A‚ªu”r‹CƒKƒX‚ğ40”NŠÔ‚Å50“íŒ¸‚·‚év‚Æ”­•\"));
+			wsprintf(messageEventTitle, TEXT("å›½é€£ãŒã€Œæ’æ°—ã‚¬ã‚¹ã‚’40å¹´é–“ã§50ï¼…å‰Šæ¸›ã™ã‚‹ã€ã¨ç™ºè¡¨"));
 			companyAStockPriceChangeAmount = 6000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1208,7 +1208,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 65) {
-			wsprintf(messageEventTitle, TEXT("ƒAƒƒŠƒJ‚Å”EÒƒu[ƒ€"));
+			wsprintf(messageEventTitle, TEXT("ã‚¢ãƒ¡ãƒªã‚«ã§å¿è€…ãƒ–ãƒ¼ãƒ "));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1216,7 +1216,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 66) {
-			wsprintf(messageEventTitle, TEXT("’†‘‚Å‘å‹K–Í‚È”½“úƒfƒ‚"));
+			wsprintf(messageEventTitle, TEXT("ä¸­å›½ã§å¤§è¦æ¨¡ãªåæ—¥ãƒ‡ãƒ¢"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = 000;
@@ -1224,7 +1224,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 67) {
-			wsprintf(messageEventTitle, TEXT("ƒˆ[ƒƒbƒp‚Å“ú–{‚Ìƒtƒ@ƒbƒVƒ‡ƒ“‚ª’–Ú"));
+			wsprintf(messageEventTitle, TEXT("ãƒ¨ãƒ¼ãƒ­ãƒƒãƒ‘ã§æ—¥æœ¬ã®ãƒ•ã‚¡ãƒƒã‚·ãƒ§ãƒ³ãŒæ³¨ç›®"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 5000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1232,7 +1232,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 68) {
-			wsprintf(messageEventTitle, TEXT("V‘—§‹£‹Zê‚ªŠ®¬"));
+			wsprintf(messageEventTitle, TEXT("æ–°å›½ç«‹ç«¶æŠ€å ´ãŒå®Œæˆ"));
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 5000;
 			companyCStockPriceChangeAmount = 5000;
@@ -1240,7 +1240,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 5000;
 		}
 		if (XX == 69) {
-			wsprintf(messageEventTitle, TEXT("­•{‚ªu50”NŠÔ‚Å“ú–{‚ÌÔ‚Ì”¼•ª‚ğƒGƒRƒJ[‚É‚·‚év‚Æ”­•\"));
+			wsprintf(messageEventTitle, TEXT("æ”¿åºœãŒã€Œ50å¹´é–“ã§æ—¥æœ¬ã®è»Šã®åŠåˆ†ã‚’ã‚¨ã‚³ã‚«ãƒ¼ã«ã™ã‚‹ã€ã¨ç™ºè¡¨"));
 			companyAStockPriceChangeAmount = 7000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1248,7 +1248,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 70) {
-			wsprintf(messageEventTitle, TEXT("“Œ“ìƒAƒWƒA‚Å’á‰¿Ši‚Ì—m•‚ª—¬s"));
+			wsprintf(messageEventTitle, TEXT("æ±å—ã‚¢ã‚¸ã‚¢ã§ä½ä¾¡æ ¼ã®æ´‹æœãŒæµè¡Œ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 4000;
 			companyCStockPriceChangeAmount = 000;
@@ -1256,7 +1256,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 71) {
-			wsprintf(messageEventTitle, TEXT("uƒ`ƒ‡ƒRƒŒ[ƒg‚ª‚ª‚ñ—\–h‚É‚È‚év‚Æ‚¢‚¤Œ¤‹†Œ‹‰Ê‚ª”­•\"));
+			wsprintf(messageEventTitle, TEXT("ã€Œãƒãƒ§ã‚³ãƒ¬ãƒ¼ãƒˆãŒãŒã‚“äºˆé˜²ã«ãªã‚‹ã€ã¨ã„ã†ç ”ç©¶çµæœãŒç™ºè¡¨"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 3000;
@@ -1264,7 +1264,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 72) {
-			wsprintf(messageEventTitle, TEXT("ƒAƒƒŠƒJ‚Å‚Æ‚ñ‚±‚Âƒ‰[ƒƒ“‚ª‘åƒqƒbƒg"));
+			wsprintf(messageEventTitle, TEXT("ã‚¢ãƒ¡ãƒªã‚«ã§ã¨ã‚“ã“ã¤ãƒ©ãƒ¼ãƒ¡ãƒ³ãŒå¤§ãƒ’ãƒƒãƒˆ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1272,7 +1272,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 73) {
-			wsprintf(messageEventTitle, TEXT("—â“€H•i‚É‚æ‚éH’†“Å‚ª‘½”­"));
+			wsprintf(messageEventTitle, TEXT("å†·å‡é£Ÿå“ã«ã‚ˆã‚‹é£Ÿä¸­æ¯’ãŒå¤šç™º"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1280,7 +1280,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 74) {
-			wsprintf(messageEventTitle, TEXT("ƒXƒ^[ƒEƒH[ƒY‚ÌVì‚ªŒöŠJ"));
+			wsprintf(messageEventTitle, TEXT("ã‚¹ã‚¿ãƒ¼ã‚¦ã‚©ãƒ¼ã‚ºã®æ–°ä½œãŒå…¬é–‹"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1288,7 +1288,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 75) {
-			wsprintf(messageEventTitle, TEXT("‘åèŠé‹Æ‚ª‰ïˆõ‚ÌŒÂlî•ñ‚ğ—¬o"));
+			wsprintf(messageEventTitle, TEXT("å¤§æ‰‹ä¼æ¥­ãŒä¼šå“¡ã®å€‹äººæƒ…å ±ã‚’æµå‡º"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1296,7 +1296,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 76) {
-			wsprintf(messageEventTitle, TEXT("“ú–{‚Ì‰»Ï•i‚ÌV¤•i‚ªƒAƒWƒA‚Åƒqƒbƒg"));
+			wsprintf(messageEventTitle, TEXT("æ—¥æœ¬ã®åŒ–ç²§å“ã®æ–°å•†å“ãŒã‚¢ã‚¸ã‚¢ã§ãƒ’ãƒƒãƒˆ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1304,7 +1304,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 77) {
-			wsprintf(messageEventTitle, TEXT("ƒTƒEƒWƒAƒ‰ƒrƒA‚Å©”šƒeƒ‚ª‘½”­"));
+			wsprintf(messageEventTitle, TEXT("ã‚µã‚¦ã‚¸ã‚¢ãƒ©ãƒ“ã‚¢ã§è‡ªçˆ†ãƒ†ãƒ­ãŒå¤šç™º"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1312,7 +1312,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -2000;
 		}
 		if (XX == 78) {
-			wsprintf(messageEventTitle, TEXT("’†‘‚ÌlŒ”ï‚ªã‚ª‚é"));
+			wsprintf(messageEventTitle, TEXT("ä¸­å›½ã®äººä»¶è²»ãŒä¸ŠãŒã‚‹"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -3000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1320,7 +1320,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 79) {
-			wsprintf(messageEventTitle, TEXT("‘Ê‰Ùqƒ[ƒJ[‚ÌÜ–¡ŠúŒÀ‹U‘•‚ª”­Šo"));
+			wsprintf(messageEventTitle, TEXT("é§„è“å­ãƒ¡ãƒ¼ã‚«ãƒ¼ã®è³å‘³æœŸé™å½è£…ãŒç™ºè¦š"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = -5000;
@@ -1328,7 +1328,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 80) {
-			wsprintf(messageEventTitle, TEXT("“ú–{‚ÌƒIƒŠƒ“ƒsƒbƒN‘Iè‚ª‘–¯‰h—_Ü"));
+			wsprintf(messageEventTitle, TEXT("æ—¥æœ¬ã®ã‚ªãƒªãƒ³ãƒ”ãƒƒã‚¯é¸æ‰‹ãŒå›½æ°‘æ „èª‰è³"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1336,7 +1336,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 81) {
-			wsprintf(messageEventTitle, TEXT("lH’m”\‚ÌŠJ”­‚ğ‚·‚éŠé‹Æ‚Ö‚Ì•â•‹à§“x‚ªŒˆ’è"));
+			wsprintf(messageEventTitle, TEXT("äººå·¥çŸ¥èƒ½ã®é–‹ç™ºã‚’ã™ã‚‹ä¼æ¥­ã¸ã®è£œåŠ©é‡‘åˆ¶åº¦ãŒæ±ºå®š"));
 			companyAStockPriceChangeAmount = 4000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1344,7 +1344,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 82) {
-			wsprintf(messageEventTitle, TEXT("ƒAƒƒŠƒJ­•{‚ªŠCŠO‚©‚ç‚Ì—A“ü‚ğ‘å•‚É§ŒÀ"));
+			wsprintf(messageEventTitle, TEXT("ã‚¢ãƒ¡ãƒªã‚«æ”¿åºœãŒæµ·å¤–ã‹ã‚‰ã®è¼¸å…¥ã‚’å¤§å¹…ã«åˆ¶é™"));
 			companyAStockPriceChangeAmount = -7000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = -2000;
@@ -1352,7 +1352,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 83) {
-			wsprintf(messageEventTitle, TEXT("ƒKƒ\ƒŠƒ“‚ª‘å•‚É’lã‚°"));
+			wsprintf(messageEventTitle, TEXT("ã‚¬ã‚½ãƒªãƒ³ãŒå¤§å¹…ã«å€¤ä¸Šã’"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -2000;
@@ -1360,7 +1360,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 84) {
-			wsprintf(messageEventTitle, TEXT("“Œ‹‚Éæ‚è•¨”•¨ŠÙ‚ªƒI[ƒvƒ“"));
+			wsprintf(messageEventTitle, TEXT("æ±äº¬ã«ä¹—ã‚Šç‰©åšç‰©é¤¨ãŒã‚ªãƒ¼ãƒ—ãƒ³"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1368,7 +1368,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 1000;
 		}
 		if (XX == 85) {
-			wsprintf(messageEventTitle, TEXT("“Œ‹‚ÅƒsƒJƒ\“W‚ªŠJÃ"));
+			wsprintf(messageEventTitle, TEXT("æ±äº¬ã§ãƒ”ã‚«ã‚½å±•ãŒé–‹å‚¬"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1376,7 +1376,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 86) {
-			wsprintf(messageEventTitle, TEXT("ˆÀ‘Sã‚Ì–â‘è‚©‚çƒhƒ[ƒ“‚Ìg—p‚ª‹Ö~‚É"));
+			wsprintf(messageEventTitle, TEXT("å®‰å…¨ä¸Šã®å•é¡Œã‹ã‚‰ãƒ‰ãƒ­ãƒ¼ãƒ³ã®ä½¿ç”¨ãŒç¦æ­¢ã«"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1384,7 +1384,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 87) {
-			wsprintf(messageEventTitle, TEXT("‘åá‚Å¬“c‹ó`‚Ì”òs‹@‚ª1“ú’†Œ‡q"));
+			wsprintf(messageEventTitle, TEXT("å¤§é›ªã§æˆç”°ç©ºæ¸¯ã®é£›è¡Œæ©ŸãŒ1æ—¥ä¸­æ¬ èˆª"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1392,7 +1392,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -4000;
 		}
 		if (XX == 88) {
-			wsprintf(messageEventTitle, TEXT("” ª‚Å‰ÎR‚ª•¬‰Î"));
+			wsprintf(messageEventTitle, TEXT("ç®±æ ¹ã§ç«å±±ãŒå™´ç«"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1400,7 +1400,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -4000;
 		}
 		if (XX == 89) {
-			wsprintf(messageEventTitle, TEXT("ŠØ‘‚Ì‘å“—Ì‚ª’|“‡‚Éã—¤"));
+			wsprintf(messageEventTitle, TEXT("éŸ“å›½ã®å¤§çµ±é ˜ãŒç«¹å³¶ã«ä¸Šé™¸"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
 			companyCStockPriceChangeAmount = 000;
@@ -1408,7 +1408,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -3000;
 		}
 		if (XX == 90) {
-			wsprintf(messageEventTitle, TEXT("–kŠC“¹VŠ²ü‚ªŠJ’Ê"));
+			wsprintf(messageEventTitle, TEXT("åŒ—æµ·é“æ–°å¹¹ç·šãŒé–‹é€š"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1416,7 +1416,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 3000;
 		}
 		if (XX == 91) {
-			wsprintf(messageEventTitle, TEXT("ƒ}ƒOƒ‚ª—á”N‚Ì2”{”­¶"));
+			wsprintf(messageEventTitle, TEXT("ãƒã‚°ãƒ­ãŒä¾‹å¹´ã®2å€ç™ºç”Ÿ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1424,7 +1424,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 92) {
-			wsprintf(messageEventTitle, TEXT("ƒtƒBƒŠƒsƒ“‚ÅŒR–ƒN[ƒfƒ^[‚ª”­¶"));
+			wsprintf(messageEventTitle, TEXT("ãƒ•ã‚£ãƒªãƒ”ãƒ³ã§è»äº‹ã‚¯ãƒ¼ãƒ‡ã‚¿ãƒ¼ãŒç™ºç”Ÿ"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -2000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1432,7 +1432,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = -1000;
 		}
 		if (XX == 93) {
-			wsprintf(messageEventTitle, TEXT("—{B‚É‚æ‚éƒEƒiƒM‚Ì‘å—Ê¶Y‚ªn‚Ü‚é"));
+			wsprintf(messageEventTitle, TEXT("é¤Šæ®–ã«ã‚ˆã‚‹ã‚¦ãƒŠã‚®ã®å¤§é‡ç”Ÿç”£ãŒå§‹ã¾ã‚‹"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1440,7 +1440,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 2000;
 		}
 		if (XX == 94) {
-			wsprintf(messageEventTitle, TEXT("–¼ŒÃ‰®`‚ª2”{‚ÉL‚ª‚é"));
+			wsprintf(messageEventTitle, TEXT("åå¤å±‹æ¸¯ãŒ2å€ã«åºƒãŒã‚‹"));
 			companyAStockPriceChangeAmount = 6000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 000;
@@ -1448,7 +1448,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 95) {
-			wsprintf(messageEventTitle, TEXT("–¾“ú‚ÍƒoƒŒƒ“ƒ^ƒCƒ“ƒf[‚¾"));
+			wsprintf(messageEventTitle, TEXT("æ˜æ—¥ã¯ãƒãƒ¬ãƒ³ã‚¿ã‚¤ãƒ³ãƒ‡ãƒ¼ã "));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 3000;
@@ -1456,7 +1456,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 96) {
-			wsprintf(messageEventTitle, TEXT("‹“û‚Ì‰¿Ši‚ª‰º‚ª‚é"));
+			wsprintf(messageEventTitle, TEXT("ç‰›ä¹³ã®ä¾¡æ ¼ãŒä¸‹ãŒã‚‹"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1464,7 +1464,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 97) {
-			wsprintf(messageEventTitle, TEXT("‹“û‚Ì‰¿Ši‚ªã‚ª‚é"));
+			wsprintf(messageEventTitle, TEXT("ç‰›ä¹³ã®ä¾¡æ ¼ãŒä¸ŠãŒã‚‹"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = -1000;
@@ -1472,7 +1472,7 @@ void Data(const int XX) {
 			companyEStockPriceChangeAmount = 000;
 		}
 		if (XX == 98) {
-			wsprintf(messageEventTitle, TEXT("–{B‚Æ‹ãB‚ğŒ‹‚ÔV‚µ‚¢‹´‚ªŠ®¬"));
+			wsprintf(messageEventTitle, TEXT("æœ¬å·ã¨ä¹å·ã‚’çµã¶æ–°ã—ã„æ©‹ãŒå®Œæˆ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
 			companyCStockPriceChangeAmount = 1000;
@@ -1482,9 +1482,9 @@ void Data(const int XX) {
 		NE = XX;
 
 		if (XX == 1000) {
-			wsprintf(messageEventTitle, TEXT("ÅŒã‚ÌŠ”‰¿‚ğ•\¦‚µ‚Ä‚¢‚Ü‚·B"));
+			wsprintf(messageEventTitle, TEXT("æœ€å¾Œã®æ ªä¾¡ã‚’è¡¨ç¤ºã—ã¦ã„ã¾ã™ã€‚"));
 		}
-		wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nƒCƒxƒ“ƒg”Ô†G%d"), XX);
+		wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nã‚¤ãƒ™ãƒ³ãƒˆç•ªå·ï¼›%d"), XX);
 	}
 
 
@@ -1493,8 +1493,8 @@ void Data(const int XX) {
 }
 
 /**
-* ‚»‚ê‚¼‚ê‚ÌŠ”‰¿‚Ì•\¦‚ğ’S‚¤ŠÖ”
-* param@ A:Šé‹Æ‚Ì”Ô†(1~5), hWnd:ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹, rc:‰æ–Ê‘S‘Ì‚Ìƒrƒbƒgƒ}ƒbƒv’·•ûŒ`, hdc:ƒEƒBƒ“ƒhƒEƒRƒ“ƒeƒNƒXƒg
+* ãã‚Œãã‚Œã®æ ªä¾¡ã®è¡¨ç¤ºã‚’æ‹…ã†é–¢æ•°
+* param@ A:ä¼æ¥­ã®ç•ªå·(1~5), hWnd:ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«, rc:ç”»é¢å…¨ä½“ã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—é•·æ–¹å½¢, hdc:ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚³ãƒ³ãƒ†ã‚¯ã‚¹ãƒˆ
 */
 
 void Ftime(const int A, const RECT rc, const HDC hdc) {
@@ -1534,7 +1534,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc3.left = rc0.left + rc.right / 40;
 			rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
 			rc3.right = rc1.right - rc.right / 40;
-			wsprintf((LPWSTR)companyName, TEXT("ƒgƒˆƒ^©“®Ô"));
+			wsprintf((LPWSTR)companyName, TEXT("ãƒˆãƒ¨ã‚¿è‡ªå‹•è»Š"));
 			companyNameTitleColorRed = 204;
 		}
 		if (A == 2) {
@@ -1555,7 +1555,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc3.left = rc0.left + rc.right / 40;
 			rc3.bottom = rc.bottom / 2 - rc.bottom / 40;
 			rc3.right = rc1.right - rc.right / 40;
-			wsprintf((LPWSTR)companyName, TEXT("ƒ†ƒjƒNƒ"));
+			wsprintf((LPWSTR)companyName, TEXT("ãƒ¦ãƒ‹ã‚¯ãƒ­"));
 			companyNameTitleColorRed = 255;
 			companyNameTitleColorGreen = 255;
 		}
@@ -1576,7 +1576,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc3.left = rc0.left + rc.right / 40;
 			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
 			rc3.right = rc1.right - rc.right / 40;
-			wsprintf((LPWSTR)companyName, TEXT("X‰i»‰Ù"));
+			wsprintf((LPWSTR)companyName, TEXT("æ£®æ°¸è£½è“"));
 
 			companyNameTitleColorRed = 102;
 			companyNameTitleColorGreen = 255;
@@ -1599,7 +1599,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc3.left = rc0.left + rc.right / 40;
 			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
 			rc3.right = rc1.right - rc.right / 40;
-			wsprintf((LPWSTR)companyName, TEXT("ƒCƒg[ƒˆ[ƒJƒh["));
+			wsprintf((LPWSTR)companyName, TEXT("ã‚¤ãƒˆãƒ¼ãƒ¨ãƒ¼ã‚«ãƒ‰ãƒ¼"));
 			companyNameTitleColorRed = 51;
 			companyNameTitleColorGreen = 204;
 		}
@@ -1620,7 +1620,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			rc3.left = rc0.left + rc.right / 40;
 			rc3.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
 			rc3.right = rc1.right - rc.right / 40;
-			wsprintf((LPWSTR)companyName, TEXT("‚i‚s‚a"));
+			wsprintf((LPWSTR)companyName, TEXT("ï¼ªï¼´ï¼¢"));
 			companyNameTitleColorRed = 211;
 			companyNameTitleColorGreen = 211;
 			companyNameTitleColorBlue = 211;
@@ -1632,11 +1632,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		rc2.top += rc.bottom / 200;
 		rc2.top += rc.bottom / 200;
 		rc2.bottom += rc.bottom / 200;
-		wsprintf((LPWSTR)companyStockPrice, TEXT("Š”‰¿F%d"), stockPrices[A - 1][his - 1]);
+		wsprintf((LPWSTR)companyStockPrice, TEXT("æ ªä¾¡ï¼š%d"), stockPrices[A - 1][his - 1]);
 		wsprintf((LPWSTR)maxCompanyStockPrice, eachCompanyMaxStockPriceInPeriod[A * 2 - 2]);	//maxStockPriceInPeriod
 		wsprintf((LPWSTR)minCompanyStockPrice, eachCompanyMaxStockPriceInPeriod[A * 2 - 2]);	//minStockPriceInPeriod
 
-		/*‰Šú‚Ì˜g‚ğì‚éƒXƒNƒŠƒvƒgŠJn*/
+		/*åˆæœŸã®æ ã‚’ä½œã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆé–‹å§‹*/
 
 		for (int i = 0; i < his; i++) {
 			stockPriceChartGraphPoint[A - 1][i].x = (rc3.right - rc3.left) / (his) * (i + 1) + rc3.left - rc.right / 300;
@@ -1649,8 +1649,8 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			}
 		}
 
-		/*‰Šú‚Ì˜g‚ğì‚éƒXƒNƒŠƒvƒgI—¹*/
-		/*”šˆ—start*/
+		/*åˆæœŸã®æ ã‚’ä½œã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆçµ‚äº†*/
+		/*æ•°å­—å‡¦ç†start*/
 
 		SelectObject(hdc, hBrushW);
 		SelectObject(hdc, hPen3);
@@ -1691,7 +1691,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		SetTextColor(hdc, RGB(0, 0, 255));
 		DrawText(hdc, companyStockPrice, -1, &rc41, DT_CENTER);
 
-		/*”šˆ—end*/
+		/*æ•°å­—å‡¦ç†end*/
 
 		SelectObject(hdc, hPen2);
 
@@ -1724,7 +1724,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		rc4.top = rc.bottom / 60;
 		rc4.bottom = rc0.top;
 		rc4.right = rc.right / number * 2 * 2 - rc.right / 100;
-		/*Œvˆ—start*/
+		/*æ™‚è¨ˆå‡¦ç†start*/
 		TCHAR sur[10];
 		SelectObject(hdc, hFont2);
 		wsprintf(sur, TEXT("%3d"), currentRemainingTime / 1000);
@@ -1743,11 +1743,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 
 		Rectangle(hdc, rc4.right - (limitedTime - currentRemainingTime) * (rc4.right - rc4.left) / limitedTime, rc4.top, rc4.right, rc4.bottom);
 
-		/*Œvˆ—end*/
-		/*ƒjƒ…[ƒXˆ—start*/
+		/*æ™‚è¨ˆå‡¦ç†end*/
+		/*ãƒ‹ãƒ¥ãƒ¼ã‚¹å‡¦ç†start*/
 		SelectObject(hdc, hFont1);
 		SetTextColor(hdc, RGB(153, 102, 0));
-		TextOut(hdc, rc1.right + rc.right / 50, rc4.top + rc4.top * 3, TEXT("`ƒjƒ…[ƒX`"), lstrlen(TEXT("`ƒjƒ…[ƒX`")));
+		TextOut(hdc, rc1.right + rc.right / 50, rc4.top + rc4.top * 3, TEXT("ï½ãƒ‹ãƒ¥ãƒ¼ã‚¹ï½"), lstrlen(TEXT("ï½ãƒ‹ãƒ¥ãƒ¼ã‚¹ï½")));
 
 		rc6.top = rc0.bottom + rc.bottom / 40;
 		rc6.left = rc0.left + rc.right / 160 + rc.right / 3;
@@ -1765,7 +1765,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 			SelectObject(hdc, hBrushw);
 			Rectangle(hdc, rc0.left, rc0.top, rc1.right, rc3.bottom);
 			SelectObject(hdc, hFont2);
-			wsprintf((LPWSTR)messageCompanyBankruptcy, TEXT("\n‚±‚Ì‰ïĞ‚Í“|Y‚µ‚Ü‚µ‚½B\nŠ”‚ÌƒJ[ƒh‚ğƒ{[ƒh‚É–ß‚µ‚Ä‚­‚¾‚³‚¢B"));
+			wsprintf((LPWSTR)messageCompanyBankruptcy, TEXT("\nã“ã®ä¼šç¤¾ã¯å€’ç”£ã—ã¾ã—ãŸã€‚\næ ªã®ã‚«ãƒ¼ãƒ‰ã‚’ãƒœãƒ¼ãƒ‰ã«æˆ»ã—ã¦ãã ã•ã„ã€‚"));
 			DrawText(hdc, messageCompanyBankruptcy, -1, &rc3, DT_CENTER);
 		}
 	}
