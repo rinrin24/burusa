@@ -676,7 +676,7 @@ HFONT MyCreateFont(int nHeight, DWORD dwCharSet, LPCTSTR lpName)
 		lpName));
 }
 
-void Data(const int XX) {
+void Data(const int eventNumber) {
 	if (EV < his + 3) {
 		companyAStockPriceChangeAmount = (rand() % 7 - 3) * 700;
 		companyBStockPriceChangeAmount = (rand() % 7 - 3) * 700;
@@ -687,7 +687,7 @@ void Data(const int XX) {
 
 	}
 	else {
-		if (XX == 0) {
+		if (eventNumber == 0) {
 			wsprintf(messageEventTitle, TEXT("本州と九州を結ぶ新しい橋が完成"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -695,7 +695,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 1) {
+		if (eventNumber == 1) {
 			wsprintf(messageEventTitle, TEXT("南海トラフ地震が発生"));
 			companyAStockPriceChangeAmount = -0;
 			companyBStockPriceChangeAmount = -3000;
@@ -703,7 +703,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -3000;
 			companyEStockPriceChangeAmount = -5000;
 		}
-		if (XX == 2) {
+		if (eventNumber == 2) {
 			wsprintf(messageEventTitle, TEXT("タイで大洪水が発生"));
 			companyAStockPriceChangeAmount = -4000;
 			companyBStockPriceChangeAmount = -1000;
@@ -711,7 +711,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -2000;
 		}
-		if (XX == 3) {
+		if (eventNumber == 3) {
 			wsprintf(messageEventTitle, TEXT("日本全国で米が不作"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -719,7 +719,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -2000;
 			companyEStockPriceChangeAmount = -1000;
 		}
-		if (XX == 4) {
+		if (eventNumber == 4) {
 			wsprintf(messageEventTitle, TEXT("愛知県に巨大台風が上陸"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -1000;
@@ -727,7 +727,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -1000;
 		}
-		if (XX == 5) {
+		if (eventNumber == 5) {
 			wsprintf(messageEventTitle, TEXT("ハワイで大規模な火山噴火"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -735,7 +735,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -5000;
 		}
-		if (XX == 6) {
+		if (eventNumber == 6) {
 			wsprintf(messageEventTitle, TEXT("九州地方で地震が発生"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -1000;
@@ -743,7 +743,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -2000;
 		}
-		if (XX == 7) {
+		if (eventNumber == 7) {
 			wsprintf(messageEventTitle, TEXT("京都が集中豪雨で大きな被害"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = 000;
@@ -751,7 +751,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -2000;
 		}
-		if (XX == 8) {
+		if (eventNumber == 8) {
 			wsprintf(messageEventTitle, TEXT("鎌倉が世界遺産に"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -759,7 +759,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 9) {
+		if (eventNumber == 9) {
 			wsprintf(messageEventTitle, TEXT("富士山が世界遺産に"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -767,7 +767,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 10) {
+		if (eventNumber == 10) {
 			wsprintf(messageEventTitle, TEXT("日本を訪れる外国人が3000万人を超える"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
@@ -775,7 +775,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 6000;
 		}
-		if (XX == 11) {
+		if (eventNumber == 11) {
 			wsprintf(messageEventTitle, TEXT("伊勢志摩サミットが開催"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 000;
@@ -783,7 +783,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 12) {
+		if (eventNumber == 12) {
 			wsprintf(messageEventTitle, TEXT("フランスでテロ"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = 000;
@@ -791,7 +791,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -4000;
 		}
-		if (XX == 13) {
+		if (eventNumber == 13) {
 			wsprintf(messageEventTitle, TEXT("電気料金が値上げ"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -1000;
@@ -799,7 +799,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -2000;
 			companyEStockPriceChangeAmount = -1000;
 		}
-		if (XX == 14) {
+		if (eventNumber == 14) {
 			wsprintf(messageEventTitle, TEXT("石油の値段が上がる"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
@@ -807,7 +807,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 15) {
+		if (eventNumber == 15) {
 			wsprintf(messageEventTitle, TEXT("石油の値段が下がる"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
@@ -815,7 +815,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 16) {
+		if (eventNumber == 16) {
 			wsprintf(messageEventTitle, TEXT("鉄の値段が上がる"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = 000;
@@ -823,7 +823,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 17) {
+		if (eventNumber == 17) {
 			wsprintf(messageEventTitle, TEXT("鉄の値段が下がる"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 000;
@@ -831,7 +831,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 18) {
+		if (eventNumber == 18) {
 			wsprintf(messageEventTitle, TEXT("今年の冬は暖冬になると予想"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = -2000;
@@ -839,7 +839,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = -1000;
 		}
-		if (XX == 19) {
+		if (eventNumber == 19) {
 			wsprintf(messageEventTitle, TEXT("今年の夏は過去最高の猛暑になると予想"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
@@ -847,7 +847,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 1000;
 		}
-		if (XX == 20) {
+		if (eventNumber == 20) {
 			wsprintf(messageEventTitle, TEXT("北陸新幹線が開通"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -855,7 +855,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 21) {
+		if (eventNumber == 21) {
 			wsprintf(messageEventTitle, TEXT("海外で日本食ブーム"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -863,7 +863,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 22) {
+		if (eventNumber == 22) {
 			wsprintf(messageEventTitle, TEXT("日本を舞台にしたディズニー映画が大ヒット"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
@@ -871,7 +871,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 23) {
+		if (eventNumber == 23) {
 			wsprintf(messageEventTitle, TEXT("ハワイでテロ"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
@@ -879,7 +879,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -5000;
 		}
-		if (XX == 24) {
+		if (eventNumber == 24) {
 			wsprintf(messageEventTitle, TEXT("ドローンの新技術が開発"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
@@ -887,7 +887,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 25) {
+		if (eventNumber == 25) {
 			wsprintf(messageEventTitle, TEXT("錦織圭がオリンピックで金メダル"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 5000;
@@ -895,7 +895,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 26) {
+		if (eventNumber == 26) {
 			wsprintf(messageEventTitle, TEXT("中国の軍艦と日本の漁船が衝突"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -3000;
@@ -903,7 +903,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 27) {
+		if (eventNumber == 27) {
 			wsprintf(messageEventTitle, TEXT("日本海で大量の石油が発見"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 2000;
@@ -911,7 +911,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 28) {
+		if (eventNumber == 28) {
 			wsprintf(messageEventTitle, TEXT("富士山噴火の危険が高まる"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -919,7 +919,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 29) {
+		if (eventNumber == 29) {
 			wsprintf(messageEventTitle, TEXT("中国で日本製品が大ブーム"));
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 4000;
@@ -927,7 +927,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 30) {
+		if (eventNumber == 30) {
 			wsprintf(messageEventTitle, TEXT("中国人の爆買いが流行"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
@@ -936,14 +936,14 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 3000;
 			companyEStockPriceChangeAmount = 5000;
 		}
-		if (XX == 31) {
+		if (eventNumber == 31) {
 			wsprintf(messageEventTitle, TEXT("首相が靖国神社参拝"));
 			companyAStockPriceChangeAmount = -4000;
 			companyCStockPriceChangeAmount = -1000;
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 32) {
+		if (eventNumber == 32) {
 			wsprintf(messageEventTitle, TEXT("「石油が20年後に無くなる」と国連が発表"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = -2000;
@@ -951,7 +951,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -3000;
 			companyEStockPriceChangeAmount = -5000;
 		}
-		if (XX == 33) {
+		if (eventNumber == 33) {
 			wsprintf(messageEventTitle, TEXT("中国が歴史問題を理由に日中間の往来を制限"));
 			companyAStockPriceChangeAmount = -4000;
 			companyBStockPriceChangeAmount = -4000;
@@ -959,7 +959,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -2000;
 			companyEStockPriceChangeAmount = -6000;
 		}
-		if (XX == 34) {
+		if (eventNumber == 34) {
 			wsprintf(messageEventTitle, TEXT("日本で中華料理が大ブーム"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
@@ -967,7 +967,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 35) {
+		if (eventNumber == 35) {
 			wsprintf(messageEventTitle, TEXT("イタリアで大地震が発生"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -975,7 +975,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 36) {
+		if (eventNumber == 36) {
 			wsprintf(messageEventTitle, TEXT("消費税が15％に増税"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -2000;
@@ -983,7 +983,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -2000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 37) {
+		if (eventNumber == 37) {
 			wsprintf(messageEventTitle, TEXT("韓国で新型インフルエンザが大流行"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
@@ -991,7 +991,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 38) {
+		if (eventNumber == 38) {
 			wsprintf(messageEventTitle, TEXT("本州で大規模な停電"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -2000;
@@ -999,7 +999,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -3000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 39) {
+		if (eventNumber == 39) {
 			wsprintf(messageEventTitle, TEXT("サッカーワールドカップが大阪で開催"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
@@ -1007,7 +1007,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 4000;
 		}
-		if (XX == 40) {
+		if (eventNumber == 40) {
 			wsprintf(messageEventTitle, TEXT("広島で土砂災害"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
@@ -1015,7 +1015,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -1000;
 		}
-		if (XX == 41) {
+		if (eventNumber == 41) {
 			wsprintf(messageEventTitle, TEXT("エボラ出血熱がヨーロッパで大流行"));
 			companyAStockPriceChangeAmount = -5000;
 			companyBStockPriceChangeAmount = -2000;
@@ -1023,7 +1023,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -2000;
 			companyEStockPriceChangeAmount = -7000;
 		}
-		if (XX == 42) {
+		if (eventNumber == 42) {
 			wsprintf(messageEventTitle, TEXT("高速道路料金が無料に"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 1000;
@@ -1031,7 +1031,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 43) {
+		if (eventNumber == 43) {
 			wsprintf(messageEventTitle, TEXT("新幹線の事故が相次ぐ"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 000;
@@ -1039,7 +1039,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -2000;
 		}
-		if (XX == 44) {
+		if (eventNumber == 44) {
 			wsprintf(messageEventTitle, TEXT("北朝鮮のミサイルが神奈川県沖に落下"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -3000;
@@ -1047,7 +1047,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -3000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 45) {
+		if (eventNumber == 45) {
 			wsprintf(messageEventTitle, TEXT("上野動物園でパンダの赤ちゃんが生まれる"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
@@ -1055,7 +1055,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 46) {
+		if (eventNumber == 46) {
 			wsprintf(messageEventTitle, TEXT("富岡製糸場が世界遺産に"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
@@ -1063,7 +1063,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 47) {
+		if (eventNumber == 47) {
 			wsprintf(messageEventTitle, TEXT("リニアモーターカーが開通"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1071,7 +1071,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 4000;
 		}
-		if (XX == 48) {
+		if (eventNumber == 48) {
 			wsprintf(messageEventTitle, TEXT("成田国際空港の国際線が2倍に増える"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1079,7 +1079,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 5000;
 		}
-		if (XX == 49) {
+		if (eventNumber == 49) {
 			wsprintf(messageEventTitle, TEXT("中東で大規模な反政府デモ"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -2000;
@@ -1087,7 +1087,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -2000;
 		}
-		if (XX == 50) {
+		if (eventNumber == 50) {
 			wsprintf(messageEventTitle, TEXT("インドの道路が整備される"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 2000;
@@ -1095,7 +1095,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 51) {
+		if (eventNumber == 51) {
 			wsprintf(messageEventTitle, TEXT("アメリカが「30年でCO2排出量を半分にする」と発表"));
 			companyAStockPriceChangeAmount = 7000;
 			companyBStockPriceChangeAmount = 000;
@@ -1103,7 +1103,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 52) {
+		if (eventNumber == 52) {
 			wsprintf(messageEventTitle, TEXT("野菜の価格が昨年の2倍に"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1111,7 +1111,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -2000;
 			companyEStockPriceChangeAmount = -1000;
 		}
-		if (XX == 53) {
+		if (eventNumber == 53) {
 			wsprintf(messageEventTitle, TEXT("デング熱の大流行により東南アジアへの渡航が制限"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -3000;
@@ -1119,7 +1119,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 54) {
+		if (eventNumber == 54) {
 			wsprintf(messageEventTitle, TEXT("ソマリアの海賊が消滅"));
 			companyAStockPriceChangeAmount = 2000;
 			companyBStockPriceChangeAmount = 2000;
@@ -1127,7 +1127,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 1000;
 		}
-		if (XX == 55) {
+		if (eventNumber == 55) {
 			wsprintf(messageEventTitle, TEXT("日本の人口が増加"));
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 4000;
@@ -1135,7 +1135,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 3000;
 			companyEStockPriceChangeAmount = 4000;
 		}
-		if (XX == 56) {
+		if (eventNumber == 56) {
 			wsprintf(messageEventTitle, TEXT("札幌オリンピック開催が決定"));
 			companyAStockPriceChangeAmount = 4000;
 			companyBStockPriceChangeAmount = 3000;
@@ -1143,7 +1143,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 4000;
 		}
-		if (XX == 57) {
+		if (eventNumber == 57) {
 			wsprintf(messageEventTitle, TEXT("東京スカイツリーが事故により営業を停止"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1151,7 +1151,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -2000;
 		}
-		if (XX == 58) {
+		if (eventNumber == 58) {
 			wsprintf(messageEventTitle, TEXT("ガソリン税が廃止"));
 			companyAStockPriceChangeAmount = 4000;
 			companyBStockPriceChangeAmount = 1000;
@@ -1159,7 +1159,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 4000;
 		}
-		if (XX == 59) {
+		if (eventNumber == 59) {
 			wsprintf(messageEventTitle, TEXT("ディズニーランドにリニューアルオープン"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
@@ -1167,7 +1167,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 60) {
+		if (eventNumber == 60) {
 			wsprintf(messageEventTitle, TEXT("石油の新しい採掘方法が開発"));
 			companyAStockPriceChangeAmount = 3000;
 			companyBStockPriceChangeAmount = 1000;
@@ -1175,7 +1175,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 61) {
+		if (eventNumber == 61) {
 			wsprintf(messageEventTitle, TEXT("燃費不正問題でヨーロッパの大手自動車メーカーが倒産"));
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 000;
@@ -1183,7 +1183,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 62) {
+		if (eventNumber == 62) {
 			wsprintf(messageEventTitle, TEXT("アメリカの大統領が広島訪問"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1191,7 +1191,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 63) {
+		if (eventNumber == 63) {
 			wsprintf(messageEventTitle, TEXT("コーヒー豆の値段が下がる"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1199,7 +1199,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 64) {
+		if (eventNumber == 64) {
 			wsprintf(messageEventTitle, TEXT("国連が「排気ガスを40年間で50％削減する」と発表"));
 			companyAStockPriceChangeAmount = 6000;
 			companyBStockPriceChangeAmount = 000;
@@ -1207,7 +1207,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 65) {
+		if (eventNumber == 65) {
 			wsprintf(messageEventTitle, TEXT("アメリカで忍者ブーム"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1215,7 +1215,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 66) {
+		if (eventNumber == 66) {
 			wsprintf(messageEventTitle, TEXT("中国で大規模な反日デモ"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -3000;
@@ -1223,7 +1223,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 67) {
+		if (eventNumber == 67) {
 			wsprintf(messageEventTitle, TEXT("ヨーロッパで日本のファッションが注目"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 5000;
@@ -1231,7 +1231,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 68) {
+		if (eventNumber == 68) {
 			wsprintf(messageEventTitle, TEXT("新国立競技場が完成"));
 			companyAStockPriceChangeAmount = 5000;
 			companyBStockPriceChangeAmount = 5000;
@@ -1239,7 +1239,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 5000;
 			companyEStockPriceChangeAmount = 5000;
 		}
-		if (XX == 69) {
+		if (eventNumber == 69) {
 			wsprintf(messageEventTitle, TEXT("政府が「50年間で日本の車の半分をエコカーにする」と発表"));
 			companyAStockPriceChangeAmount = 7000;
 			companyBStockPriceChangeAmount = 000;
@@ -1247,7 +1247,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 70) {
+		if (eventNumber == 70) {
 			wsprintf(messageEventTitle, TEXT("東南アジアで低価格の洋服が流行"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 4000;
@@ -1255,7 +1255,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 71) {
+		if (eventNumber == 71) {
 			wsprintf(messageEventTitle, TEXT("「チョコレートががん予防になる」という研究結果が発表"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1263,7 +1263,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 72) {
+		if (eventNumber == 72) {
 			wsprintf(messageEventTitle, TEXT("アメリカでとんこつラーメンが大ヒット"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1271,7 +1271,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 73) {
+		if (eventNumber == 73) {
 			wsprintf(messageEventTitle, TEXT("冷凍食品による食中毒が多発"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1279,7 +1279,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -3000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 74) {
+		if (eventNumber == 74) {
 			wsprintf(messageEventTitle, TEXT("スターウォーズの新作が公開"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 1000;
@@ -1287,7 +1287,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 1000;
 		}
-		if (XX == 75) {
+		if (eventNumber == 75) {
 			wsprintf(messageEventTitle, TEXT("大手企業が会員の個人情報を流出"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -1000;
@@ -1295,7 +1295,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -2000;
 			companyEStockPriceChangeAmount = -2000;
 		}
-		if (XX == 76) {
+		if (eventNumber == 76) {
 			wsprintf(messageEventTitle, TEXT("日本の化粧品の新商品がアジアでヒット"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1303,7 +1303,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 77) {
+		if (eventNumber == 77) {
 			wsprintf(messageEventTitle, TEXT("サウジアラビアで自爆テロが多発"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -2000;
@@ -1311,7 +1311,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -2000;
 		}
-		if (XX == 78) {
+		if (eventNumber == 78) {
 			wsprintf(messageEventTitle, TEXT("中国の人件費が上がる"));
 			companyAStockPriceChangeAmount = -2000;
 			companyBStockPriceChangeAmount = -3000;
@@ -1319,7 +1319,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -1000;
 		}
-		if (XX == 79) {
+		if (eventNumber == 79) {
 			wsprintf(messageEventTitle, TEXT("駄菓子メーカーの賞味期限偽装が発覚"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1327,7 +1327,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 80) {
+		if (eventNumber == 80) {
 			wsprintf(messageEventTitle, TEXT("日本のオリンピック選手が国民栄誉賞"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 1000;
@@ -1335,7 +1335,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 1000;
 		}
-		if (XX == 81) {
+		if (eventNumber == 81) {
 			wsprintf(messageEventTitle, TEXT("人工知能の開発をする企業への補助金制度が決定"));
 			companyAStockPriceChangeAmount = 4000;
 			companyBStockPriceChangeAmount = 000;
@@ -1343,7 +1343,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 1000;
 		}
-		if (XX == 82) {
+		if (eventNumber == 82) {
 			wsprintf(messageEventTitle, TEXT("アメリカ政府が海外からの輸入を大幅に制限"));
 			companyAStockPriceChangeAmount = -7000;
 			companyBStockPriceChangeAmount = -1000;
@@ -1351,7 +1351,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 83) {
+		if (eventNumber == 83) {
 			wsprintf(messageEventTitle, TEXT("ガソリンが大幅に値上げ"));
 			companyAStockPriceChangeAmount = -3000;
 			companyBStockPriceChangeAmount = -2000;
@@ -1359,7 +1359,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -3000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 84) {
+		if (eventNumber == 84) {
 			wsprintf(messageEventTitle, TEXT("東京に乗り物博物館がオープン"));
 			companyAStockPriceChangeAmount = 1000;
 			companyBStockPriceChangeAmount = 000;
@@ -1367,7 +1367,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 1000;
 		}
-		if (XX == 85) {
+		if (eventNumber == 85) {
 			wsprintf(messageEventTitle, TEXT("東京でピカソ展が開催"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1375,7 +1375,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 86) {
+		if (eventNumber == 86) {
 			wsprintf(messageEventTitle, TEXT("安全上の問題からドローンの使用が禁止に"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = 000;
@@ -1383,7 +1383,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 87) {
+		if (eventNumber == 87) {
 			wsprintf(messageEventTitle, TEXT("大雪で成田空港の飛行機が1日中欠航"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1391,7 +1391,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -4000;
 		}
-		if (XX == 88) {
+		if (eventNumber == 88) {
 			wsprintf(messageEventTitle, TEXT("箱根で火山が噴火"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1399,7 +1399,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -4000;
 		}
-		if (XX == 89) {
+		if (eventNumber == 89) {
 			wsprintf(messageEventTitle, TEXT("韓国の大統領が竹島に上陸"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -1000;
@@ -1407,7 +1407,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = -3000;
 		}
-		if (XX == 90) {
+		if (eventNumber == 90) {
 			wsprintf(messageEventTitle, TEXT("北海道新幹線が開通"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1415,7 +1415,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		if (XX == 91) {
+		if (eventNumber == 91) {
 			wsprintf(messageEventTitle, TEXT("マグロが例年の2倍発生"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1423,7 +1423,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 92) {
+		if (eventNumber == 92) {
 			wsprintf(messageEventTitle, TEXT("フィリピンで軍事クーデターが発生"));
 			companyAStockPriceChangeAmount = -1000;
 			companyBStockPriceChangeAmount = -2000;
@@ -1431,7 +1431,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = -1000;
 		}
-		if (XX == 93) {
+		if (eventNumber == 93) {
 			wsprintf(messageEventTitle, TEXT("養殖によるウナギの大量生産が始まる"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1439,7 +1439,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 2000;
 		}
-		if (XX == 94) {
+		if (eventNumber == 94) {
 			wsprintf(messageEventTitle, TEXT("名古屋港が2倍に広がる"));
 			companyAStockPriceChangeAmount = 6000;
 			companyBStockPriceChangeAmount = 000;
@@ -1447,7 +1447,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 95) {
+		if (eventNumber == 95) {
 			wsprintf(messageEventTitle, TEXT("明日はバレンタインデーだ"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1455,7 +1455,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 2000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 96) {
+		if (eventNumber == 96) {
 			wsprintf(messageEventTitle, TEXT("牛乳の価格が下がる"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1463,7 +1463,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 97) {
+		if (eventNumber == 97) {
 			wsprintf(messageEventTitle, TEXT("牛乳の価格が上がる"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1471,7 +1471,7 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = -1000;
 			companyEStockPriceChangeAmount = 000;
 		}
-		if (XX == 98) {
+		if (eventNumber == 98) {
 			wsprintf(messageEventTitle, TEXT("本州と九州を結ぶ新しい橋が完成"));
 			companyAStockPriceChangeAmount = 000;
 			companyBStockPriceChangeAmount = 000;
@@ -1479,12 +1479,12 @@ void Data(const int XX) {
 			companyDStockPriceChangeAmount = 1000;
 			companyEStockPriceChangeAmount = 3000;
 		}
-		NE = XX;
+		NE = eventNumber;
 
-		if (XX == 1000) {
+		if (eventNumber == 1000) {
 			wsprintf(messageEventTitle, TEXT("最後の株価を表示しています。"));
 		}
-		wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), XX);
+		wsprintf(messageEventNumber, TEXT("\n\n\n\n\n\nイベント番号；%d"), eventNumber);
 	}
 
 
