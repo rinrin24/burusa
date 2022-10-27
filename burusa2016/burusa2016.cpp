@@ -416,35 +416,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 				o = 0;
 
-				/**goto文を使っています。注意！**/
-
-			loop:
+			while (true) {
 				XX = rand() % nD;
-
-				/*if (XX == 108) {
-					goto loop;
-				}
-				if (XX == 110) {
-					goto loop;
-				}
-				if (XX == 111) {
-					goto loop;
-				}
-				if (XX == 112) {
-					goto loop;
-				}
-				if (XX >= 123 && XX <= 130) {
-					goto loop;
-				}*/
-
-
 				if (nLOOP[XX] == true) {
 					o++;
 					if (o == 1000000) {
 						Data(1000);
-						goto out;
+						break;
 					}
-					goto loop;
+					continue;
 				}
 				if (!(EV < his + 3)) {
 					nLOOP[XX] = true;
@@ -457,156 +437,95 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						Data(XX);
 					}
 				}
-			out:
-				/*
-				try {
-					while (true) {
-						XX = rand() % nD;
-						if (XX == 108) {
-							throw std::string(std::to_string(XX));
-							continue;
-						}
-						if (XX == 110) {
-							throw std::string(std::to_string(XX));
-							continue;
-						}
-						if (XX == 111) {
-							throw std::string(std::to_string(XX));
-							continue;
-						}
-						if (XX == 112) {
-							throw std::string(std::to_string(XX));
-							continue;
-						}
-						if (XX >= 123 && XX <= 130) {
-							throw std::string(std::to_string(XX));
-							continue;
-						}
+				break;
+			}
+			o = 1;
 
-
-						if (nLOOP[XX] == 1) {
-							o++;
-							if (o == 1000000) {
-								Data(1000);
-								break;
-							}
-							continue;
-						}
-						if (!(EV < his + 3)) {
-							nLOOP[XX] = 1;
-						}
-						if (!(EV < his + 3)) {
-							if (NE == 36) {
-								Data(34);
-								nLOOP[34] = 1;
-								NE = 0;
-							}
-							else {
-								Data(XX);
-							}
-						}
+			for (q = 0; q < 5; q++) {
+				for (o = 0; o < his; o++) {
+					stockPrices[q][o] = stockPrices[q][o + 1];
+				}
+				for (o = 0; o < his; o++) {
+					if (o == 0) {
+						maxStockPriceInPeriod = stockPrices[q][o];
+					}
+					else if (stockPrices[q][o] > maxStockPriceInPeriod) {
+						maxStockPriceInPeriod = stockPrices[q][o];
 					}
 				}
-				catch (std::string errorMessage) {
-					std::cout << errorMessage << std::endl;
-				}*/
-				o = 1;
-				/**goto文を使っています。注意！**/
-
-				/////////////////////////////////////////////////////////////
-
-				for (q = 0; q < 5; q++) {
-
-					for (o = 0; o < his; o++) {
-						stockPrices[q][o] = stockPrices[q][o + 1];
+				for (o = 0; o < his; o++) {
+					if (o == 0) {
+						minStockPriceInPeriod = stockPrices[q][o];
 					}
-
-					for (o = 0; o < his; o++) {
-						if (o == 0) {
-							maxStockPriceInPeriod = stockPrices[q][o];
-						}
-						else if (stockPrices[q][o] > maxStockPriceInPeriod) {
-							maxStockPriceInPeriod = stockPrices[q][o];
-						}
+					else if (stockPrices[q][o] < minStockPriceInPeriod) {
+						minStockPriceInPeriod = stockPrices[q][o];
 					}
-
-					for (o = 0; o < his; o++) {
-						if (o == 0) {
-							minStockPriceInPeriod = stockPrices[q][o];
-						}
-						else if (stockPrices[q][o] < minStockPriceInPeriod) {
-							minStockPriceInPeriod = stockPrices[q][o];
-						}
-					}
-
-					if (maxStockPriceInPeriod != minStockPriceInPeriod) {
-						if (q < 2) {
-							for (o = 0; o < his; o++) {
-								i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
-								stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100;
-							}
-						}
-						else {
-							for (o = 0; o < his; o++) {
-								i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
-								stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100 + clientRectangle.bottom / 2;
-							}
+				}
+				if (maxStockPriceInPeriod != minStockPriceInPeriod) {
+					if (q < 2) {
+						for (o = 0; o < his; o++) {
+							i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+							stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100;
 						}
 					}
 					else {
-						if (q < 2) {
-							for (o = 0; o < his; o++) {
-								stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
-							}
-						}
-						else {
-							for (o = 0; o < his; o++) {
-								stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
-							}
+						for (o = 0; o < his; o++) {
+							i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+							stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100 + clientRectangle.bottom / 2;
 						}
 					}
-
-					wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), maxStockPriceInPeriod);
-					wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), minStockPriceInPeriod);
-
 				}
+				else {
+					if (q < 2) {
+						for (o = 0; o < his; o++) {
+							stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
+						}
+					}
+					else {
+						for (o = 0; o < his; o++) {
+							stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
+						}
+					}
+				}
+				wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), maxStockPriceInPeriod);
+				wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), minStockPriceInPeriod);
 
-				currentRemainingTime = limitedTime;
+			}
 
-				/*Unknown*/
-				stockPrices[0][his] = stockPrices[0][his - 1] + companyAStockPriceChangeAmount;
-				stockPrices[1][his] = stockPrices[1][his - 1] + companyBStockPriceChangeAmount;
-				stockPrices[2][his] = stockPrices[2][his - 1] + companyCStockPriceChangeAmount;
-				stockPrices[3][his] = stockPrices[3][his - 1] + companyDStockPriceChangeAmount;
-				stockPrices[4][his] = stockPrices[4][his - 1] + companyEStockPriceChangeAmount;
+			currentRemainingTime = limitedTime;
 
-				/*Unknown*/
+			/*Unknown*/
+			stockPrices[0][his] = stockPrices[0][his - 1] + companyAStockPriceChangeAmount;
+			stockPrices[1][his] = stockPrices[1][his - 1] + companyBStockPriceChangeAmount;
+			stockPrices[2][his] = stockPrices[2][his - 1] + companyCStockPriceChangeAmount;
+			stockPrices[3][his] = stockPrices[3][his - 1] + companyDStockPriceChangeAmount;
+			stockPrices[4][his] = stockPrices[4][his - 1] + companyEStockPriceChangeAmount;
+			/*Unknown*/
 
-				/*為替+ニュースまとめstart*/
+			/*為替+ニュースまとめstart*/
+
+			for (o = 0; o < 5; o++) {
+				q = stockPrices[o][stockPriceChartGraphPointNumber] % 1000;
+				if (q >= 500) {
+					stockPrices[o][stockPriceChartGraphPointNumber] += 1000;
+				}
+				stockPrices[o][stockPriceChartGraphPointNumber] -= q;
+			}
+
+			if (EV < his + 3) {
+				for (o = 0; o < 5; o++) {
+					if (stockPrices[o][stockPriceChartGraphPointNumber] < 12000) {
+						stockPrices[o][stockPriceChartGraphPointNumber] = 12000;
+					}
+				}
 
 				for (o = 0; o < 5; o++) {
-					q = stockPrices[o][stockPriceChartGraphPointNumber] % 1000;
-					if (q >= 500) {
-						stockPrices[o][stockPriceChartGraphPointNumber] += 1000;
+					if (stockPrices[o][stockPriceChartGraphPointNumber] > 18000) {
+						stockPrices[o][stockPriceChartGraphPointNumber] = 18000;
 					}
-					stockPrices[o][stockPriceChartGraphPointNumber] -= q;
 				}
-
-				if (EV < his + 3) {
-					for (o = 0; o < 5; o++) {
-						if (stockPrices[o][stockPriceChartGraphPointNumber] < 12000) {
-							stockPrices[o][stockPriceChartGraphPointNumber] = 12000;
-						}
-					}
-
-					for (o = 0; o < 5; o++) {
-						if (stockPrices[o][stockPriceChartGraphPointNumber] > 18000) {
-							stockPrices[o][stockPriceChartGraphPointNumber] = 18000;
-						}
-					}
-
-				}
-				if (EV > stockPriceChartGraphPointNumber - 2) {
+			}
+			if (EV > stockPriceChartGraphPointNumber - 2) {
 					for (o = 0; o < 5; o++) {
 						if (stockPrices[o][his - 1] < 100) {
 							AS[o] = 2;
