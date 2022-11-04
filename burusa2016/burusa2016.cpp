@@ -191,23 +191,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		limitedTime = 10000;
 		currentRemainingTime = limitedTime;
 		XO = true;
-		rc0.left = 0;
-		rc0.top = clientRectangle.bottom / 16;
-		rc0.right = clientRectangle.right / cellNumber;
-		rc0.bottom = clientRectangle.bottom / 9;
-		rc1.left = rc0.right;
-		rc1.top = rc0.top;
-		rc1.right = clientRectangle.right / cellNumber * 2;
-		rc1.bottom = rc0.bottom;
-		rc2.top = 2;
-		rc2.left = 2;
-		rc2.bottom = rc0.top - clientRectangle.bottom / 80;
-		rc2.right = rc1.right;
-		rc3.top = rc0.bottom + clientRectangle.bottom / 40;
-		rc3.left = rc0.left + clientRectangle.right / 160;
-		rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
-		rc3.right = rc1.right - clientRectangle.right / 35;
-
+		rc0 = RECT{ 0, clientRectangle.bottom / 16, clientRectangle.right / cellNumber, clientRectangle.bottom / 9 };
+		rc1 = RECT{ rc0.right , rc0.top, clientRectangle.right / cellNumber * 2, rc0.bottom };
+		rc2 = RECT{ 2, 2, rc0.top - clientRectangle.bottom / 80 , rc1.right };
+		rc3 = RECT{ rc0.bottom + clientRectangle.bottom / 40, rc0.left + clientRectangle.right / 160, clientRectangle.bottom / 2 - clientRectangle.bottom / 40, rc3.right = rc1.right - clientRectangle.right / 35 };
 		/*それぞれの全期間での株価の初期化*/
 		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[0][o] = 15000;
