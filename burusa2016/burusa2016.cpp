@@ -165,7 +165,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 	int i, q;
 	i = 0;
-	int o;
 	int id;
 
 	static int maxStockPriceInPeriod, minStockPriceInPeriod;
@@ -392,13 +391,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					stockPrices[4][his] = 15000;
 				}
 
-				o = 0;
-
-				while (true) {
+				for (int j = 0;true;) {
 					XX = rand() % nD;
 					if (nLOOP[XX] == true) {
-						o++;
-						if (o == 1000000) {
+						j++;
+						if (j == 1000000) {
 							Data(1000);
 							break;
 						}
@@ -417,7 +414,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					}
 					break;
 				}
-				o = 1;
 
 				for (int k = 0; k < 5; k++) {
 					for (int l = 0; l < his; l++) {
