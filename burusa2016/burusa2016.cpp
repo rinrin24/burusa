@@ -180,8 +180,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 	switch (msg) {
 	case WM_CREATE:
-		for (o = 0; o < nD; o++) {
-			nLOOP[o] = false;
+		for (int k = 0; k < nD; k++) {
+			nLOOP[k] = false;
 		}
 		hPen10 = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
 		hPen5 = (HPEN)GetStockObject(BLACK_PEN);
@@ -196,12 +196,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		rc2 = RECT{ 2, 2, rc0.top - clientRectangle.bottom / 80 , rc1.right };
 		rc3 = RECT{ rc0.bottom + clientRectangle.bottom / 40, rc0.left + clientRectangle.right / 160, clientRectangle.bottom / 2 - clientRectangle.bottom / 40, rc3.right = rc1.right - clientRectangle.right / 35 };
 		/*それぞれの全期間での株価の初期化*/
-		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
-			stockPrices[0][o] = 15000;
-			stockPrices[1][o] = 15000;
-			stockPrices[2][o] = 15000;
-			stockPrices[3][o] = 15000;
-			stockPrices[4][o] = 15000;
+		for (int k = 0; k < stockPriceChartGraphPointNumber; k++) {
+			stockPrices[0][k] = 15000;
+			stockPrices[1][k] = 15000;
+			stockPrices[2][k] = 15000;
+			stockPrices[3][k] = 15000;
+			stockPrices[4][k] = 15000;
 		}
 		SetTimer(hWnd, ID_MYTIMER, 200, NULL);
 
@@ -214,17 +214,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		hFont5 = MyCreateFont(50, SHIFTJIS_CHARSET, TEXT("ＭＳ 明朝"));
 		hFont6 = MyCreateFont(25, SHIFTJIS_CHARSET, TEXT("ＭＳ 明朝"));
 
-		for (o = 0; o < his; o++) {
-			stockPriceChartGraphPoint[0][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
-			stockPriceChartGraphPoint[0][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left;
-			stockPriceChartGraphPoint[1][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
-			stockPriceChartGraphPoint[1][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left + clientRectangle.right * 2 / 3;
-			stockPriceChartGraphPoint[2][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
-			stockPriceChartGraphPoint[2][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left;
-			stockPriceChartGraphPoint[3][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
-			stockPriceChartGraphPoint[3][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left + clientRectangle.right / 3;
-			stockPriceChartGraphPoint[4][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
-			stockPriceChartGraphPoint[4][o].x = (rc3.right - rc3.left) / (his) * (o + 1) + rc3.left + clientRectangle.right * 2 / 3;
+		for (int k = 0; k < his; k++) {
+			stockPriceChartGraphPoint[0][k].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
+			stockPriceChartGraphPoint[0][k].x = (rc3.right - rc3.left) / (his) * (k + 1) + rc3.left;
+			stockPriceChartGraphPoint[1][k].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
+			stockPriceChartGraphPoint[1][k].x = (rc3.right - rc3.left) / (his) * (k + 1) + rc3.left + clientRectangle.right * 2 / 3;
+			stockPriceChartGraphPoint[2][k].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
+			stockPriceChartGraphPoint[2][k].x = (rc3.right - rc3.left) / (his) * (k + 1) + rc3.left;
+			stockPriceChartGraphPoint[3][k].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
+			stockPriceChartGraphPoint[3][k].x = (rc3.right - rc3.left) / (his) * (k + 1) + rc3.left + clientRectangle.right / 3;
+			stockPriceChartGraphPoint[4][k].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
+			stockPriceChartGraphPoint[4][k].x = (rc3.right - rc3.left) / (his) * (k + 1) + rc3.left + clientRectangle.right * 2 / 3;
 		}
 		hBmp = (HBITMAP)LoadImage(hInst,	//インスタンスハンドル
 			TEXT("ReSt.bmp"),						//イメージの名前
@@ -419,54 +419,54 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				}
 				o = 1;
 
-				for (q = 0; q < 5; q++) {
-					for (o = 0; o < his; o++) {
-						stockPrices[q][o] = stockPrices[q][o + 1];
+				for (int k = 0; k < 5; k++) {
+					for (int l = 0; l < his; l++) {
+						stockPrices[k][l] = stockPrices[k][l + 1];
 					}
-					for (o = 0; o < his; o++) {
-						if (o == 0) {
-							maxStockPriceInPeriod = stockPrices[q][o];
+					for (int l = 0; l < his; l++) {
+						if (l == 0) {
+							maxStockPriceInPeriod = stockPrices[k][l];
 						}
-						else if (stockPrices[q][o] > maxStockPriceInPeriod) {
-							maxStockPriceInPeriod = stockPrices[q][o];
+						else if (stockPrices[k][l] > maxStockPriceInPeriod) {
+							maxStockPriceInPeriod = stockPrices[k][l];
 						}
 					}
-					for (o = 0; o < his; o++) {
-						if (o == 0) {
-							minStockPriceInPeriod = stockPrices[q][o];
+					for (int l = 0; l < his; l++) {
+						if (l == 0) {
+							minStockPriceInPeriod = stockPrices[k][l];
 						}
-						else if (stockPrices[q][o] < minStockPriceInPeriod) {
-							minStockPriceInPeriod = stockPrices[q][o];
+						else if (stockPrices[k][l] < minStockPriceInPeriod) {
+							minStockPriceInPeriod = stockPrices[k][l];
 						}
 					}
 					if (maxStockPriceInPeriod != minStockPriceInPeriod) {
-						if (q < 2) {
-							for (o = 0; o < his; o++) {
-								i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
-								stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100;
+						if (k < 2) {
+							for (int l = 0; l < his; l++) {
+								i = (stockPrices[k][l] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+								stockPriceChartGraphPoint[k][l].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100;
 							}
 						}
 						else {
-							for (o = 0; o < his; o++) {
-								i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
-								stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100 + clientRectangle.bottom / 2;
+							for (int l = 0; l < his; l++) {
+								i = (stockPrices[k][l] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+								stockPriceChartGraphPoint[k][l].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100 + clientRectangle.bottom / 2;
 							}
 						}
 					}
 					else {
-						if (q < 2) {
-							for (o = 0; o < his; o++) {
-								stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
+						if (k < 2) {
+							for (int l = 0; l < his; l++) {
+								stockPriceChartGraphPoint[k][l].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
 							}
 						}
 						else {
-							for (o = 0; o < his; o++) {
-								stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
+							for (int l = 0; l < his; l++) {
+								stockPriceChartGraphPoint[k][l].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
 							}
 						}
 					}
-					wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), maxStockPriceInPeriod);
-					wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), minStockPriceInPeriod);
+					wsprintf(eachCompanyMaxStockPriceInPeriod[k * 2], TEXT("%d"), maxStockPriceInPeriod);
+					wsprintf(eachCompanyMaxStockPriceInPeriod[k * 2], TEXT("%d"), minStockPriceInPeriod);
 
 				}
 
@@ -482,46 +482,46 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 				/*為替+ニュースまとめstart*/
 
-				for (o = 0; o < 5; o++) {
-					q = stockPrices[o][stockPriceChartGraphPointNumber] % 1000;
+				for (int k = 0; k < 5; k++) {
+					q = stockPrices[k][stockPriceChartGraphPointNumber] % 1000;
 					if (q >= 500) {
-						stockPrices[o][stockPriceChartGraphPointNumber] += 1000;
+						stockPrices[k][stockPriceChartGraphPointNumber] += 1000;
 					}
-					stockPrices[o][stockPriceChartGraphPointNumber] -= q;
+					stockPrices[k][stockPriceChartGraphPointNumber] -= q;
 				}
 
 				if (EV < his + 3) {
-					for (o = 0; o < 5; o++) {
-						if (stockPrices[o][stockPriceChartGraphPointNumber] < 12000) {
-							stockPrices[o][stockPriceChartGraphPointNumber] = 12000;
+					for (int k = 0; k < 5; k++) {
+						if (stockPrices[k][stockPriceChartGraphPointNumber] < 12000) {
+							stockPrices[k][stockPriceChartGraphPointNumber] = 12000;
 						}
 					}
 
-					for (o = 0; o < 5; o++) {
-						if (stockPrices[o][stockPriceChartGraphPointNumber] > 18000) {
-							stockPrices[o][stockPriceChartGraphPointNumber] = 18000;
+					for (int k = 0; k < 5; k++) {
+						if (stockPrices[k][stockPriceChartGraphPointNumber] > 18000) {
+							stockPrices[k][stockPriceChartGraphPointNumber] = 18000;
 						}
 					}
 				}
 				if (EV > stockPriceChartGraphPointNumber - 2) {
-					for (o = 0; o < 5; o++) {
-						if (stockPrices[o][his - 1] < 100) {
-							AS[o] = 2;
+					for (int k = 0; k < 5; k++) {
+						if (stockPrices[k][his - 1] < 100) {
+							AS[k] = 2;
 						}
-						if (AS[o] > 0) { AS[o]--; }
+						if (AS[k] > 0) { AS[k]--; }
 					}
 				}
 				int r;
 				for (int w = 0; w < 5; w++) {
 					if (AS[w] > 0) {
-						for (o = 0; o < stockPriceChartGraphPointNumber + 1; o++) {
+						for (int k = 0; k < stockPriceChartGraphPointNumber + 1; k++) {
 							r = rand() % 4001 - 2000;
-							stockPrices[w][o] = 15000 + r;
-								q = stockPrices[w][o] % 1000;
+							stockPrices[w][k] = 15000 + r;
+								q = stockPrices[w][k] % 1000;
 							if (q >= 500) {
-								stockPrices[w][o] += 1000;
+								stockPrices[w][k] += 1000;
 							}
-							stockPrices[w][o] -= q;
+							stockPrices[w][k] -= q;
 						}
 					}
 				}
