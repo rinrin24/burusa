@@ -337,23 +337,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			rc0.top = clientRectangle.bottom / 16;
 			rc0.right = clientRectangle.right / cellNumber;
 			rc0.bottom = clientRectangle.bottom / 9;
+
 			rc1.left = rc0.right;
 			rc1.top = rc0.top;
 			rc1.right = clientRectangle.right / cellNumber * 2;
 			rc1.bottom = rc0.bottom;
-			rc2.top = 2;
+
 			rc2.left = 2;
-			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
+			rc2.top = 2;
 			rc2.right = rc1.right;
-			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
+			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
+
 			rc3.left = rc0.left + clientRectangle.right / 80;
-			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
+			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
 			rc3.right = rc1.right - clientRectangle.right / 80;
+			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
 
 			rc4.left = rc1.right + clientRectangle.right / 20;
 			rc4.top = clientRectangle.bottom / 60;
-			rc4.bottom = rc0.top;
 			rc4.right = clientRectangle.right / cellNumber * 2 * 2 - clientRectangle.right / 100;
+			rc4.bottom = rc0.top;
 
 			if (EV < his + 2) {
 				currentRemainingTime -= limitedTime - 1000;
@@ -362,11 +365,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 			currentRemainingTime -= 1000;
 
-			RECT rc5;
-			rc5.left = clientRectangle.right / 3;
-			rc5.right = rc4.right;
-			rc5.top = rc4.top;
-			rc5.bottom = rc4.bottom;
+			RECT rc5 = RECT{clientRectangle.right / 3, rc4.top,rc5.right = rc4.right,rc4.bottom};
 
 
 			InvalidateRect(hWnd, &rc5, 0);
@@ -1551,17 +1550,9 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		SelectObject(hdc, hBrushW);
 		SelectObject(hdc, hPen3);
 
-		RECT rc40{};
-		rc40.left = (rc0.left + rc1.left) / 2;
-		rc40.right = (rc0.right + rc1.right) / 2;
-		rc40.bottom = (rc0.bottom + rc1.bottom) / 2;
-		rc40.top = (rc0.top + rc1.top) / 2;
+		RECT rc40 = RECT{(rc0.left + rc1.left) / 2, (rc0.top + rc1.top) / 2, (rc0.bottom + rc1.bottom) / 2, (rc0.right + rc1.right) / 2};
 
-		RECT rc41{};
-		rc41.left = rc40.left;
-		rc41.right = rc40.right;
-		rc41.bottom = rc40.bottom;
-		rc41.top = rc40.top + rc.bottom / 100;
+		RECT rc41 = RECT{rc40.left, rc40.top + rc.bottom / 100, rc40.bottom, rc40.right};
 
 		SelectObject(hdc, hBrushT);
 
@@ -1600,26 +1591,12 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 
 	}
 	if (A == 6) {
-		rc0.left = 0;
-		rc0.top = rc.bottom / 16;
-		rc0.right = rc.right / cellNumber;
-		rc0.bottom = rc.bottom / 9;
-		rc1.left = rc0.right;
-		rc1.top = rc0.top;
-		rc1.right = rc.right / cellNumber * 2;
-		rc1.bottom = rc0.bottom;
-		companyNameTitleRectangle.top = 2;
-		companyNameTitleRectangle.left = 2;
-		companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
-		companyNameTitleRectangle.right = rc1.right;
-		companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
-		companyStockPriceGraphRectangle.left = rc0.left + rc.right / 80;
-		companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40;
-		companyStockPriceGraphRectangle.right = rc1.right - rc.right / 80;
-		timerRectangle.left = rc1.right + rc.right / 20;
-		timerRectangle.top = rc.bottom / 60;
-		timerRectangle.bottom = rc0.top;
-		timerRectangle.right = rc.right / cellNumber * 2 * 2 - rc.right / 100;
+		rc0 = RECT{ 0, rc.bottom / 16, rc.right / cellNumber, rc.bottom / 9 };
+
+		rc1 = RECT{rc0.right, rc0.top, rc.right / cellNumber * 2, rc0.bottom};
+		companyNameTitleRectangle = RECT{ 2, 2, rc0.top - rc.bottom / 80, rc1.right};
+		companyStockPriceGraphRectangle = RECT{ rc0.left + rc.right / 80, rc0.bottom + rc.bottom / 40, rc.bottom / 2 - rc.bottom / 40, rc1.right - rc.right / 80 };
+		timerRectangle = RECT{ rc1.right + rc.right / 20, rc.bottom / 60, rc.right / cellNumber * 2 * 2 - rc.right / 100, rc0.top };
 		/*時計処理start*/
 		TCHAR sur[10];
 		SelectObject(hdc, hFont2);
@@ -1645,10 +1622,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		SetTextColor(hdc, RGB(153, 102, 0));
 		TextOut(hdc, rc1.right + rc.right / 50, timerRectangle.top + timerRectangle.top * 3, TEXT("～ニュース～"), lstrlen(TEXT("～ニュース～")));
 
-		eventTitleRectangle.top = rc0.bottom + rc.bottom / 40;
-		eventTitleRectangle.left = rc0.left + rc.right / 160 + rc.right / 3;
-		eventTitleRectangle.bottom = rc.bottom / 2 - rc.bottom / 10;
-		eventTitleRectangle.right = rc1.right - rc.right / 32 + rc.right / 3;
+		eventTitleRectangle = RECT{ rc0.left + rc.right / 160 + rc.right / 3, rc0.bottom + rc.bottom / 40, rc1.right - rc.right / 32 + rc.right / 3, rc.bottom / 2 - rc.bottom / 10 };
 
 		SelectObject(hdc, hFont6);
 		DrawText(hdc, messageEventTitle, lstrlen(messageEventTitle), &eventTitleRectangle, DT_CENTER | DT_WORDBREAK);
