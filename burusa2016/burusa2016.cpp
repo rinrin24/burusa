@@ -198,17 +198,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		/*それぞれの全期間での株価の初期化*/
 		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[0][o] = 15000;
-		}
-		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[1][o] = 15000;
-		}
-		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[2][o] = 15000;
-		}
-		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[3][o] = 15000;
-		}
-		for (o = 0; o < stockPriceChartGraphPointNumber; o++) {
 			stockPrices[4][o] = 15000;
 		}
 		SetTimer(hWnd, ID_MYTIMER, 200, NULL);
