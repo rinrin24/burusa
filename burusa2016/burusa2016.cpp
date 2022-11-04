@@ -122,8 +122,7 @@ const int his = stockPriceChartGraphPointNumber;
 static int EV = 0;
 TCHAR messageEventTitle[100];
 TCHAR messageEventNumber[30];
-const static int number = 6;/*株価の数*/
-int spread[5] = { 10, 20, 30, 40, 50 };
+const static int cellNumber = 6;/*表示する領域の数*/
 static POINT stockPriceChartGraphPoint[5][stockPriceChartGraphPointNumber];
 //文字色について扱うグローバル変数
 int rR, rG, rB;
@@ -194,11 +193,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		XO = true;
 		rc0.left = 0;
 		rc0.top = clientRectangle.bottom / 16;
-		rc0.right = clientRectangle.right / number;
+		rc0.right = clientRectangle.right / cellNumber;
 		rc0.bottom = clientRectangle.bottom / 9;
 		rc1.left = rc0.right;
 		rc1.top = rc0.top;
-		rc1.right = clientRectangle.right / number * 2;
+		rc1.right = clientRectangle.right / cellNumber * 2;
 		rc1.bottom = rc0.bottom;
 		rc2.top = 2;
 		rc2.left = 2;
@@ -357,11 +356,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 			rc0.left = 0;
 			rc0.top = clientRectangle.bottom / 16;
-			rc0.right = clientRectangle.right / number;
+			rc0.right = clientRectangle.right / cellNumber;
 			rc0.bottom = clientRectangle.bottom / 9;
 			rc1.left = rc0.right;
 			rc1.top = rc0.top;
-			rc1.right = clientRectangle.right / number * 2;
+			rc1.right = clientRectangle.right / cellNumber * 2;
 			rc1.bottom = rc0.bottom;
 			rc2.top = 2;
 			rc2.left = 2;
@@ -375,7 +374,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			rc4.left = rc1.right + clientRectangle.right / 20;
 			rc4.top = clientRectangle.bottom / 60;
 			rc4.bottom = rc0.top;
-			rc4.right = clientRectangle.right / number * 2 * 2 - clientRectangle.right / 100;
+			rc4.right = clientRectangle.right / cellNumber * 2 * 2 - clientRectangle.right / 100;
 
 			if (EV < his + 2) {
 				currentRemainingTime -= limitedTime - 1000;
@@ -416,116 +415,116 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 				o = 0;
 
-			while (true) {
-				XX = rand() % nD;
-				if (nLOOP[XX] == true) {
-					o++;
-					if (o == 1000000) {
-						Data(1000);
-						break;
+				while (true) {
+					XX = rand() % nD;
+					if (nLOOP[XX] == true) {
+						o++;
+						if (o == 1000000) {
+							Data(1000);
+							break;
+						}
+						continue;
 					}
-					continue;
+					if (!(EV < his + 3)) {
+						nLOOP[XX] = true;
+						if (NE == 36) {
+							Data(34);
+							nLOOP[34] = true;
+							NE = 0;
+						}
+						else {
+							Data(XX);
+						}
+					}
+					break;
 				}
-				if (!(EV < his + 3)) {
-					nLOOP[XX] = true;
-					if (NE == 36) {
-						Data(34);
-						nLOOP[34] = true;
-						NE = 0;
-					}
-					else {
-						Data(XX);
-					}
-				}
-				break;
-			}
-			o = 1;
+				o = 1;
 
-			for (q = 0; q < 5; q++) {
-				for (o = 0; o < his; o++) {
-					stockPrices[q][o] = stockPrices[q][o + 1];
-				}
-				for (o = 0; o < his; o++) {
-					if (o == 0) {
-						maxStockPriceInPeriod = stockPrices[q][o];
+				for (q = 0; q < 5; q++) {
+					for (o = 0; o < his; o++) {
+						stockPrices[q][o] = stockPrices[q][o + 1];
 					}
-					else if (stockPrices[q][o] > maxStockPriceInPeriod) {
-						maxStockPriceInPeriod = stockPrices[q][o];
+					for (o = 0; o < his; o++) {
+						if (o == 0) {
+							maxStockPriceInPeriod = stockPrices[q][o];
+						}
+						else if (stockPrices[q][o] > maxStockPriceInPeriod) {
+							maxStockPriceInPeriod = stockPrices[q][o];
+						}
 					}
-				}
-				for (o = 0; o < his; o++) {
-					if (o == 0) {
-						minStockPriceInPeriod = stockPrices[q][o];
+					for (o = 0; o < his; o++) {
+						if (o == 0) {
+							minStockPriceInPeriod = stockPrices[q][o];
+						}
+						else if (stockPrices[q][o] < minStockPriceInPeriod) {
+							minStockPriceInPeriod = stockPrices[q][o];
+						}
 					}
-					else if (stockPrices[q][o] < minStockPriceInPeriod) {
-						minStockPriceInPeriod = stockPrices[q][o];
-					}
-				}
-				if (maxStockPriceInPeriod != minStockPriceInPeriod) {
-					if (q < 2) {
-						for (o = 0; o < his; o++) {
-							i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
-							stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100;
+					if (maxStockPriceInPeriod != minStockPriceInPeriod) {
+						if (q < 2) {
+							for (o = 0; o < his; o++) {
+								i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+								stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100;
+							}
+						}
+						else {
+							for (o = 0; o < his; o++) {
+								i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
+								stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100 + clientRectangle.bottom / 2;
+							}
 						}
 					}
 					else {
-						for (o = 0; o < his; o++) {
-							i = (stockPrices[q][o] - minStockPriceInPeriod) * 100 / (maxStockPriceInPeriod - minStockPriceInPeriod) * ((clientRectangle.bottom / 2 - clientRectangle.bottom / 30) - (rc0.bottom + clientRectangle.bottom / 30));
-							stockPriceChartGraphPoint[q][o].y = clientRectangle.bottom / 2 - clientRectangle.bottom / 30 - i / 100 + clientRectangle.bottom / 2;
+						if (q < 2) {
+							for (o = 0; o < his; o++) {
+								stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
+							}
+						}
+						else {
+							for (o = 0; o < his; o++) {
+								stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
+							}
 						}
 					}
+					wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), maxStockPriceInPeriod);
+					wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), minStockPriceInPeriod);
+
 				}
-				else {
-					if (q < 2) {
-						for (o = 0; o < his; o++) {
-							stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top;
-						}
-					}
-					else {
-						for (o = 0; o < his; o++) {
-							stockPriceChartGraphPoint[q][o].y = (rc3.bottom - rc3.top) / 2 + rc3.top + clientRectangle.bottom / 2;
-						}
-					}
-				}
-				wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), maxStockPriceInPeriod);
-				wsprintf(eachCompanyMaxStockPriceInPeriod[q * 2], TEXT("%d"), minStockPriceInPeriod);
 
-			}
+				currentRemainingTime = limitedTime;
 
-			currentRemainingTime = limitedTime;
+				/*Unknown*/
+				stockPrices[0][his] = stockPrices[0][his - 1] + companyAStockPriceChangeAmount;
+				stockPrices[1][his] = stockPrices[1][his - 1] + companyBStockPriceChangeAmount;
+				stockPrices[2][his] = stockPrices[2][his - 1] + companyCStockPriceChangeAmount;
+				stockPrices[3][his] = stockPrices[3][his - 1] + companyDStockPriceChangeAmount;
+				stockPrices[4][his] = stockPrices[4][his - 1] + companyEStockPriceChangeAmount;
+				/*Unknown*/
 
-			/*Unknown*/
-			stockPrices[0][his] = stockPrices[0][his - 1] + companyAStockPriceChangeAmount;
-			stockPrices[1][his] = stockPrices[1][his - 1] + companyBStockPriceChangeAmount;
-			stockPrices[2][his] = stockPrices[2][his - 1] + companyCStockPriceChangeAmount;
-			stockPrices[3][his] = stockPrices[3][his - 1] + companyDStockPriceChangeAmount;
-			stockPrices[4][his] = stockPrices[4][his - 1] + companyEStockPriceChangeAmount;
-			/*Unknown*/
-
-			/*為替+ニュースまとめstart*/
-
-			for (o = 0; o < 5; o++) {
-				q = stockPrices[o][stockPriceChartGraphPointNumber] % 1000;
-				if (q >= 500) {
-					stockPrices[o][stockPriceChartGraphPointNumber] += 1000;
-				}
-				stockPrices[o][stockPriceChartGraphPointNumber] -= q;
-			}
-
-			if (EV < his + 3) {
-				for (o = 0; o < 5; o++) {
-					if (stockPrices[o][stockPriceChartGraphPointNumber] < 12000) {
-						stockPrices[o][stockPriceChartGraphPointNumber] = 12000;
-					}
-				}
+				/*為替+ニュースまとめstart*/
 
 				for (o = 0; o < 5; o++) {
-					if (stockPrices[o][stockPriceChartGraphPointNumber] > 18000) {
-						stockPrices[o][stockPriceChartGraphPointNumber] = 18000;
+					q = stockPrices[o][stockPriceChartGraphPointNumber] % 1000;
+					if (q >= 500) {
+						stockPrices[o][stockPriceChartGraphPointNumber] += 1000;
+					}
+					stockPrices[o][stockPriceChartGraphPointNumber] -= q;
+				}
+
+				if (EV < his + 3) {
+					for (o = 0; o < 5; o++) {
+						if (stockPrices[o][stockPriceChartGraphPointNumber] < 12000) {
+							stockPrices[o][stockPriceChartGraphPointNumber] = 12000;
+						}
+					}
+
+					for (o = 0; o < 5; o++) {
+						if (stockPrices[o][stockPriceChartGraphPointNumber] > 18000) {
+							stockPrices[o][stockPriceChartGraphPointNumber] = 18000;
+						}
 					}
 				}
-			}
-			if (EV > stockPriceChartGraphPointNumber - 2) {
+				if (EV > stockPriceChartGraphPointNumber - 2) {
 					for (o = 0; o < 5; o++) {
 						if (stockPrices[o][his - 1] < 100) {
 							AS[o] = 2;
@@ -539,8 +538,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						for (o = 0; o < stockPriceChartGraphPointNumber + 1; o++) {
 							r = rand() % 4001 - 2000;
 							stockPrices[w][o] = 15000 + r;
-
-							q = stockPrices[w][o] % 1000;
+								q = stockPrices[w][o] % 1000;
 							if (q >= 500) {
 								stockPrices[w][o] += 1000;
 							}
@@ -552,7 +550,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				/*為替end*/
 				InvalidateRect(hWnd, NULL, 0);
 			}/**currentRemainingTime==0**/
-			/*株価・チャート移動のためのスクリプトend*/
+		/*株価・チャート移動のためのスクリプトend*/
 		}
 		break;
 	case WM_CHAR:
@@ -1439,11 +1437,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		if (A == 1) {
 			rc0.left = 0;
 			rc0.top = rc.bottom / 16;
-			rc0.right = rc.right / number;
+			rc0.right = rc.right / cellNumber;
 			rc0.bottom = rc.bottom / 9;
 			rc1.left = rc0.right;
 			rc1.top = rc0.top;
-			rc1.right = rc.right / number * 2;
+			rc1.right = rc.right / cellNumber * 2;
 			rc1.bottom = rc0.bottom;
 			companyNameTitleRectangle.top = 2;
 			companyNameTitleRectangle.left = 2;
@@ -1460,11 +1458,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 
 			rc0.left = rc.right * 2 / 3;
 			rc0.top = rc.bottom / 16;
-			rc0.right = rc.right * 2 / 3 + rc.right / number;
+			rc0.right = rc.right * 2 / 3 + rc.right / cellNumber;
 			rc0.bottom = rc.bottom / 9;
-			rc1.left = rc.right * 2 / 3 + rc.right / number;
+			rc1.left = rc.right * 2 / 3 + rc.right / cellNumber;
 			rc1.top = rc.bottom / 16;
-			rc1.right = rc.right * 2 / 3 + rc.right / number * 2;
+			rc1.right = rc.right * 2 / 3 + rc.right / cellNumber * 2;
 			rc1.bottom = rc0.bottom;
 			companyNameTitleRectangle.top = 2;
 			companyNameTitleRectangle.left = 2 + rc.right * 2 / 3;
@@ -1481,11 +1479,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		if (A == 3) {
 			rc0.left = 0;
 			rc0.top = rc.bottom / 16 + rc.bottom / 2;
-			rc0.right = rc.right / number;
+			rc0.right = rc.right / cellNumber;
 			rc0.bottom = rc.bottom / 9 + rc.bottom / 2;
 			rc1.left = rc0.right;
 			rc1.top = rc.bottom / 16 + rc.bottom / 2;
-			rc1.right = rc.right / number * 2;
+			rc1.right = rc.right / cellNumber * 2;
 			rc1.bottom = rc.bottom / 9 + rc.bottom / 2;
 			companyNameTitleRectangle.top = 2 + rc.bottom / 2;
 			companyNameTitleRectangle.left = 2;
@@ -1504,11 +1502,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		if (A == 4) {
 			rc0.left = 0 + rc.right / 3;
 			rc0.top = rc.bottom / 16 + rc.bottom / 2;
-			rc0.right = rc.right / number + rc.right / 3;
+			rc0.right = rc.right / cellNumber + rc.right / 3;
 			rc0.bottom = rc.bottom / 9 + rc.bottom / 2;
 			rc1.left = rc0.right;
 			rc1.top = rc0.top;
-			rc1.right = rc.right / number * 2 + rc.right / 3;
+			rc1.right = rc.right / cellNumber * 2 + rc.right / 3;
 			rc1.bottom = rc0.bottom;
 			companyNameTitleRectangle.top = 2 + rc.bottom / 2;
 			companyNameTitleRectangle.left = 2 + rc.right / 3;
@@ -1525,11 +1523,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		if (A == 5) {
 			rc0.left = rc.right * 2 / 3;
 			rc0.top = rc.bottom / 16 + rc.bottom / 2;
-			rc0.right = rc.right * 2 / 3 + rc.right / number;
+			rc0.right = rc.right * 2 / 3 + rc.right / cellNumber;
 			rc0.bottom = rc.bottom / 9 + rc.bottom / 2;
-			rc1.left = rc.right * 2 / 3 + rc.right / number;
+			rc1.left = rc.right * 2 / 3 + rc.right / cellNumber;
 			rc1.top = rc0.top;
-			rc1.right = rc.right * 2 / 3 + rc.right / number * 2;
+			rc1.right = rc.right * 2 / 3 + rc.right / cellNumber * 2;
 			rc1.bottom = rc0.bottom;
 			companyNameTitleRectangle.top = 2 + rc.bottom / 2;
 			companyNameTitleRectangle.left = 2 + rc.right * 2 / 3;
@@ -1563,8 +1561,8 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 
 		SelectObject(hdc, hPen);
 		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < number / 2; j++) {
-				Rectangle(hdc, rc.right * j * 2 / number, rc.bottom * i / 2, rc.right * (j + 1) * 2 / number, rc.bottom * (i + 1) / 2);
+			for (int j = 0; j < cellNumber / 2; j++) {
+				Rectangle(hdc, rc.right * j * 2 / cellNumber, rc.bottom * i / 2, rc.right * (j + 1) * 2 / cellNumber, rc.bottom * (i + 1) / 2);
 			}
 		}
 
@@ -1625,11 +1623,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 	if (A == 6) {
 		rc0.left = 0;
 		rc0.top = rc.bottom / 16;
-		rc0.right = rc.right / number;
+		rc0.right = rc.right / cellNumber;
 		rc0.bottom = rc.bottom / 9;
 		rc1.left = rc0.right;
 		rc1.top = rc0.top;
-		rc1.right = rc.right / number * 2;
+		rc1.right = rc.right / cellNumber * 2;
 		rc1.bottom = rc0.bottom;
 		companyNameTitleRectangle.top = 2;
 		companyNameTitleRectangle.left = 2;
@@ -1642,7 +1640,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		timerRectangle.left = rc1.right + rc.right / 20;
 		timerRectangle.top = rc.bottom / 60;
 		timerRectangle.bottom = rc0.top;
-		timerRectangle.right = rc.right / number * 2 * 2 - rc.right / 100;
+		timerRectangle.right = rc.right / cellNumber * 2 * 2 - rc.right / 100;
 		/*時計処理start*/
 		TCHAR sur[10];
 		SelectObject(hdc, hFont2);
