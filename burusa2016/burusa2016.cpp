@@ -154,7 +154,6 @@ static HBITMAP hBmp;
 BITMAP bmp_info;
 static HDC hdc_mem;
 int bmpw, bmph;
-HPEN hPen10;
 
 //ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
@@ -183,7 +182,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		for (int k = 0; k < nD; k++) {
 			nLOOP[k] = false;
 		}
-		hPen10 = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
 		hPen5 = (HPEN)GetStockObject(BLACK_PEN);
 		hPen4 = (HPEN)GetStockObject(NULL_PEN);
 		hBrushw = (HBRUSH)GetStockObject(WHITE_BRUSH);
