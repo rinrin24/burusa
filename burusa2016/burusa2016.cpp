@@ -166,7 +166,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 	int i;
 	int stockPriceFraction;
 	i = 0;
-	int id;
+	int destroyCheckStatus;
 
 	static int maxStockPriceInPeriod, minStockPriceInPeriod;
 
@@ -242,11 +242,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 		break;
 	case WM_CLOSE:
-		id = MessageBox(hWnd,
+		destroyCheckStatus = MessageBox(hWnd,
 			TEXT("終了してもよろしいですか"),
 			TEXT("確認"),
 			MB_YESNO | MB_ICONQUESTION);
-		if (id == IDYES) {
+		if (destroyCheckStatus == IDYES) {
 			DestroyWindow(hWnd);
 		}
 		break;
