@@ -163,7 +163,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 	RECT rc0, rc1, rc2, rc3;
 	RECT rc4;
 
-	int i, q;
+	int i;
+	int stockPriceFraction;
 	i = 0;
 	int id;
 
@@ -479,11 +480,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				/*為替+ニュースまとめstart*/
 
 				for (int k = 0; k < 5; k++) {
-					q = stockPrices[k][stockPriceChartGraphPointNumber] % 1000;
-					if (q >= 500) {
+					stockPriceFraction = stockPrices[k][stockPriceChartGraphPointNumber] % 1000;
+					if (stockPriceFraction >= 500) {
 						stockPrices[k][stockPriceChartGraphPointNumber] += 1000;
 					}
-					stockPrices[k][stockPriceChartGraphPointNumber] -= q;
+					stockPrices[k][stockPriceChartGraphPointNumber] -= stockPriceFraction;
 				}
 
 				if (EV < his + 3) {
@@ -513,11 +514,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						for (int k = 0; k < stockPriceChartGraphPointNumber + 1; k++) {
 							r = rand() % 4001 - 2000;
 							stockPrices[w][k] = 15000 + r;
-								q = stockPrices[w][k] % 1000;
-							if (q >= 500) {
+								stockPriceFraction = stockPrices[w][k] % 1000;
+							if (stockPriceFraction >= 500) {
 								stockPrices[w][k] += 1000;
 							}
-							stockPrices[w][k] -= q;
+							stockPrices[w][k] -= stockPriceFraction;
 						}
 					}
 				}
