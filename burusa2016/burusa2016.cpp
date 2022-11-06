@@ -144,7 +144,7 @@ TCHAR messageLoadProgress[] = TEXT("\n\n\n\n\n%d完了");
 const int nD = 98;
 bool nLOOP[130];
 
-bool XO;
+bool isTrading;
 HPEN hPen4, hPen5;
 int Qw;
 
@@ -188,7 +188,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 		limitedTime = 10000;
 		currentRemainingTime = limitedTime;
-		XO = true;
+		isTrading = true;
 		rc0 = RECT{ 0, clientRectangle.bottom / 16, clientRectangle.right / cellNumber, clientRectangle.bottom / 9 };
 		rc1 = RECT{ rc0.right , rc0.top, clientRectangle.right / cellNumber * 2, rc0.bottom };
 		rc2 = RECT{ 2, 2, rc0.top - clientRectangle.bottom / 80 , rc1.right };
@@ -270,7 +270,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 
 		if (!(EV < his + 3)) {
-			if (XO) {
+			if (isTrading) {
 				Ftime(1, clientRectangle, hdc);
 				Ftime(2, clientRectangle, hdc);
 				Ftime(3, clientRectangle, hdc);
@@ -279,7 +279,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				Ftime(6, clientRectangle, hdc);
 			}
 
-			if (!XO) {
+			if (!isTrading) {
 				bmph = clientRectangle.bottom / 9;
 				bmpw = bmph;
 				SelectObject(hdc, hBrushw);
@@ -329,7 +329,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		}
 		Qw++;
 
-		if (XO) {
+		if (isTrading) {
 
 			rc0.left = 0;
 			rc0.top = clientRectangle.bottom / 16;
@@ -376,7 +376,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			if (currentRemainingTime == 0) {
 
 				if (!(EV < his + 2)) {
-					XO = false;
+					isTrading = false;
 				}
 				/*株価・チャート移動のためのスクリプトstart*/
 
@@ -529,8 +529,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		break;
 	case WM_CHAR:
 		if (wp == VK_ESCAPE) {
-			if (!XO) XO = true; InvalidateRect(hWnd, &clientRectangle, 0); break;
-			XO = false;
+			if (!isTrading) isTrading = true; InvalidateRect(hWnd, &clientRectangle, 0); break;
+			isTrading = false;
 		}
 		if (wp == VK_RETURN) {
 			if (limitedTime == 1000) limitedTime -= 1000;
