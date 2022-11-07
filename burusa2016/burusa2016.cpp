@@ -330,41 +330,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		Qw++;
 
 		if (isTrading) {
-
-			rc0.left = 0;
-			rc0.top = clientRectangle.bottom / 16;
-			rc0.right = clientRectangle.right / cellNumber;
-			rc0.bottom = clientRectangle.bottom / 9;
-
-			rc1.left = rc0.right;
-			rc1.top = rc0.top;
-			rc1.right = clientRectangle.right / cellNumber * 2;
-			rc1.bottom = rc0.bottom;
-
-			rc2.left = 2;
-			rc2.top = 2;
-			rc2.right = rc1.right;
-			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
-
-			rc3.left = rc0.left + clientRectangle.right / 80;
-			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
-			rc3.right = rc1.right - clientRectangle.right / 80;
-			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
-
-			rc4.left = rc1.right + clientRectangle.right / 20;
-			rc4.top = clientRectangle.bottom / 60;
-			rc4.right = clientRectangle.right / cellNumber * 2 * 2 - clientRectangle.right / 100;
-			rc4.bottom = rc0.top;
+			rc0 = RECT{ 0, clientRectangle.bottom / 16, clientRectangle.right / cellNumber, clientRectangle.bottom / 9 };
+			rc1 = RECT{ rc0.right, rc0.top, clientRectangle.right / cellNumber * 2, rc0.bottom };
+			rc2 = RECT{ 2, 2, rc1.right, rc0.top - clientRectangle.bottom / 80 };
+			rc3 = RECT{ rc0.left + clientRectangle.right / 80, rc0.bottom + clientRectangle.bottom / 40, rc1.right - clientRectangle.right / 80, clientRectangle.bottom / 2 - clientRectangle.bottom / 40 };
+			rc4 = RECT{ rc1.right + clientRectangle.right / 20, clientRectangle.bottom / 60, clientRectangle.right / cellNumber * 2 * 2 - clientRectangle.right / 100, rc0.top };
 
 			if (EV < his + 2) {
 				currentRemainingTime -= limitedTime - 1000;
-
 			}
 
 			currentRemainingTime -= 1000;
 
 			RECT rc5 = RECT{clientRectangle.right / 3, rc4.top,rc5.right = rc4.right,rc4.bottom};
-
 
 			InvalidateRect(hWnd, &rc5, 0);
 
@@ -1445,21 +1423,9 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		}
 		if (A == 5) {
 			rc0 = RECT{ rc.right * 2 / 3, rc.bottom / 16 + rc.bottom / 2, rc.right * 2 / 3 + rc.right / cellNumber, rc.bottom / 9 + rc.bottom / 2};
-
-			rc1.left = rc.right * 2 / 3 + rc.right / cellNumber;
-			rc1.top = rc0.top;
-			rc1.right = rc.right * 2 / 3 + rc.right / cellNumber * 2;
-			rc1.bottom = rc0.bottom;
-
-			companyNameTitleRectangle.left = 2 + rc.right * 2 / 3;
-			companyNameTitleRectangle.top = 2 + rc.bottom / 2;
-			companyNameTitleRectangle.right = rc1.right;
-			companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
-
-			companyStockPriceGraphRectangle.left = rc0.left + rc.right / 40;
-			companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
-			companyStockPriceGraphRectangle.right = rc1.right - rc.right / 40;
-			companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2;
+			rc0 = RECT{ rc.right * 2 / 3 + rc.right / cellNumber, rc0.top, rc.right * 2 / 3 + rc.right / cellNumber * 2, rc0.bottom };
+			companynameTitleRectangle = RECT{ 2 + rc.right * 2 / 3,2 + rc.bottom / 2, rc1.right, rc0.top - rc.bottom / 80 };
+			companyStockPriceGraphRectangle = RECT{ rc0.left + rc.right / 40, rc0.bottom + rc.bottom / 40, rc1.right - rc.right / 40, rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2 };
 			wsprintf((LPWSTR)companyName, TEXT("ＪＴＢ"));
 			companyNameTitleColorRed = 211;
 			companyNameTitleColorGreen = 211;
