@@ -1424,7 +1424,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		if (A == 5) {
 			rc0 = RECT{ rc.right * 2 / 3, rc.bottom / 16 + rc.bottom / 2, rc.right * 2 / 3 + rc.right / cellNumber, rc.bottom / 9 + rc.bottom / 2 };
 			rc0 = RECT{ rc.right * 2 / 3 + rc.right / cellNumber, rc0.top, rc.right * 2 / 3 + rc.right / cellNumber * 2, rc0.bottom };
-			companynameTitleRectangle = RECT{ 2 + rc.right * 2 / 3,2 + rc.bottom / 2, rc1.right, rc0.top - rc.bottom / 80 };
+			companyNameTitleRectangle = RECT{ 2 + rc.right * 2 / 3, 2 + rc.bottom / 2, rc1.right, rc0.top - rc.bottom / 80 };
 			companyStockPriceGraphRectangle = RECT{ rc0.left + rc.right / 40, rc0.bottom + rc.bottom / 40, rc1.right - rc.right / 40, rc.bottom / 2 - rc.bottom / 40 + rc.bottom / 2 };
 			wsprintf((LPWSTR)companyName, TEXT("ＪＴＢ"));
 			companyNameTitleColorRed = 211;
