@@ -8,8 +8,8 @@
 #include <time.h>
 
 
-#define ID_MYTIMER 100
-#define ID_MYTIMER2 200
+#define ID_LOADING_TIMER 100
+#define ID_MAIN_TIMER 200
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 ATOM InitApp(HINSTANCE);
@@ -146,7 +146,7 @@ bool nLOOP[130];
 
 bool isTrading;
 HPEN hPen4, hPen5;
-int Qw;
+int programLoadRate;
 
 static int AS[5];
 
@@ -201,7 +201,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			stockPrices[3][k] = 15000;
 			stockPrices[4][k] = 15000;
 		}
-		SetTimer(hWnd, ID_MYTIMER, 200, NULL);
+		SetTimer(hWnd, ID_LOADING_TIMER, 200, NULL);
 
 		srand((unsigned)time(NULL));
 
@@ -249,8 +249,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		}
 		break;
 	case WM_DESTROY:
-		KillTimer(hWnd, ID_MYTIMER);
-		KillTimer(hWnd, ID_MYTIMER2);
+		KillTimer(hWnd, ID_LOADING_TIMER);
+		KillTimer(hWnd, ID_MAIN_TIMER);
 		DeleteObject(hFont1);
 		DeleteObject(hFont2);
 		DeleteObject(hFont3);
@@ -270,6 +270,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		Rectangle(hdc, clientRectangle.left, clientRectangle.top, clientRectangle.right, clientRectangle.bottom);
 
 		if (!(EV < his + 3)) {
+			/*
+			* 取引中画面の表示
+			*/
 			if (isTrading) {
 				Ftime(1, clientRectangle, hdc);
 				Ftime(2, clientRectangle, hdc);
@@ -279,6 +282,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				Ftime(6, clientRectangle, hdc);
 			}
 
+			/*
+			* 取引準備中画面の表示
+			*/
 			if (!isTrading) {
 				bmph = clientRectangle.bottom / 9;
 				bmpw = bmph;
@@ -308,6 +314,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		}
 		SelectObject(hdc, hBrush);
 
+		/*
+		* 読み込み中画面の表示
+		*/
 		if (EV < his + 3) {
 			SelectObject(hdc, hBrushw);
 
@@ -316,7 +325,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			SelectObject(hdc, hFont5);
 			wsprintf((LPWSTR)messageLoadingPleaseWait, TEXT("\n読み込み中です。\n少々お待ちください。"));
 			DrawText(hdc, messageLoadingPleaseWait, -1, &clientRectangle, DT_CENTER);
-			wsprintf((LPWSTR)messageLoadProgress, TEXT("\n\n\n\n\n%d％完了"), Qw * 100 / (his + 1 + limitedTime / 1000));
+			wsprintf((LPWSTR)messageLoadProgress, TEXT("\n\n\n\n\n%d％完了"), programLoadRate * 100 / (his + 1 + limitedTime / 1000));
 			DrawText(hdc, messageLoadProgress, -1, &clientRectangle, DT_CENTER);
 		}
 		EndPaint(hWnd, &ps);
@@ -324,10 +333,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		break;
 	case WM_TIMER:
 		if (EV == his + 3) {
-			KillTimer(hWnd, ID_MYTIMER);
-			SetTimer(hWnd, ID_MYTIMER2, 1000, NULL);
+			KillTimer(hWnd, ID_LOADING_TIMER);
+			SetTimer(hWnd, ID_MAIN_TIMER, 1000, NULL);
 		}
-		Qw++;
+		programLoadRate++;
 
 		if (isTrading) {
 
@@ -355,7 +364,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 			if (EV < his + 2) {
 				currentRemainingTime -= limitedTime - 1000;
-
 			}
 
 			currentRemainingTime -= 1000;
@@ -378,10 +386,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				if (!(EV < his + 2)) {
 					isTrading = false;
 				}
-				/*株価・チャート移動のためのスクリプトstart*/
 
 				EV++;
-
+				
+				/*
+				* それぞれの企業の最新の株価を15000円に初期化
+				*/
 				if (EV == 2) {
 					stockPrices[0][his] = 15000;
 					stockPrices[1][his] = 15000;
@@ -390,6 +400,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					stockPrices[4][his] = 15000;
 				}
 
+				/*
+				* 次の株価の増減を選択
+				*/
 				for (int j = 0;true;) {
 					XX = rand() % nD;
 					if (nLOOP[XX] == true) {
@@ -414,6 +427,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 					break;
 				}
 
+				/*
+				* ある期間の情報を一つ古い期間のものとする
+				* グラフに表示する期間の最大・最小株価を求める
+				* グラフに表示するそれぞれの点のy座標を求める
+				*/
 				for (int k = 0; k < 5; k++) {
 					for (int l = 0; l < his; l++) {
 						stockPrices[k][l] = stockPrices[k][l + 1];
@@ -467,17 +485,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 				currentRemainingTime = limitedTime;
 
-				/*Unknown*/
+				/*
+				* それぞれの企業の次の株価を決定
+				*/
 				stockPrices[0][his] = stockPrices[0][his - 1] + companyAStockPriceChangeAmount;
 				stockPrices[1][his] = stockPrices[1][his - 1] + companyBStockPriceChangeAmount;
 				stockPrices[2][his] = stockPrices[2][his - 1] + companyCStockPriceChangeAmount;
 				stockPrices[3][his] = stockPrices[3][his - 1] + companyDStockPriceChangeAmount;
 				stockPrices[4][his] = stockPrices[4][his - 1] + companyEStockPriceChangeAmount;
-				/*Unknown*/
-
-				/*為替+ニュースまとめstart*/
-
+				
+				/*
+				* 1000円以下の端数の四捨五入
+				*/
 				for (int k = 0; k < 5; k++) {
+					std::cout << stockPrices[k][stockPriceChartGraphPointNumber] << std::endl;
 					stockPriceFraction = stockPrices[k][stockPriceChartGraphPointNumber] % 1000;
 					if (stockPriceFraction >= 500) {
 						stockPrices[k][stockPriceChartGraphPointNumber] += 1000;
@@ -510,9 +531,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 				for (int w = 0; w < 5; w++) {
 					if (AS[w] > 0) {
 						for (int k = 0; k < stockPriceChartGraphPointNumber + 1; k++) {
+							//-2000~2000
 							r = rand() % 4001 - 2000;
 							stockPrices[w][k] = 15000 + r;
-								stockPriceFraction = stockPrices[w][k] % 1000;
+							stockPriceFraction = stockPrices[w][k] % 1000;
 							if (stockPriceFraction >= 500) {
 								stockPrices[w][k] += 1000;
 							}
@@ -520,11 +542,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 						}
 					}
 				}
-				/*為替+ニュースまとめend*/
-				/*為替end*/
 				InvalidateRect(hWnd, NULL, 0);
-			}/**currentRemainingTime==0**/
-		/*株価・チャート移動のためのスクリプトend*/
+			}
 		}
 		break;
 	case WM_CHAR:
