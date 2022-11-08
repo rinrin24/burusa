@@ -339,43 +339,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		programLoadRate++;
 
 		if (isTrading) {
-			rc0.left = 0;
-			rc0.top = clientRectangle.bottom / 16;
-			rc0.right = clientRectangle.right / cellNumber;
-			rc0.bottom = clientRectangle.bottom / 9;
-
-			rc1.left = rc0.right;
-			rc1.top = rc0.top;
-			rc1.right = clientRectangle.right / cellNumber * 2;
-			rc1.bottom = rc0.bottom;
-
-			rc2.left = 2;
-			rc2.top = 2;
-			rc2.right = rc1.right;
-			rc2.bottom = rc0.top - clientRectangle.bottom / 80;
-
-			rc3.left = rc0.left + clientRectangle.right / 80;
-			rc3.top = rc0.bottom + clientRectangle.bottom / 40;
-			rc3.right = rc1.right - clientRectangle.right / 80;
-			rc3.bottom = clientRectangle.bottom / 2 - clientRectangle.bottom / 40;
-
-			rc4.left = rc1.right + clientRectangle.right / 20;
-			rc4.top = clientRectangle.bottom / 60;
-			rc4.right = clientRectangle.right / cellNumber * 2 * 2 - clientRectangle.right / 100;
-			rc4.bottom = rc0.top;
-
+			rc0 = RECT{ 0, clientRectangle.bottom / 16, clientRectangle.right / cellNumber, clientRectangle.bottom / 9 };
+			rc1 = RECT{ rc0.right, rc0.top, clientRectangle.right / cellNumber * 2, rc0.bottom };
+			rc2 = RECT{ 2, 2, rc1.right, rc0.top - clientRectangle.bottom / 80 };
+			rc3 = RECT{ rc0.left + clientRectangle.right / 80, rc0.bottom + clientRectangle.bottom / 40, rc1.right - clientRectangle.right / 80, clientRectangle.bottom / 2 - clientRectangle.bottom / 40 };
+			rc4 = RECT{ rc1.right + clientRectangle.right / 20, clientRectangle.bottom / 60, clientRectangle.right / cellNumber * 2 * 2 - clientRectangle.right / 100, rc0.top };
+			
 			if (EV < his + 2) {
 				currentRemainingTime -= limitedTime - 1000;
 			}
 
 			currentRemainingTime -= 1000;
 
-			RECT rc5;
-			rc5.left = clientRectangle.right / 3;
-			rc5.top = rc4.top;
-			rc5.right = rc4.right;
-			rc5.bottom = rc4.bottom;
-
+			RECT rc5 = RECT{ clientRectangle.right / 3 , rc4.top, rc4.right, rc4.bottom };
+			
 			InvalidateRect(hWnd, &rc5, 0);
 
 			if (EV < his + 3) {
