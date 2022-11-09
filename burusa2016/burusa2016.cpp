@@ -1406,25 +1406,10 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 	if (A != 6) {
 		SelectObject(hdc, hBrush);
 		if (A == 1) {
-			rc0.left = 0;
-			rc0.top = rc.bottom / 16;
-			rc0.right = rc.right / cellNumber;
-			rc0.bottom = rc.bottom / 9;
-
-			rc1.left = rc0.right;
-			rc1.top = rc0.top;
-			rc1.right = rc.right / cellNumber * 2;
-			rc1.bottom = rc0.bottom;
-
-			companyNameTitleRectangle.left = 2;
-			companyNameTitleRectangle.top = 2;
-			companyNameTitleRectangle.right = rc1.right;
-			companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
-
-			companyStockPriceGraphRectangle.left = rc0.left + rc.right / 40;
-			companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
-			companyStockPriceGraphRectangle.right = rc1.right - rc.right / 40;
-			companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40;
+			rc0 = RECT{ 0, rc.bottom / 16, rc.right / cellNumber, rc.bottom / 9 };
+			rc1 = RECT{ rc0.right, rc0.top, rc.right / cellNumber * 2, rc0.bottom };
+			companyNameTitleRectangle = RECT{ 2, 2, rc1.right, rc0.top - rc.bottom / 80 };
+			companyStockPriceGraphRectangle = RECT{ rc0.left + rc.right / 40, rc0.bottom + rc.bottom / 40, rc1.right - rc.right / 40, rc.bottom / 2 - rc.bottom / 40 };
 			wsprintf((LPWSTR)companyName, TEXT("トヨタ自動車"));
 			companyNameTitleColorRed = 204;
 		}
