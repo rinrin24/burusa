@@ -1454,8 +1454,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		SetDCBrushColor(hdc, RGB(companyNameTitleColorRed, companyNameTitleColorGreen, companyNameTitleColorBlue));
 
 		companyNameTitleRectangle.left += rc.right / 15;
-		companyNameTitleRectangle.top += rc.bottom / 200;
-		companyNameTitleRectangle.top += rc.bottom / 200;
+		companyNameTitleRectangle.top += rc.bottom / 100;
 		companyNameTitleRectangle.right -= rc.right / 15;
 		companyNameTitleRectangle.bottom += rc.bottom / 200;
 		
