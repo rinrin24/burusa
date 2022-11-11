@@ -1481,17 +1481,8 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		SelectObject(hdc, hBrushW);
 		SelectObject(hdc, hPen3);
 
-		RECT rc40{};
-		rc40.left = (rc0.left + rc1.left) / 2;
-		rc40.top = (rc0.top + rc1.top) / 2;
-		rc40.right = (rc0.right + rc1.right) / 2;
-		rc40.bottom = (rc0.bottom + rc1.bottom) / 2;
-
-		RECT rc41{};
-		rc41.left = rc40.left;
-		rc41.top = rc40.top + rc.bottom / 100;
-		rc41.right = rc40.right;
-		rc41.bottom = rc40.bottom;
+		RECT rc40{ (rc0.left + rc1.left) / 2, (rc0.top + rc1.top) / 2, (rc0.right + rc1.right) / 2, (rc0.bottom + rc1.bottom) / 2 };
+		RECT rc41{ rc40.left, rc40.top + rc.bottom / 100, rc40.right, rc40.bottom };
 
 		SelectObject(hdc, hBrushT);
 
@@ -1530,30 +1521,11 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 
 	}
 	if (A == 6) {
-		rc0.left = 0;
-		rc0.top = rc.bottom / 16;
-		rc0.right = rc.right / cellNumber;
-		rc0.bottom = rc.bottom / 9;
-
-		rc1.left = rc0.right;
-		rc1.top = rc0.top;
-		rc1.right = rc.right / cellNumber * 2;
-		rc1.bottom = rc0.bottom;
-
-		companyNameTitleRectangle.left = 2;
-		companyNameTitleRectangle.top = 2;
-		companyNameTitleRectangle.right = rc1.right;
-		companyNameTitleRectangle.bottom = rc0.top - rc.bottom / 80;
-
-		companyStockPriceGraphRectangle.left = rc0.left + rc.right / 80;
-		companyStockPriceGraphRectangle.top = rc0.bottom + rc.bottom / 40;
-		companyStockPriceGraphRectangle.right = rc1.right - rc.right / 80;
-		companyStockPriceGraphRectangle.bottom = rc.bottom / 2 - rc.bottom / 40;
-
-		timerRectangle.left = rc1.right + rc.right / 20;
-		timerRectangle.top = rc.bottom / 60;
-		timerRectangle.right = rc.right / cellNumber * 2 * 2 - rc.right / 100;
-		timerRectangle.bottom = rc0.top;
+		rc0 = RECT{ 0, rc.bottom / 16, rc.right / cellNumber, rc.bottom / 9 };
+		rc1 = RECT{ rc0.right, rc0.top, rc.right / cellNumber * 2, rc0.bottom };
+		companyNameTitleRectangle = RECT{ 2, 2, rc1.right, rc0.top - rc.bottom / 80 };
+		companyStockPriceGraphRectangle = RECT{ rc0.left + rc.right / 80, rc0.bottom + rc.bottom / 40, rc1.right - rc.right / 80, rc.bottom / 2 - rc.bottom / 40 };
+		timerRectangle = RECT{ rc1.right + rc.right / 20, rc.bottom / 60, rc.right / cellNumber * 2 * 2 - rc.right / 100, rc0.top };
 		
 		/*時計処理start*/
 		TCHAR sur[10];
@@ -1580,10 +1552,7 @@ void Ftime(const int A, const RECT rc, const HDC hdc) {
 		SetTextColor(hdc, RGB(153, 102, 0));
 		TextOut(hdc, rc1.right + rc.right / 50, timerRectangle.top + timerRectangle.top * 3, TEXT("～ニュース～"), lstrlen(TEXT("～ニュース～")));
 
-		eventTitleRectangle.left = rc0.left + rc.right / 160 + rc.right / 3;
-		eventTitleRectangle.top = rc0.bottom + rc.bottom / 40;
-		eventTitleRectangle.right = rc1.right - rc.right / 32 + rc.right / 3;
-		eventTitleRectangle.bottom = rc.bottom / 2 - rc.bottom / 10;
+		eventTitleRectangle = RECT{ rc0.left + rc.right / 160 + rc.right / 3, rc0.bottom + rc.bottom / 40, rc1.right - rc.right / 32 + rc.right / 3, rc.bottom / 2 - rc.bottom / 10 };
 
 		SelectObject(hdc, hFont6);
 		DrawText(hdc, messageEventTitle, lstrlen(messageEventTitle), &eventTitleRectangle, DT_CENTER | DT_WORDBREAK);
